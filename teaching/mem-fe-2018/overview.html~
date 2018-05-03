@@ -134,33 +134,32 @@ mem.fe.2018 [at] uniandes.edu.co
 
 
 <!-- ===== MAIN CONTENT OF THE PAGE  ====-->
-<table align="center">
-  <tr>
-    <td>
-<img src="images/bogota.jpeg" style="width: 730px">
-    </td>
-  </tr>
-</table>
-<i><small>Photo: courtesy of Laura Milena Forero Junco</small></i>
 <div class="Paragraph title">
-  Welcome to Bogot&aacute 
+Overview
 </div>
-On behalf of the <a href="https://mptg-cbp.github.io/">Max Planck Tandem Group in Computational Biophysics of the University of Los Andes</a>, we are pleased to announce the school on computer simulations of biological membranes and free energy calculations of biological systems. We are looking forward to welcome you at the thrilling city of Bogot&aacute, located at the heart of the Colombian Andes.
-<div class="Paragraph title">
-Registration open:</a>
-</div>
-<ul>
-  <li> <strong>Deadline: June 15, 2018</strong>.
-  </li>
-<li> 
- <a href="registration.html">
-   Register here </a>
-</li>
-</ul>
-<div class="Paragraph title">
-  </div>  
-Colombia among the 52 places to go in 2018 according to <a href="https://www.nytimes.com/interactive/2018/travel/places-to-visit.html">New York Times</a>.
+<table>
+  <td>
+    <tr>
+<img src="https://mptg-cbp.github.io/images/pictures/27.png"  align="right">
+    </tr>
+<tr>      
+  Biological membranes define the boundaries of biological compartments and regulate the transfer of information between the cell and the exterior. The use of computer simulations, in particular molecular dynamics simulations, has enabled monitoring the dynamics of biological membranes in an unprecedentedly broad spatio-temporal range. Moreover, recent methodological advances are pushing the level of complexity further, while increasing the precision and accuracy. Computer simulations have elucidated key aspects of biological membranes and helped us to understand their structure, assembly, composition, activity, and dynamics, among many others.
 
+
+
+  <p><p>
+</tr>
+  </td>
+  <td>
+    <tr>
+      <img src="images/distributions.png" style="width: 300px"  align="left">
+    </tr>
+    <tr>
+      Computer simulations have also been widely used to compute free energies &#8210the driving forces of biomolecular processes&#8210. By incorporating concepts of statistical mechanics into equlibrium and non-equilibrium methods, it has been possible to decipher key processes in biology, including energetics of permeation trhough membranes, chemo-mechanical energy transduction by molecular motors, biomolecular recognition, ligand-receptor binding affinities, biomolecular thermodynamic stability. <p><p>
+</tr>
+  </td>
+  </table>
+The goal of the school is to bring a selected group of reknown scientist to provide the state of the art of computer simulations of biological membranes and of free energy calculations of biomolecular systems. They will illustrate the physico-chemical principles, applications, and challenges of biomembrane simulations and of free energy calculations. Furthermore, the participants will get familiarized with the available packages for computer simulations through hands on sessions. In addition, they will also have the opportunity to present their work in oral and poster contributions. A session will also be dedicated to highlight the recent experimental advances, complementary to the simulations, to study biological membranes. 
 
 
 
