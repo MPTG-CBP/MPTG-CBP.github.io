@@ -497,3 +497,11 @@ vertical-align: top;
 	display: block;
 
 }
+
+
+.code{
+    font-family:"Courier New", Courier, monospace;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    text-align: left;
+   }
