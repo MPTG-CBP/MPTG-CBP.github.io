@@ -95,7 +95,7 @@ Contents:
 <a name="Download"></a>
   Download
 </div>
-1) Clone GROMACS.git, by executing in the terminal:<br>
+1) Clone GROMACS.git, by running in the terminal:<br>
 <div class="code">
 git clone git://git.gromacs.org/gromacs.git<p>
 </div>
@@ -107,11 +107,11 @@ cd gromacs<p>
 <div class="code">
 <a href="https://gerrit.gromacs.org/#/c/8005/">https://gerrit.gromacs.org/#/c/8005</a>
 </div>
-Click "Download" at the right-hand side. Copy-paste and execute the entire Checkout-line command in the terminal, which for "user" should be something like:
+Click "Download" at the right-hand side. Copy the entire Checkout-line command and execute it in the terminal. For "user" the command should be something like:
 <div class="code">
 git fetch https://user@gerrit.gromacs.org/a/gromacs refs/changes/05/8005/7 && git checkout FETCH_HEAD<p>
 </div>
-3-optional) Any time you want to fetch a new patch, run (3) after reseting any previous downloaded and installed patch, by executing
+3-optional) To reset any previous downloaded and installed patch run:
 <div class="code">
 git reset --hard HEAD^<p>
 </div>
@@ -128,7 +128,7 @@ Installation
   cmake .. -DGMX_BUILD_OWN_FFTW=ON -DREGRESSIONTEST_DOWNLOAD=ON<br>
   make <p>
 </div>
-After installation, the GROma&rho;s tools will be accessible in the "build" directory as:
+After installation, the GROma&rho;s tools should be accessible in the "build" directory as:
 <div class="code">
   ./bin/gmx tide -h<br>
   ./bin/gmx mapxxx -h<br>
