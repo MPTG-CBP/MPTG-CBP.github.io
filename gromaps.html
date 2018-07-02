@@ -99,7 +99,11 @@ Contents:
 <div class="code">
 git clone git://git.gromacs.org/gromacs.git<p>
 </div>
-2) fetch the latest patch of GROma&rho;s, by signing in, via a web browser, in the site:
+2) Go to the created directory
+<div class="code">
+cd gromacs<p>
+</div>
+3) fetch the latest patch of GROma&rho;s, by signing in, via a web browser, in the site:
 <div class="code">
 <a href="https://gerrit.gromacs.org/#/c/8005/">https://gerrit.gromacs.org/#/c/8005</a>
 </div>
@@ -107,7 +111,7 @@ Click "Download" at the right-hand side. Copy-paste and execute the entire Check
 <div class="code">
 git fetch https://user@gerrit.gromacs.org/a/gromacs refs/changes/05/8005/7 && git checkout FETCH_HEAD<p>
 </div>
-2-optional) Any time you want to fetch a new patch, run (2) after reseting any previous downloaded and installed patch, by executing
+3-optional) Any time you want to fetch a new patch, run (3) after reseting any previous downloaded and installed patch, by executing
 <div class="code">
 git reset --hard HEAD^<p>
 </div>
@@ -116,10 +120,6 @@ git reset --hard HEAD^<p>
 <div class="Paragraph subtitle" >
 <a name="Installation"></a>
 Installation
-</div>
-3) Go to the created directory
-<div class="code">
-cd gromacs<p>
 </div>
 4) Install GROMACS as usual (instructions <a href="http://manual.gromacs.org/documentation/2018/install-guide/index.html">here</a>):
 <div class="code">
