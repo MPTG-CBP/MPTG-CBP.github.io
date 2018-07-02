@@ -68,73 +68,90 @@ function hide(link, divId) { var lText = link.innerHTML; var d = getObject(divId
     
     <table style="text-align: left; width: 100%;" border="0" cellpadding="0" cellspacing="3">
       <tbody>
+
         <tr>
-	  	  <!--- ===== BEGIN TABLE OF CONTENTS ===== ---->
-	  <td style="vertical-align: top; width: 100px;">
-	                <table style="text-align: center; width: 100%;" border="0" ; cellpadding="5" ; cellspacing="0">
-              <tbody>
-		<tr>
-		  <td>
-		    <div id="side">
-		      <div id="menu"> 
-			<ul>
-			  <li><a href="index.html">Home</a></li>
-			  <li><a href="research.html">Research</a></li>
-			  <li><a href="people.html">People</a></li>
-		  	  <li><a href="publications.html">Publications</a></li>
-			  <li><a href="teaching.html">Teaching</a></li>
-			  <li><a href="positions.html">Positions</a></li>
-			  <li><a href="gallery.html">Gallery</a></li>
-			  <li><a href="software.html">Software</a></li>
-            <li><a href="contact.html">Contact</a></li>
-			</ul>
-		      </div>
-		    </div>
-		    <div class="paragraph Heading_2" >
-
-
-		      <a href="http://www.uniandes.edu.co"><img src="images/uniandes_logo.png" style="width: 150px;margin-top:15px;"></a>
-
-
-				   <hr>Hosted by:<br>
-				   <a href="http://www.mpimf-heidelberg.mpg.de/person/49405/2169">
-<img src="images/MPI_logo.png" style="height: 100px;">
-				   </a>
-<hr>Guest members of:<br>
-<a href="http://typo.iwr.uni-heidelberg.de/members/guest-members/">
-<img src="images/iwr-logo.png" style="width: 120px;"><br>
-</a>
-
-				   
-</div>
-		    
-		  </td>
-		</tr>
-	      </tbody>
-            </table>
-          </td>
-	
-
-
-	  <!--- ===== END TABLE OF CONTENTS ===== ---->
-	  
-
-	    
-            
 
 <!-- ===== MAIN CONTENT OF THE PAGE  ====-->
 <td style="vertical-align: top; text-align: justify;">
 
-<!-- ========= VWF  ========= -->
 <div class="Paragraph title" >
-Software
+GROma&rho;s
 </div>
-<UL>
-  <li><a href="gromaps.html"> GROma&rho;s</a>
-  <li><a href="http://wwwuser.gwdg.de/~ggroenh/membed.html"> g_membed</a>
-    
-</li>
-</UL>
+A GROMACS-based toolset for the calculation and comparison of density maps from molecular dynamics simulations. Here, you will find information how to download, install, and execute the toolset.
+
+<!-- === Table of contents === -->
+<div class="Paragraph subtitle" >
+Contents:
+</div>
+<ul>
+  <li><a href="#Download">Download</a></li>
+  <li><a href="#Installation">Installation</a></li>
+  <li><a href="#Examples">Examples</a></li>
+  <li><a href="#Citation">Citation</a></li>
+</ul>
+
+<!-- === Download === -->
+<div class="Paragraph subtitle" >
+<a name="Download"></a>
+  Download
+</div>
+1) Clone GROMACS.git, by executing in the terminal:<br>
+<div class="code">
+git clone git://git.gromacs.org/gromacs.git<p>
+</div>
+2) fetch the latest patch of GROma&rho;s, by signing in, via a web browser, in the site:
+<div class="code">
+<a href="https://gerrit.gromacs.org/#/c/8005/">https://gerrit.gromacs.org/#/c/8005</a>
+</div>
+Click "Download" at the right-hand side. Copy-paste and execute the entire Checkout-line command in the terminal, which for "user" should be something like:
+<div class="code">
+git fetch https://user@gerrit.gromacs.org/a/gromacs refs/changes/05/8005/7 && git checkout FETCH_HEAD<p>
+</div>
+2-optional) Any time you want to fetch a new patch, run (2) after reseting any previous downloaded and installed patch, by executing
+<div class="code">
+git reset --hard HEAD^<p>
+</div>
+
+<!-- === Install === -->
+<div class="Paragraph subtitle" >
+<a name="Installation"></a>
+Installation
+</div>
+3) Go to the created directory
+<div class="code">
+cd gromacs<p>
+</div>
+4) Install GROMACS as usual (instructions <a href="http://manual.gromacs.org/documentation/2018/install-guide/index.html">here</a>):
+<div class="code">
+  mkdir build<br>
+  cd build<br>
+  cmake .. -DGMX_BUILD_OWN_FFTW=ON -DREGRESSIONTEST_DOWNLOAD=ON<br>
+  make <p>
+</div>
+After installation, the GROma&rho;s tools will be accessible in the "build" directory as:
+<div class="code">
+  ./bin/gmx tide -h<br>
+  ./bin/gmx mapxxx -h<br>
+</div>
+
+<!-- === Examples === -->
+<div class="Paragraph subtitle" >
+<a name="Examples"></a>
+Examples
+</div>
+
+<!-- === Citation === -->
+<div class="Paragraph subtitle" >
+<a name="Citation"></a>
+Citation
+</div>
+
+
+
+
+
+
+
 
 
 
