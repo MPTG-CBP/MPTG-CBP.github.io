@@ -95,43 +95,35 @@ Contents:
 <a name="Download"></a>
   Download
 </div>
-1) Clone GROMACS.git, by running in the terminal:<br>
-<div class="code">
-git clone git://git.gromacs.org/gromacs.git<p>
-</div>
-2) Go to the created directory
-<div class="code">
-cd gromacs<p>
-</div>
-3) fetch the latest patch of GROma&rho;s, by signing in, via a web browser, in the site:
-<div class="code">
-<a href="https://gerrit.gromacs.org/#/c/8005/">https://gerrit.gromacs.org/#/c/8005</a>
-</div>
-Click "Download" at the right-hand side. Copy the entire Checkout-line command and execute it in the terminal. For "user" the command should be something like:
-<div class="code">
-git fetch https://user@gerrit.gromacs.org/a/gromacs refs/changes/05/8005/7 && git checkout FETCH_HEAD<p>
-</div>
-3-optional) To reset any previous downloaded and installed patch run:
-<div class="code">
-git reset --hard HEAD^<p>
-</div>
-
+1) Download the GROMACS patch set including groma&rho;s <a href="gromaps_img/gromaps.tar.gz">here</a>
 <!-- === Install === -->
 <div class="Paragraph subtitle" >
 <a name="Installation"></a>
 Installation
+</div>
+2) Uncompress the downloaded directory:
+<div class="code">
+tar xzvf gromaps.tar.gz
+</div>
+3) Go to the created directory
+<div class="code">
+cd gromaps
 </div>
 4) Install GROMACS as usual (instructions <a href="http://manual.gromacs.org/documentation/2018/install-guide/index.html">here</a>):
 <div class="code">
   mkdir build<br>
   cd build<br>
   cmake .. -DGMX_BUILD_OWN_FFTW=ON -DREGRESSIONTEST_DOWNLOAD=ON<br>
-  make <p>
+  make
 </div>
-After installation, the GROma&rho;s tools should be accessible in the "build" directory as:
+After installation, the GROma&rho;s tools will be accessible in the "build/bin" directory. They should appear in the list of programs as maptide, mapdiff, mapconvert, etc:   
 <div class="code">
-  ./bin/gmx tide -h<br>
-  ./bin/gmx mapxxx -h<br>
+  ./bin/gmx help commands
+ </div>
+To see the help of each individual tool run
+<div class="code">
+  ./bin/gmx maptide -h<br>
+  ./bin/gmx map* -h
 </div>
 
 <!-- === Examples === -->
@@ -139,12 +131,221 @@ After installation, the GROma&rho;s tools should be accessible in the "build" di
 <a name="Examples"></a>
 Examples
 </div>
+In the following, a set of examples will explain how to use the groma&rho;s tools. Download the folder with all the necessary input files to run the examples <a href="gromaps_img/examples.tar.gz">here</a>. Uncompress the file and go to the created directory:
+<div class="code">
+  tar xzvf examples.tar.gz<br>
+  cd examples
+</div>
+Let us assume that GROma&rho;s directory path is 
+<div class="code">
+GROmaps
+</div>
+All the GROma&rho;s commands will be reached in
+<div class="code">
+$GROmaps/build/bin/gmx ...
+</div>
+In the following any gmx command refers to the command found in this path, which  we ommit for simplicity.
+<OL>
+  <li> <div class="Paragraph subsubtitle">Basic density-map calculation</div>
+    We here compute the time-averaged density of a set of water molecules inside and around one of the four channels of yeast aquaporin. We consider a small trajectory fragment (aqy1.xtc) and a reference initial conformation (aqy1.gro). We compute the map at a grid resolution of 0.1 nm:
+    <div class="code"><strong>
+gmx maptide -f aqy1.xtc -s aqy1 -select 'resname SOL' -spacing 0.1 -mo 
+</strong>  </div>
+    The output density map average.ccp4 (ccp4 format) can be visualized by any molecular visualization package. Here, we will use PyMOL. Open pymol<br>
+<!--- drawing showing the density they should see in pymol -->
+<img src="gromaps_img/average.png" style="width: 200px;"align="right" ></a>
+
+<div class="code">
+pymol average.ccp4
+    </div>
+    By default, PyMOL normalizes ccp4 maps, to standard deviation units and zero mean. to visualize the density contour at 1.0 sigma as a mesh type:
+          <div class="code">
+isomesh mesh, average, 1 
+	  </div>
+	  The mesh displays the two water compartments and the water channel interrupted at the top by a tyrosine residue (not shown). Other useful map representations in PyMOL are isosurface, slice, and volume.
+    		 
+
+        <li> <div class="Pagragraph subsubtitle">Density-map calculation with non-default Gaussian coefficients</div>
+      By default GROma&rho;s considers 4 Gaussians per atom to spread the density (see methods in citation below). The Gaussian coefficients are obtained from the cryo-electron microscopy structure factors and they are listed in the file 
+    <div class="code"><strong>
+$GROmaps/share/top/electronscattering.dat
+</strong></div>
+    For each atom, several Gaussians (lines) are defined. Each line contains the atomic number (column 1), followed by the amplitude A (column 2) and the width B (column 3) of each Gaussian. A modified electronscattering.dat file can be specified to maptide through the -gaussparameters flag. For example, for a Non-Default Atom named NDA, whose atomic number is X, and with N Gaussians,  the entry in  electronscattering.dat file should look like
+        <div class="code"><strong>
+	    X NDA<br>
+	    X A<sub>1</sub>(NDA) B<sub>1</sub>(NDA)<br>
+	    X A<sub>2</sub>(NDA) B<sub>2</sub>(NDA)<br>
+	    ...<br>
+	    X A<sub>N</sub>(NDA) B<sub>N</sub>(NDA)<br>
+</strong></div>
+
+<li> <div class="Pagragraph subsubtitle">Difference map</div>
+We here calculate the difference between a computed and a reference map. First, we compute the map, by considering the water molecules which were exclusively inside the channel (coordinates z>0 and z<2 nm). The reference is the map computed in example (1). Grid parameters (extent and resolution) will be taken from the reference map (-refmap option):
+<div class="code"><strong>
+gmx maptide -f aqy1.xtc -s aqy1.gro -refmap average.ccp4  -select 'resname SOL and z>1 and z<2'  -mo average_z0-2-nm.ccp4 
+</strong>    </div>
+Then, we compute the difference    
+    	  <div class="code"><strong>
+gmx mapdiff -compare  average_z0-2-nm.ccp4 -refmap average.ccp4  -mo diff.ccp4  -comparefactor 1 -reffactor -1 
+</strong> </div>
+We visualize the difference map with pymol<br>
+
+<!--- drawing diff map -->
+<img src="gromaps_img/diff.png" style="width: 200px;"align="right" ></a>
+	  
+ <div class="code">
+pymol diff.ccp4
+	  </div>
+		  We choose the map in slice representation, by clicking on the diff object at the right-hand side
+<div class="code">
+A->slice->default
+    </div>
+Rotate with the mouse to change the viewing orientation. Inside the channel, density is identical for the computed and the reference map (diff=0: white). Outside the channel the computed map has no density while the reference does (diff<0:red).
+
+<li> <div class="Pagragraph subsubtitle">Masking</div> 
+  We can mask regions from the calculation. Let us first create a mask, which will include the volume occupied by the crystallographic water molecules and exclude the rest of the space. For that, we use the Room temperature X-ray structure of Aqy1 (5BN2 PDB code). We create the mask by running maptide (a mask is also a density map), reading size and resolution lattice from the experimental  Xray map (-refmap) and selecting only crystallographic water molecules:
+    <div class="code"><strong>
+gmx maptide -f 5bn2.pdb -s 5bn2.pdb -refmap Aqy1_RT_Xray.ccp4 -select 'resname HOH' -mo mask.ccp4 
+    </strong> </div>
+    The created mask has non-zero values for regions occupied by the water molecules and zero values everywhere else (as it is a map it can be visuallized e.g. by PyMOL) .<p>
+    
+The density map is now computed, ignoring all grid points which have a value smaller than 1e-5 in the mask:
+    <div class="code"><strong>
+gmx maptide -f aqy1.xtc -s aqy1.gro -refmap Aqy1_RT_Xray.ccp4 -mask mask.ccp4 -maskcutoff 1e-5 -select 'resname SOL' -mo average_masked.ccp4 
+    </strong> </div>
+    To visuallize the output map open pymol
+    <div class="code">
+      pymol
+</div>
+    Before loading the map, the normalization option must be turned off, so all masked points (which have NAN values) are ignored. Hence, in the pymol console type:<br>
+
+    <!--- drawing diff map -->
+<img src="gromaps_img/mask.png" style="width: 200px;"align="right" ></a>
+        <div class="code">
+	  unset normalize_ccp4_maps<br>
+	  load average_masked.ccp4	  
+	</div>
+Click on the average_masked object at the right-hand side:
+        <div class="code">
+A->slice->default
+	</div>
+Unmasked regions (blue shade) correspond to density of water at the crstallographic water-molecule positions. Masked regions (green) correspond to the rest of the space.<p>
+
+																													      
+<li> <div class="Pagragraph subsubtitle">Time-resolved global correlation</div> 
+  Here, we compute the global correlation coefficient between the computed map and the experimental X-ray map as a function of time, averaging over 10 frames (a time-windows of 200 ps):
+    <div class="code"><strong>
+gmx maptide -f aqy1.xtc -s aqy1.gro -refmap Aqy1_RT_Xray.ccp4 -select 'resname SOL' -blocksize 10  -correlation 
+    </strong>  </div>
+    View correlation with xmgrace:
+    <div class="code">
+      xmgrace correlation.xvg 
+     </div>
+    The correlation trace displays how much the computed map resembles the X-ray map as a function of time (frames). This calculation is very useful for these type of systems, for which an RMSD calculation is not straightforward. The correlation is very low, because the computed map contains only density for the water molecules while the reference experimental map has also density of protein atoms. The correlation improves if a mask (to only the water molecules) is applied:
+    <div class="code"><strong>
+gmx maptide -f aqy1.xtc -s aqy1.gro -refmap Aqy1_RT_Xray.ccp4 -mask mask.ccp4 -maskcutoff 1e-2  -select 'resname SOL' -blocksize 10  -correlation correlation_mask.xvg
+    </strong>  </div>
+Compare both  correlations with xmgrace:
+    <div class="code">
+      xmgrace correlation.xvg correlation_mask.xvg
+     </div>
+    unmasked is shown in black and masked in red.<p>
+    <img src="gromaps_img/correlation.png" style="width: 300px;" ></a>
+
+  
+<li> <div class="Pagragraph subsubtitle">Local correlation</div>
+  In this example, we compute the local correlation of the time-averaged map and the X-ray map. First, we compute the map, taking grid parameters from the X-ray map, and masking all except the water-populated region :
+<div class="code"><strong>
+    gmx maptide -f aqy1.xtc -s aqy1.gro -refmap Aqy1_RT_Xray.ccp4  -select 'resname SOL'  -mo average.ccp4
+    
+</strong>    </div>
+Then, we compute the local correlation. The correlation coefficient is computed in a cubic region, considering all neighbour grid points, which lay 0.15 nm away, from each grid point: 
+    	  <div class="code"><strong>
+gmx mapcompare -compare average.ccp4 -refmap Aqy1_RT_Xray.ccp4  -localcorrelation localcorrelation.ccp4 -rlocal 0.15
+</strong> </div>
+    <!--- drawing diff map -->
+<img src="gromaps_img/loccorrelation.png" style="width: 200px;"align="right" ></a>
+We visualize the localcorrelation map with pymol
+ <div class="code">
+pymol 
+ </div>
+in the pymol console: 
+<div class="code">
+unset normalize_ccp4_maps<br>
+load loccorrelation.ccp4
+	</div>
+Click on the average_masked object at the right-hand side:
+        <div class="code">
+A->slice->default
+	</div>
+	For the pore, where the water molecules are located, there are regions of high correlation (blue). For the rest of the space the computed map has zero density while the reference experimental map has protein-related density. Therefore, there, the maps are poorly correlated (white) or moderately anti-correlated (light red).<p>
+Useful information of the maps can be retrieved by:
+    	  <div class="code"><strong>
+gmx mapinfo -mi localcorrelation.ccp4 
+</strong> </div>
+	  In particular, the miminum and maximum values [ -0.542903, 0.923177 ] reflect the range of the spatial correlation.
+	  
+ 
+<li> <div class="Pagragraph subsubtitle">Spatial free energies</div>
+  In this example we estimate the spatial free energy as -log(&rho;). We consider a short fragment of  coarse-grained trajectory of a GPCR membrane protein embedded in a bilayer of POPC lipids  and cholesterol. Fist, we compute the density cholesterol: 
+      	  <div class="code"><strong>
+	      gmx maptide  -f gpcr.xtc -s gpcr.pdb -spacing 0.4 -gaussparameters CG_coeff.dat -select 'resname CHOL and within 3 of group "Protein"' -mo chol.ccp4<p>
+</strong> </div>
+	  Then, we take the logarithm of this map:
+	        	  <div class="code"><strong>
+			      gmx maplog  -mi chol.ccp4 -mo logchol.ccp4 -fillundef minfloat<p><p>
+</strong> </div>
+			  The flag "-fillundef minfloat" will set the minimum float (-3.40282E+38) to all grid points for which density is negative and therefore -log(rho) is undefined. This will help to distinghish these singularities from the rest<p>
+
+    An <strong> absolute estimate of the free energy </strong> is obtained by multiplying the map by -1:<br>
+-log [ &rho;(CHOL) ].<br>
+This is achieved by executing the command:
+<div class="code"><strong>
+gmx mapdiff -compare  logchol.ccp4 -refmap logchol.ccp4  -mo mlogchol.ccp4  -comparefactor -1 -reffactor 0 
+</strong> </div>    
+To visuallize the map in pymol:
+ <div class="code">
+pymol 
+ </div>
+in the pymol console: 
+<div class="code">
+unset normalize_ccp4_maps<br>
+load mlogchol.ccp4<br>
+load gpcr.pdb<br>
+hide<br>
+show spheres, poly<br>
+ramp_new ramp, mlogchol , [2,4,6,  8, 10] , [blue,  cyan, green, yellow , orange, white]<br>
+slice_new slice, mlogchol <br>
+color ramp, slice<br>
+</div>
+    <img src="gromaps_img/mlogchol.png" style="width: 250px;"  ></a><br>
+The absolute free energy is presented in a color map around the GPCR (spheres). Near the protein there are spots with high affinity compared to the bulk regions (smaller energy values in cyan an blue near the protein compared to those in green far away from the protein). <p><p>
+
+<strong> The relative free energy </strong> is defined as: -log [ &rho;(CHOL) / &rho; (POPC) ].<br> 
+  In practice, it is obtained by using the mapdiff command:
+  <div class="code"><strong>
+gmx mapdiff -compare  logchol.ccp4 -refmap logpopc.ccp4  -mo mlogchol_relative.ccp4  -comparefactor -1 -reffactor 1 
+</strong> </div>   
+  
+Note that log[ &rho;(POPC) ] must have been obtained beforehand (e.g. following a similar protocol as that described above for CHOL).
+
+ 
+    
+</OL>
+
+
+
 
 <!-- === Citation === -->
 <div class="Paragraph subtitle" >
-<a name="Citation"></a>
-Citation
+  <a name="Citation"></a>
+  Citation
 </div>
+For work related to the GROma&rho;s tools, please cite this article:<br>
+Rodolfo Briones, Christian Blau, Carsten Kutzner, Bert L. de Groot, and, Camilo Aponte-Santamar&iacutea. <i>GROma&rho;s: a GROMACS-based toolset for the calculation and comparison of density maps from molecular dynamics simulations</i>. <strong>Submitted</strong>.
+
+
+
 
 
 
