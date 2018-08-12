@@ -1,0 +1,903 @@
+<HTML>
+<head><title>biological membranes</title>
+  <style type="text/css"> 
+  div.important {color: #ff0000}
+  div.code {
+  background: #e0e0e0;
+  border: black 1px solid;
+  padding: 10px;  width: 100%;
+ </style>
+
+<link rel="stylesheet" type="text/css" href="./prakt.css">
+
+</head>
+<body BGCOLOR="white" ; style="width: 70%"; >
+
+  <center><h1><b>Molecular Dynamics simulations of lipid bilayers and membrane proteins</b><br>
+<a href="https://mptg-cbp.github.io"> by Camilo Aponte-Santamar&iacutea</a>
+    </h1>
+
+  </center>
+<font color=#005A9C> <big>
+   <big> <b>Contents</b></big></big>
+  </font>
+<font face="Arial" size="-1">
+<a name="contents"></a>  
+<div class="code" style="width: 36%; background: white;">
+   <font size=4>
+     <a href="#bilayer"> A. Lipid bilayer simulation setup </a> <br>
+     <a href="#bilayer_ana"> B. Lipid bilayer simulation analysis </a> <br>
+     <a href="#memprot">C. Membrane protein simulation setup   </a><br>
+     <a href="#memprot_ana">D. Membrane protein simulation setup   </a><br>
+      <a href="#references"> References </a>
+    </font>
+  
+</div>
+<br> 
+
+<!----------------------- BILAYER SETUP ------------>
+<IMG align=right style="width:400px"  SRC="files/bilayer.png">
+<a name="bilayer"></a> <font color=#005A9C size=+1>   <h2>A. Setup of a lipid bilayer simulation</h2> </font>
+We will first setup a simulation of a small lipid bilayer. Several repositories exist, containing force-field parameters, equilibrated initial conformations, and MD simulation parameters for lipids and membrane systems. They include the <a href="http://www.charmm-gui.org/?doc=input/membrane"> CHARMM GUI membrane buildier </a>, the <a href="https://lipidbook.bioch.ox.ac.uk/"> Oxford lipidbook</a>, and the <a href="http://www.fos.su.se/~sasha/SLipids/"> Slipids</a>.<p>
+
+    Today we will consider a small patch of patch of dipalmitoylphosphatidylcholine (DPPC) lipids, with the OPLS-AA force-field, from the <a href="https://lipidbook.bioch.ox.ac.uk/package/show/id/51.html">Oxford lipidbook</a>.<p>
+
+Download  the necessary files by right clicking <a href="files/dppc_files.zip"> here</a>. When prompted, save the file in the Desktop directory.<p>
+
+    Open a terminal, go to the Desktop directory, and unzip the downloaded file:
+<p>
+</p><div class="code">
+<pre>
+  cd ~/Desktop<p>
+  ls -lhrt *zip<p>
+  unzip  dppc_files.zip
+</pre>
+</div>
+<p>
+  Have a look at the structure using pymol:
+<p>
+</p><div class="code">
+<pre>
+pymol system+ions.pdb
+</pre>
+</div>
+<p>
+You will see the lipids arranged in two layers. Highlight the headgroup atoms by typing in the pymol console
+<p>
+</p><div class="code">
+<pre>
+show spheres, name C1+C2+C3+C4+C5+C6+O7+P8+O9+O10+O11
+</pre>
+</div>
+<p><p>
+  <font size="+1" color="red"> Question: </font>
+  How do lipids arrange? which lipid parts are exposed to the water molecules?
+<p><p>
+    In the linux terminal, after closing pymol, execute the command to generate the tpr file
+    <p>
+</p><div class="code">
+<pre>
+gmx grompp -f run.mdp  -p topol.top -c system+ions.pdb  -maxwarn 1
+</pre>
+</div>
+<p>
+Now run the simulation by executing the command
+</p><div class="code">
+<pre>
+gmx mdrun -s topol.tpr -v 
+</pre>
+</div>
+<p>
+  This is a 400 ns simulation. Its duration will depend on the computer configuration, but in any case it will take too long for the tutorial. Cancel the simulation by typing
+</p><div class="code">
+<pre>
+ctrl+c
+</pre>
+</div>
+<p>
+  For the following analysis, download the trajectory (positions printed every half a nanosecond):  and the energy file (containing global information of the simulation every picosecond): <a href="files/run.xtc"> xtc </a> files.<p>
+
+First, look at the trajectory with vmd: 
+</p><div class="code">
+<pre>
+vmd  system+ions.pdb run.xtc
+</pre>
+</div>
+<p>
+  and click play in the VMD main window.   The bonds crossing over the periodic boundaries make difficult to visualize the trajectory. Let us change the visualization
+</p>
+<div class="code">
+  <pre>
+    Click Graphic->Representations
+    Change the drawing method to "dynamic bonds" 
+   </pre>
+</div>	       
+<p>
+  Play around with the visualization, orientation, and frame rate to get a visual idea of the dynamics of the bilayer.
+<p><p>
+  <font size="+1" color="red"> Question: </font>
+What can you say about the dynamics of the lipids? how do they pack in the bilayer? can you say something about the nature of the interactions of the head groups with the water molecules?
+<p><p>
+
+    <!----------------------- BILAYER ANALYSIS ------------>
+<a name="bilayer_ana"></a> <font color=#005A9C size=+2>   <h2>B. Analysis of a lipid bilayer simulation  </h2> </font>
+    Let us now do a quantitative analysis of the simulation.<p>
+<b><big>1. Area per lipid</big></b><p>
+    First, compute the lateral area per lipid molecule. Compute the lateral area of the simulation box by executing in the linux terminal
+       </p><div class="code">
+<pre>
+gmx traj  -f run.xtc -s system+ions.pdb -ob 
+</pre>
+</div>
+<p> 
+  When prompted, select System, and press enter. Then, look which file was created:
+         </p><div class="code">
+<pre>
+ls -lhrt
+</pre>
+</div>
+<p> 
+Look at the changes in box size with xmgrace
+           </p><div class="code">
+<pre>
+xmgrace -block box.xvg -bxy 1:2  -bxy 1:3 -bxy 1:4
+</pre>
+</div>
+<p><p>
+      <font size="+1" color="red"> Question: </font>
+Why do the box dimensions change with time? Do the changes reflect a converged trajectory? 
+<p><p>
+    We can estimate the area per lipid as the lateral area divided by the number of lipids per leaflet:<br>
+    <img src="files/apl_eq.png" style="width:100px;" align="center">
+
+<p><p>
+      <font size="+1" color="red"> Question: </font>
+Why is the denominator divided by two?
+<p><p>
+    
+   The number of DPPC lipids appears in the "molecules" section of the topology file:
+           </p><div class="code">
+<pre>
+more topol.top
+</pre>
+</div>
+<p>
+  The box.xvg is a simple ascii file, which you can access and manipulate with simple scripts. The following somewhat complicated line removes the header of such file (lines starting with # and @) and prints the area per lipid as a function of time. Replace the variable Nl by the number of lipids found in the topoloty and execute the command:
+             </p><div class="code">
+<pre>
+grep -v \# box.xvg | grep -v \@ | awk ' {Nl=XXX ; t=$1 ; lx=$2 ; ly=$3 ; print t, lx*ly/(Nl/2)} ' > apl.dat
+</pre>
+</div>
+<p>
+Now look at the resulting apl.dat file with xmgrace  
+</p><div class="code">
+<pre>
+xmgrace apl.dat
+</pre>
+</div>
+<p><p>
+      <font size="+1" color="red"> Question: </font>
+How does the APL compare with the experimental value for DPPC at 320 K (0.63 nm<sup>2</sup>)?. 
+<p><p>
+
+    
+<b><big>2. Bilayer thickness</big></b><p>
+    To compute the bilayer thickness run the command:
+    </p><div class="code">
+<pre>
+gmx density -f run.xtc -s topol.tpr -center
+</pre>
+</div>
+<p>
+  Select the DPPC group when prompted (both for centering and for density calculation). Display the density with xmgrace
+      </p><div class="code">
+<pre>
+xmgrace density.xvg
+</pre>
+</div>
+<p>
+
+  <p><p>
+      <font size="+1" color="red"> Question: </font>
+What is the bilayer thickness and how does it compare with the head-to-head experimental distance of D<sub>HH</sub>=38.7 Angstrom?   
+<p><p>
+
+
+    <b><big>3. Order parameter</big></b><p>
+    We will monitor the ordering of the lipids. Have a visual inspection again onto the trajectory and try to judge the level of ordering of the acyl-chains.<p>
+  <p><p>
+      <font size="+1" color="red"> Question: </font>
+How do the lipids look? ordered or disordered?
+<p><p>
+    As you may realize, only by visual inspection, it is a very hard to determine the degree of ordering. We will compute the Deuterium order parameter which tell us how the lipids in average orient with respect to certain arbitrary axis (normal to the plane in our case). Let us first create an index file for one of the two acyl chains. Each carbon atom should be in a separate group and default index groups must be deleted. Copy and paste the entire following command:
+         </p><div class="code">
+  <pre>
+    {
+echo a C17
+echo a C18
+echo a C19
+echo a C20
+echo a C21
+echo a C22
+echo a C23
+echo a C24
+echo a C25
+echo a C26
+echo a C27
+echo a C28
+echo a C29
+echo a C30
+echo a C31
+echo del 0-12
+echo q
+    } | gmx make_ndx  -f system+ions.pdb -o sn1.ndx
+</pre>
+</div>
+<p> 
+Compute the order parameters by running for this chain by running the command
+      </p><div class="code">
+<pre>
+gmx order -f run.xtc -s topol.tpr  -n sn1.ndx -od deuter_sn1.xvg
+</pre>
+</div>
+<p>  
+  Repeat this process for the second acyl chain (sn2) whose atoms are C32,...,C50, paying attention to the name of the index file and the deuter_xxx.xvg files. At the end you should have two files: deuter_sn1.xvg and deuter_sn2.xvg. Plot them with xmgrace:
+        </p><div class="code">
+<pre>
+xmgrace deuter_sn1.xvg deuter_sn2.xvg
+</pre>
+</div>
+<p>  
+    <p><p>
+      <font size="+1" color="red"> Question: </font>
+Which parts of the acyl chain are more ordered and which ones more disordered?
+<p><p>
+  
+
+    <b><big>4. Lipid difussion</big></b><p>
+We will finally consider a dynamic quantity, namely the diffusion coefficient of lipids. To compute type:
+    </p><div class="code">
+<pre>
+ gmx msd -f run.xtc -s topol.tpr  -beginfit 1000 -endfit 10000 -trestart 10000 -lateral z
+</pre>
+</div>
+<p>
+When prompted, select the DPPC group..<p>
+Plot the mean square displacement versus time:    
+        </p><div class="code">
+<pre>
+xmgrace msd.xvg
+</pre>
+</div>
+<p>
+  Zoom to the time window, considered for the fitting (0 to 10000 ps). Use the zoom button at the up-left xmgrace menu for this purpose.
+  <p><p>
+<font size="+1" color="red"> Question: </font>
+Which type of diffusive behavior do the lipids display at that given time scale (sub-diffusive, diffusive or super-diffusive)?.<p><p>
+<p><p>
+<font size="+1" color="red"> Question: </font>
+The slope of this curve is related to the diffusion coefficient. How does the estimated value compares with the experimental diffusion coefficient for this lipid at 320 K (D<sub>exp</sub>~1.5x10<sup>-7</sup> cm<sup>2</sup>/s)? 
+<p><p>
+<p><p>
+<font size="+1" color="red"> Question: </font>
+What is the origin of the discrepancies between the simulation and the experimental value?
+<p><p>
+<p><p>
+<font size="+1" color="red"> Question: </font>
+What change in conformation (area per lipid and thickness), ordering, and dynamics (diffusion coefficient) is expected if the temperature is reduced?
+<p><p>        
+
+
+    <!----------------------- MEMBRANE PROTEIN SETUP ------------>
+    <IMG align=right style="width:300px"  SRC="files/aqp.png">
+    <a name="memprot"></a> <font color=#005A9C size=+2>   <h2>C. Setup of a membrane protein simulation </h2> </font>
+Now, we will setup an MD simulation of a membrane protein. We will consider an aquaporin, a class of membrane proteins which facilitate the permeation of water and other solutes through biological lipid bilayers in response to osmotic pressure.  We will consider aquaporin-0, the most abundant protein in our eye lense.<p>   
+
+Please go to the <a href=http://www.rcsb.org/pdb/> protein data bank</a>, search the structure with PDB code <b>2B6O</b>. Download the structure, by clicking on the "Download Files" button at the right side. Select "PDB Format" and save the file  in the Desktop directory. Look at the protein with pymol
+<p>
+<div class="code" ; style="width:40%">
+<pre>
+pymol 2b6o.pdb
+</pre>
+</div>
+<p> <p>
+<font color=red size=+1> Question: </font> Which molecules do you see in the structure?
+<p><p>
+We will remove the surrounding lipid molecules (residue name MC3) and leave only the protein and the water molecules (residue name HOH).
+To do so, we execute the command:
+ <p>
+<div class="code">
+<pre>
+grep -v MC3 2b6o.pdb > monomer+HOH.pdb 
+</pre>
+</div>
+<p>
+We have to model missing atoms or residues. This information is contained in the MISSING RESIDUES and MISSING ATOMS section of the pdb file. In the case of aquaporin-0, the OG atom of SER6 is missing. We can create this atom by using pymol:
+   <p>
+<div class="code">
+<pre>
+pymol monomer+HOH.pdb
+</pre>
+</div>
+<p>
+In the pymol console
+   <p>
+<div class="code">
+<pre>
+hide<br>
+show sticks, resi 6
+</pre>
+</div>
+<p>
+  Follow the instructions given by the tutor to create the atom by using the "Builder" utility of pymol. Once the atom has been added, save the molecule by typing in the pymol console:
+   <p>
+<div class="code">
+<pre>
+save monomer_complete.pdb , all
+</pre>
+</div>
+<p>
+  
+Last thing to do is to change the name of the modified atoms from pymol to GROMACS format. Close pymol and run in the terminal:
+ <p>
+<div class="code">
+<pre>
+sed 's/O01/OG /g' monomer_complete.pdb > tmp<p>
+sed 's/C01/CB /g' tmp >  monomer_complete.pdb
+</pre>
+</div>
+<p>
+Aquaporins arrange as tetramers, with identical monomeric units. We will generate the tetramer by applying symmetric rotation and translation operations to the monomer. First, let us translate the monomer in the x-axis by an amount equalling the crystallographic box: 
+ <p>
+<div class="code">
+<pre>
+grep CRYST1 2b6o.pdb
+gmx editconf -f monomer_complete.pdb -translate -6.5500 0 0 -o monomer_complete_trans.pdb  -label "A" 
+</pre>
+</div>
+<p> 
+Now will apply the rotations. We will rotate the monomer by 90&#176, -90&#176, and 180&#176 around the z-axis:
+ <p>
+<div class="code">
+<pre>
+gmx editconf -f monomer_complete_trans.pdb -rotate 0 0 90 -o mon_90.pdb -label "B"<br> 
+gmx editconf -f monomer_complete_trans.pdb -rotate 0 0 -90 -o mon_-90.pdb -label "C" <br> 
+gmx editconf -f monomer_complete_trans.pdb -rotate 0 0 180 -o mon_180.pdb -label "D" <br> 
+</pre>
+</div>
+<p> 
+We concatenate the four monomers into a single pdb file, saving as well the box size, and reordering protein atoms first and water atoms later:
+ <p>
+<div class="code">
+<pre>
+{
+grep CRYST1 2b6o.pdb
+grep ATOM monomer_complete_trans.pdb
+grep ATOM mon_90.pdb
+grep ATOM mon_-90.pdb
+grep ATOM mon_180.pdb
+grep HETATM monomer_complete_trans.pdb
+grep HETATM mon_90.pdb
+grep HETATM mon_-90.pdb
+grep HETATM mon_180.pdb
+}> tetramer.pdb
+</pre>
+</div>
+<p> 
+Look at the tetramer with pymol
+ <p>
+<div class="code">
+<pre>
+pymol tetramer.pdb 
+</pre>
+</div>
+<p> 
+Now we will generate the topology of the protein with pdb2gmx:
+ <p>
+<div class="code">
+<pre>
+gmx pdb2gmx -f tetramer.pdb -ignh -ter -his 
+</pre>
+</div>
+<p> 
+Select:<br>
+- OPLS-AA/L force field <br>
+- tip4p water model <br>
+Select the protonation state of each histidine (-his option), based on the following list:<br>
+- HIS36:  NE2<br>
+- HIS57:  ND1<br>
+- HIS62:  NE2<br>
+- HIS118: NE2<br>
+- HIS168: ND1<br>
+- HIS197: ND1<br>
+Select "NH2" for the N-terminus and COOH for the C-terminus. <p>
+Because pdb2gmx will prompt this information for each monomer, it is better to create a list with all the selections, copy that list four times and pass it to pdb2gmx:
+ <p>
+<div class="code">
+<pre>
+cat>tmp2<< EOF  
+1
+1
+EOF
+
+cat>tmpmon<< EOF 
+1
+0
+1
+1
+0
+0
+2
+2
+EOF
+
+cat tmp2 tmpmon tmpmon tmpmon tmpmon > tmplist
+gmx pdb2gmx -f tetramer.pdb -ignh -ter -his < tmplist
+</pre>
+</div>
+<p>
+List the created files with 
+ <p>
+<div class="code">
+<pre>
+ls -lhrt
+</pre>
+</div>
+<p>
+Download an equilibrated patch of DMPC lipids <a href="files/dmpc_opls_patch_391_lipids.pdb"> here</a> and visualize it with pymol 
+ <p>
+<div class="code">
+<pre>
+pymol dmpc_opls_patch_391_lipids.pdb
+</pre>
+</div>
+<p>
+Center the protein in the middle of the bilayer. Compute the center of mass of the bilayer:    
+ <p>
+<div class="code">
+<pre>
+gmx traj -f dmpc_opls_patch_391_lipids.pdb -s dmpc_opls_patch_391_lipids.pdb -ox -com
+</pre>
+</div>
+<p>
+  Select the DMP group. Center of mass will appear in the last line of the coord.xvg file. Look at it:
+   <p>
+<div class="code">
+<pre>
+tail -n 1 coord.xvg
+</pre>
+</div>
+<p>
+  The 2nd, 3th, and 4th column are the center of mass coordinates of the bilayer. Use these three numbers, as COMx, COMy, and COMz in the following command, to center the tetramer:
+     <p>
+<div class="code">
+<pre>
+gmx editconf -f conf.gro -center COMx COMy COMz -o conf_centered.pdb 
+</pre>
+</div>
+<p>
+  Now merge the tetramer, crystallographic waters, and lipids onto a single pdb file:
+     <p>
+<div class="code">
+<pre>
+  {
+  grep CRYST1 dmpc_opls_patch_391_lipids.pdb
+  grep ATOM conf_centered.pdb 
+  grep ATOM dmpc_opls_patch_391_lipids.pdb
+  } > tet_patch_clashing.pdb
+</pre>
+</div>
+ <p>
+    Visualize the resulting pdb with pymol<p> 
+ <p>
+<div class="code">
+<pre>
+pymol tet_patch_clashing.pdb
+</pre>
+</div>
+ <p>
+   Here, many lipids are clashing with the protein. We have to remove them. This will be achieved by deinflating the protein, letting it gradually grow until it recovers its original size, and allowing the lipids to accommodate during this growing process.  This method has been proposed by Yesylevskyy in <a href="http://pubs.acs.org/doi/abs/10.1021/ci600553y">ProtSqueeze</a> and later implemented in GROMACS as <a href="http://wwwuser.gwdg.de/~ggroenh/membed.html">g_membed</a>.<p>
+
+ Download the topology of the DMPC lipids <a href="files/dmpc_opls.zip">here</a>. Save the file in the Desktop directory and uncompress it 
+ <p>
+<div class="code">
+<pre>
+unzip dmpc_opls.zip
+</pre>
+</div>
+ <p>
+   Allow to overwrite the ff.oplsa directory, by selecting the option [A]ll.<p>
+  Now the topology file has to be modified: lipids and solvating water molecules must be included and for g_membed, crystallographic water molecules must be distinguished from the other water molecules. A topology file has been prepared with all these modifications. Download the  <a href="files/topol_membed.top">top file here</a>.<p>
+
+  We also need a special parameter file for membed, in which the interactions of the protein with itself are cancelled. You can download this <a href="files/g_membed.mdp">mdp file here</a>.<p>
+
+  Now create an index file, defining a group named PROTEIN_GMEMBED, which contains the protein and the crystallographic waters (group named HO4):
+   <p>
+<div class="code">
+  <pre>
+   gmx make_ndx -f tet_patch_clashing.pdb 
+</pre>
+</div>
+   <p>
+     In the make_ndx console: merge the Protein group with the HO4 group, change the name of the created group to PROTEIN_GMEMBED (group number 18, but it may change), and "q" to save and quit:
+   <p>
+<div class="code">
+  <pre>
+    "Protein" | "HO4"
+    name 18 PROTEIN_GMEMBED
+    q
+</pre>
+</div>
+   <p>
+     Now obtain the tpr file by running grompp:
+        <p>
+<div class="code">
+  <pre>
+gmx grompp -f g_membed.mdp -p topol_membed.top -c tet_patch_clashing.pdb -n index.ndx   -o membed.tpr   -maxwarn 2  </pre>
+</div>
+   <p>
+     Download the file with the options for membed: <a href="files/membed.dat">membed.dat</a>. Run the simulation afterwards:<p>
+             <p>
+<div class="code">
+  <pre>
+  echo PROTEIN_GMEMBED DMP | gmx mdrun -membed membed.dat -s membed.tpr -mn index.ndx -v  -c confout.pdb
+  </pre>
+</div>
+	     <p>
+Load the membed trajectory with vmd, to see the inflation process:
+	     <p>
+<div class="code">
+  <pre>
+    vmd confout.pdb traj_comp.xtc
+  </pre>
+</div>
+<p>
+ Let us change the visualization
+</p>
+<div class="code">
+  <pre>
+    Click Graphic->Representations
+    Change "selected atoms" to "not water"
+   </pre>
+</div>	       
+<p>
+  
+The number of lipid and water molecules in the topology after membed has to be updated. Count the number of lipids and non-crystallographic water molecules:
+	                    <p>
+<div class="code">
+  <pre>
+    cp topol_membed.top topol.top
+    grep -c P8 confout.pdb                # number of lipids
+    grep -v HOH confout.pdb | grep -c OW  # number of non-crystallographic water molecules
+  </pre>
+</div>
+	     <p>
+	       Open topol.top with a text editor and update the number of lipids (DMP) and water molecules (SOL):
+	                    <p>
+<div class="code">
+  <pre>
+    gedit topol.top
+  </pre>
+</div>	       
+			    <p>
+			      Last thing to do is to neutralize the system by adding ions. Download a the following mdp file for energy minimization, <a href="files/em.mdp">em.mdp</a>, and execute grompp
+		      	    <p>
+<div class="code">
+  <pre>
+gmx grompp -f em.mdp -c confout.pdb -p topol.top -o tmp.tpr 
+  </pre>
+</div>	       
+			    <p>
+			      Let us also add 150 mM of Sodium and Chloride ions. Water is at 55.5 M. Thus we have to add one ion every 370 water molecules to achieve a concentration of 150 mM. Count the total number of water molecules:
+		      	    <p>
+<div class="code">
+  <pre>
+grep -c OW confout.pdb
+  </pre>
+</div>	       
+			    <p>
+			      Determine the resulting number of ions corresponding to 150 mM: Nions.<p>
+Update the index group SOL with only the solvent water molecules (residue SOL) discarding crystallographic waters (residue HOH):
+  			      		      	    <p>
+<div class="code">
+  <pre>
+    gmx make_ndx -f confout.pdb
+      </pre>
+</div>	       
+						    <p>
+selecting the following options in the make_ndx menu:
+
+ 			      		      	    <p>
+<div class="code">
+  <pre>
+    del number #of SOL group
+    r SOL
+    q
+      </pre>
+</div>	       
+						    <p>
+Run genion, selecting the group SOL: 						      
+		      		      	    <p>
+<div class="code">
+  <pre>
+gmx genion -s tmp.tpr -neutral -np Nions -nn Nions  -p topol.top -o system_neutral.gro -n index.ndx 
+  </pre>
+</div>	       
+			    <p>
+			      Energy minimize the system:
+		      		      	    <p>
+<div class="code">
+  <pre>
+    gmx grompp -f em.mdp -p topol.top -c system_neutral.gro -o em.tpr
+    gmx mdrun -deffnm em -v
+  </pre>
+</div>	       
+					    <p>
+We should equilibrate the solvent (lipids, waters, and ions) around the protein, maintaining the protein position restrained. We will skip this step and the subsequent production run and continue with a preexisting MD trajectory in the following analysis.<p>
+	      
+	       
+Go back to <a href="#contents">Contents</a> 
+
+    <!----------------------- MEMBRANE PROTEIN ANALYSIS ------------>
+    <a name="memprot_ana"></a> <font color=#005A9C size=+2>   <h2>D. Analysis of a membrane protein simulation</h2> </font>
+    Download the following compressed file, containing an MD simulation of AQP0 together with a reference initial conformation: <a href="files/aqp0_md_traj.zip">aqp0_md_traj.zip</a>. Unzip the file<p>
+  
+  Visually inspect the trajectory with pymol:
+ <p>
+<div class="code">
+  <pre>
+pymol conf_0ns.pdb   
+  </pre>
+</div>	       
+ <p>
+   In the pymol console:
+ <p>
+<div class="code">
+  <pre>
+    load traj.xtc,  conf_0ns
+    hide
+    show lines, poly
+    show spheres, name P8
+    </pre>
+</div>	       
+ <p>
+   Click on one lipid near the protein and one far away. They will constitute the "sele" group at the right side. Now change their representation:
+    <p>
+<div class="code">
+  <pre>
+show lines, sele
+  </pre>
+</div>	       
+ <p>
+   It is probably easier to see the lipids, hiding the P8 atom spheres:
+       <p>
+<div class="code">
+  <pre>
+hide spheres, name P8
+  </pre>
+</div>	       
+<p><p>
+  <font size="+1" color="red"> Question: </font>
+What can you say about the dynamics of the protein and the lipids?
+<p><p>
+<b><big>1. Permeation of water</big></b><p>
+  Aquaporins are water channels, facilitating the permeation of water and other small solutes through biological membranes, in response to osmotic pressure. Let us examine the permeation of water. Load the trajectory with vmd:
+         <p>
+<div class="code">
+  <pre>
+vmd conf_0ns.pdb traj.xtc
+  </pre>
+</div>	       
+<p>
+  In the VMD Main window:
+           <p>
+<div class="code">
+  <pre>
+    Click Graphic->Representations
+    For "Selected Atoms" choose "resname SOL and within 4 of protein" 
+    and for "Drawing method" select Licorice 	   
+    Click on "Trajectory"
+    Turn on "Update Selection Every Frame"	   
+	   
+    Click on "Create Rep"
+    Replace "resname SOL and within 4 of protein" by "protein and resid 62 64 180 183"
+    Select Licorice as Drawing method
+    In the VMD Main window pres play, adjusting the speed	   
+    In the Molecule display, play with the orientation and zoom 
+	   </pre>
+</div>	       
+<p>
+<p>
+  <font size="+1" color="red"> Question: </font>
+  how many water pathways can you identify?
+<p>
+  <font size="+1" color="red"> Question: </font>
+  How would you describe the water passage through each one of these paths? 
+<p>
+  <p>
+  <font size="+1" color="red"> Question: </font>
+What is the advantage to allow the water permeation in a single-file fashion?
+<p>
+  <p>
+  <font size="+1" color="red"> Question: </font>
+We selected key residues at the pore of each aquaporin tetramer. From the trajectory, could you imagine how these residues facilitate the water conduction through such narrow pores? HINT: look whether hydrogen bonds may be formed between these residues and water.
+<p>
+Under equilibrium conditions, the net flux of water is zero. However, water molecules by sometimes manage to diffuse trhough the pore. Highlight two water molecules to evidence this. In the vmd Graphical Representations window:
+         <p>
+<div class="code">
+  <pre>
+    Click on the First representation of the list to highlight it.
+    Click on "Create Rep". In the created representation change the Selected Atoms to "resid 525 9370"
+    For that representation, choose VDW as Drawing Method
+  </pre>
+</div>	       
+<p>
+  Aquaporin-0 is a poorly conducting channel. There are other aquaporins which exhibit a more high water permeability, while still maintaing strict control on the substances that cross. For a detail analysis of the permeation of water through aquaporins we recomend to read the literature below and to follow the tutorial developed by Prof. Bert de Groot in G&oumlttingen found <a href="http://www3.mpibpc.mpg.de/groups/de_groot/compbio1/p5/">here</a>.<p>
+
+<IMG align=right style="width:300px"  SRC="files/aqp0.png">  
+<b><big>2. Localization of lipids around membrane proteins</big></b><p>
+Aquaporin-0 has a unique feature. It has been possible to crystallize it with a complete layer of lipids around it. Therefore it is an ideal system to study lipid-protein interactions. Let us check how the lipids accommodate around the protein. Create an index group with the C40 atoms (located in the middle of the one of the acyl chains) and split that group into residues:
+           <p>
+<div class="code" ; style="width:55%">
+  <pre>
+    gmx make_ndx -f conf_0ns.pdb
+    > a C40
+    > splitres XXX ; XXX is the number of the C40 created group
+    > press "Enter" key
+    > q
+  </pre>
+</div>	       
+ <p>
+   Scroll up through the output of the last command and remember the number of the first and last created groups (e.g. C40_DMPC_236: 23 and C40_DMPC_523: 310).<p>
+  Compute the minimum distance between the protein and each of the C40 atoms, by replacing the number of these groups here:
+       <p>
+<div class="code">
+  <pre>
+    {
+    echo 1
+    for i in {23..310}
+    do
+    echo $i
+    done
+    } | gmx mindist -f traj.xtc -s conf_0ns.pdb  -n index.ndx  -od -ng 288 -xvg none
+  </pre>
+</div>	       
+ <p>  
+   Open the result with xmgrace:
+       <p>
+<div class="code">
+  <pre>
+xmgrace -nxy mindist.xvg
+  </pre>
+</div>	       
+ <p>  
+   You will see the minimum distance of each C40 atom to the protein as a function of time.<p>
+  Let us compute a histogram. In xmgrace:
+       <p>
+<div class="code">
+  <pre>
+    Click Edit->Arrange graphs    
+    Change Cols: 2
+    Click Apply
+    Click Close
+
+    Click Data->Data set operations
+    In the new window, right click pressed on G0.S0[2][201]-> Selector operations -> Select All
+    Change Operation type from "Sort" to "Join"
+    Click "Apply"
+    Click "Close"
+
+    Click Data->Transformations->Histograms
+    At the left (Source), click on Set: G0.S0[2][57888]
+    Right click pressed on that set and then -> "Hide"
+    At the right (Destination), select Graph G1(0 sets)
+    Activate option "Normalize"
+    Set Start at: 0
+    Set Stop at:  5
+    Set # of bins 100
+    Click Apply
+    Click Close
+
+    Click on the right-hand side graph
+Click "As" button at the left menu
+  </pre>
+</div>	       
+ <p>  
+   You will see the distance distribution of the C40 atom ortogonal to the protein. This distance is related with the localization of the acyl-chains around the protein
+ <p><p>
+  <font size="+1" color="red"> Question: </font>
+At which distance from the protein is the first layer of lipids located?
+<p>
+  <font size="+1" color="red"> Question: </font>
+Up to which layer is there a degree of localization?
+<p>
+  <font size="+1" color="red"> Question: </font>
+Why the distribution decreases for increasing distances?
+<p>
+  <font size="+1" color="red"> Question: </font>
+How do you think this distribution will change if an atom of the lipid head-group instead of the acyl-chains is considered?
+<p><p>
+  We can also compute the 2D density. To do that, we have to remove the rotation and translation of the protein:
+       <p>
+<div class="code">
+  <pre>
+    gmx trjconv -f traj.xtc -s conf_0ns.pdb -fit rot+trans -o traj_fitted.xtc
+    > Backbone ; group for least-square fitting
+    > System ; group for output
+  </pre>
+</div>	       
+ <p>    
+   Execute the following command:
+       <p>
+<div class="code">
+  <pre>
+    gmx densmap -f traj_fitted.xtc -s conf_0ns.pdb -n index.ndx  -bin 0.05
+    > C40 ; Select the group of C40 atoms
+  </pre>
+</div>	       
+ <p>    
+   densmap creates an xpm file. Convert this file to eps format by running:
+    <p>
+<div class="code">
+  <pre>
+    gmx xpm2ps -f densmap.xpm -o densmap.eps
+  </pre>
+</div>	       
+ <p>    
+   Visualize the map with okular:
+       <p>
+<div class="code">
+  <pre>
+    evince densmap.eps
+  </pre>
+</div>	       
+ <p>    
+ <p>
+  <font size="+1" color="red"> Question: </font>
+How do the lipids localize tangentially around the protein?
+ <p>
+<font size="+1" color="red"> Question: </font>
+Why are there regions of high-lipid density near the protein?
+ <p>
+ <p>
+<font size="+1" color="red"> Question: </font>
+What happens with the lipids far away from the protein?
+ <p>
+ <p>
+<font size="+1" color="red"> Question: </font>
+The Cryo-EM structure of aquaporin-0 revealed the position of several surrounding lipids (remember the first step in which we removed the lipids from the crystallographic structure). How do the lipid positions in the structure compare to the average positions you observed in the simulations? HINT: identify the protein surface residues near the high lipid density, looking at the 2D density plot and the trajectory.
+<p>   
+  
+
+  
+<a name="references"></a> <font color=#005A9C size=+1> <h2>Further references and advanced reading:</h2> </font>
+
+  <b><big>Simulation of biological membranes:</big></b><p>
+<ul>
+  <li> Helgi I. Ing&oacutelfsson, Cl&eacutement Arnarez, Xavier Periole, Siewert J. Marrink.  <b> <EM> Computational 'microscopy' of cellular membranes. </EM> </b> J Cell Sci 129: 257-268 (2016). <a href="http://jcs.biologists.org/content/129/2/257"> [link]</a><p>
+      <li> Matthieu Chavent,Anna L Duncan, and Mark Sansom.  <b> <EM> Molecular dynamics simulations of membrane proteins and their interactions: from nanoscale to mesoscale</EM> </b> Curr. Opin. Struct. Biol. 40: 8-16. <a href="https://doi.org/10.1016/j.sbi.2016.06.007"> [link]</a><p>
+</ul>
+
+  <b><big>Aquaporin water channels:</big></b><p>
+<ul>
+  <li> Bert de Groot and Helmut Grubm&uuml;ller H. <b> <EM> The dynamics and energetics of water permeation and proton exclusion in aquaporins. </EM> </b> Curr. Opin. Struct. Biol. 15: 176-183 (2005)   <a href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwjT0aGijufXAhVLRSYKHZ4aAhgQFggnMAA&url=https%3A%2F%2Fwww.mpibpc.mpg.de%2F275987%2Fcosb_aquaporin_proton.pdf&usg=AOvVaw0-9svwcjayYSZy63XwqAjL"> [link] </a><p>
+      
+<li> Bert de Groot BL and Grubm&uuml;ller H. <b> <EM> Water permeation across biological membranes: Mechanism and dynamics of Aquaporin-1 and GlpF.  </EM> </b> Science.   294: 2353-2357 (2001)   <a href="http://www.sciencemag.org/cgi/reprint/sci;294/5550/2353?maxtoshow=&HITS=10&hits=10&RESULTFORMAT=&searchid=1&FIRSTINDEX=0&volume=294&firstpage=2353&resourcetype=HWCIT.pdf"> [link] </a><p>
+</ul>
+
+  <b><big>Lipid-protein interactions and aquaporin-0:</big></b><p>
+<ul>
+  <li> C Aponte-Santamar&iacutea, R Briones, AD Schenk, T Walz, and BL de Groot.
+       <b> <EM>  Molecular driving forces defining lipid positions around aquaporin-0. </EM> </b> PNAS. 109: 9887-9892 (2012). <a href="http://dx.doi.org/10.1073/pnas.1121054109"> [link] </a><p>
+</ul>
+
+
+
+
+
+
+
+</font>
+</body>
+</HTML>
+

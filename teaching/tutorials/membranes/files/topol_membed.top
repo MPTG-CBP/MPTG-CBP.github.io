@@ -1,0 +1,66 @@
+;
+;	File 'topol.top' was generated
+;	By user: camilo (1002)
+;	On host: cocuy
+;	At date: Tue Nov 28 09:49:28 2017
+
+;
+;	This is a standalone topology file
+;
+;	Created by:
+;	                    :-) GROMACS - gmx pdb2gmx, 2016.4 (-:
+;	
+;	Executable:   /usr/bin/gmx
+;	Data prefix:  /usr
+;	Working dir:  /home/camilo/Desktop
+;	Command line:
+;	  gmx pdb2gmx -f tetramer.pdb -ignh -ter -his
+;	Force field was read from current directory or a relative path - path added.
+;
+
+; Include forcefield parameters
+#include "./oplsaa.ff/forcefield.itp"
+
+; Include chain topologies
+#include "topol_Protein_chain_A.itp"
+#include "topol_Protein_chain_B.itp"
+#include "topol_Protein_chain_C.itp"
+#include "topol_Protein_chain_D.itp"
+
+; Include water topology
+#include "./oplsaa.ff/tip4p.itp"
+
+; Include water HOH topology
+#include "./oplsaa.ff/tip4p_hoh.itp"
+
+; Include dmpc lipid topology
+#include "dmpc_opls.itp"
+
+
+
+#ifdef POSRES_WATER
+; Position restraint for each water oxygen
+[ position_restraints ]
+;  i funct       fcx        fcy        fcz
+   1    1       1000       1000       1000
+#endif
+
+; Include topology for ions
+#include "./oplsaa.ff/ions.itp"
+
+[ system ]
+; Name
+Protein
+
+[ molecules ]
+; Compound        #mols
+Protein_chain_A     1
+Protein_chain_B     1
+Protein_chain_C     1
+Protein_chain_D     1
+HOH                79
+HOH                79
+HOH                79
+HOH                79
+DMPC              392
+SOL             24377
