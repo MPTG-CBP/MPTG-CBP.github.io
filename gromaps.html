@@ -77,18 +77,33 @@ function hide(link, divId) { var lText = link.innerHTML; var d = getObject(divId
 <div class="Paragraph title" >
 GROma&rho;s
 </div>
-A GROMACS-based toolset for the calculation and comparison of density maps from molecular dynamics simulations. Here, you will find information how to download, install, and execute the toolset.
+GROma&rho;s is an open-source GROMACS-based toolset for the calculation and comparison of density maps from molecular dynamics simulations. Here, you will find information how to download, install, and execute the toolset. For more information see also our <a href="#Citation">publication</a>.
 
 <!-- === Table of contents === -->
 <div class="Paragraph subtitle" >
 Contents:
 </div>
 <ul>
+  <li><a href="#Citation">Reference/citation</a></li>
   <li><a href="#Download">Download</a></li>
   <li><a href="#Installation">Installation</a></li>
   <li><a href="#Examples">Examples</a></li>
-  <li><a href="#Citation">Citation</a></li>
+   <li><a href="#Updates">News and updates</a></li>
+  <li><a href="#Contact">Contact</a></li>
+  <li><a href="#Disclaimer">Disclaimer</a></li>
 </ul>
+
+<!-- === Citation === -->
+<div class="Paragraph subtitle" >
+  <a name="Citation"></a>
+  Reference/citation
+</div>
+The method behind GROma&rho;s and several illustrative examples are given in the following publication:<p>
+<ul>
+  <li>
+Rodolfo Briones, Christian Blau, Carsten Kutzner, Bert L. de Groot, and Camilo Aponte-Santamar&iacutea. <i>GROma&rho;s: a GROMACS-based toolset to analyse density maps derived from molecular dynamics simulations</i>. <strong>Biophysical Journal</strong>. In minor revision.<br>
+</ul>
+<strong>For work related to any of the GROma&rho;s tools, please cite this article.</strong><p>
 
 <!-- === Download === -->
 <div class="Paragraph subtitle" >
@@ -333,16 +348,40 @@ Note that log[ &rho;(POPC) ] must have been obtained beforehand (e.g. following 
     
 </OL>
 
-
-
-
-<!-- === Citation === -->
+<!-- === News and updates === -->
 <div class="Paragraph subtitle" >
-  <a name="Citation"></a>
-  Citation
+  <a name="Updates"></a>
+News and updates:
 </div>
-For work related to the GROma&rho;s tools, please cite this article:<br>
-Rodolfo Briones, Christian Blau, Carsten Kutzner, Bert L. de Groot, and, Camilo Aponte-Santamar&iacutea. <i>GROma&rho;s: a GROMACS-based toolset for the calculation and comparison of density maps from molecular dynamics simulations</i>. <strong>Submitted</strong>.
+<ul>
+  <li> <strong>November 8, 2018 </strong>.
+    GROma&rho;s has been presented in the last GROMACS workshop, held in G&oumlttingen on Oct 17-19, 2018. Its source code currently appears as a draft in gerrit.gromacs.org (number 8005). We aim some of the functionalities of GROma&rho;s to become part of the main GROMACS version (target version is GROMACS2020). In particular, it appears likely that maptide could become part of the standard set of GROMACS tools, while the other comparison tools, which do not directly operate on trajectory data, will remain  publicly available in this site.
+</ul>
+
+<!-- === Contact === -->
+<div class="Paragraph subtitle" >
+  <a name="Contact"></a>
+Contact
+</div>
+Please send your comments, questions, and bug reports  to
+ <div class="body">
+<img src="images/email.png" style="width: 200px;"><p><p>
+ </div>
+
+
+ <!-- === Disclaimer === -->
+<div class="Paragraph subtitle" >
+  <a name="Disclaimer"></a>
+Disclaimer
+</div>
+GROma&rho;s is open source. This software is distributed with NO WARRANTY OF ANY KIND. The authors are not responsible for any losses or damages suffered directly or indirectly from the use of this software. Use it at your own risk. 
+
+
+
+
+
+
+
 
 
 
