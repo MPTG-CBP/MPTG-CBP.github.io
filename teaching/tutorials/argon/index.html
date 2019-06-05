@@ -1,0 +1,370 @@
+<HTML>
+<head><title>Computational biophysics</title></head>
+
+
+<style type="text/css">
+  div.important {color: #ff0000}
+  div.code {
+  background: #afd8de;
+  border: #000 2px solid;
+  padding: 10px;  width: 35%;
+  }
+</style>
+
+
+
+<body BGCOLOR="white">
+<font face="Arial" size="-1">
+<a name="contents"></a>  <center><h1>Practical 1: Introduction to molecular dynamics simulations  </h1></center>
+<IMG align=right SRC="t4l_anim_ev1_small.gif">
+
+<div class="code">
+
+  
+  <font color=black size=5>
+    Contents
+  </font>
+  <UL>
+    <font color=black size=3>
+      <LI><a href="#intro"> A. Introduction </a>
+      <LI><a href="#mdargon">B. MD simulation of Argon </a>
+      <LI><a href="#cond">C. Condensation and boiling of Argon </a>
+      <LI><a href="#freez">D. Freezing and melting of Argon </a>
+      <LI><a href="#optional">E. Optional exercises </a>
+      <LI><a href="#references"> References </a>
+
+    </font>
+  </UL>
+  
+</div>
+<br>
+
+
+<body BGCOLOR="white">
+<a name="intro"></a> <font color=#00c5d0 size=+1>   <h2>A. Introduction  </h2> </font>
+
+<!--
+
+<font color=red size=+1> Important: use mozilla as web browser for
+this practical (other browsers may cause problems), and go to:</font>
+<p>
+Note: if you encounter an english word that you don't know, you can
+visit the <a href=http://dict.leo.org/> LEO online dictionary</a> to
+translate it into german. Otherwise, just as with any other question,
+ask! <br>
+<p>
+If you encounter a problem accessing the internet, please configure your
+browser to use the following proxyserver: <br>
+www-cache.cip.physik.local with port  3128
+<p>
+-->
+Often it is necessary to understand the dynamics of a biomolecule in
+order to understand its function. For proteins, much information can
+usually be derived from the structure, or even based solely on the
+sequence, but the detailed functional mechanism often includes a
+structural transition or atomic fluctuations of the protein or
+substrate that can only be understood if the underlying atomistic
+dynamics are known in detail. The functional dynamics
+of proteins typically take place on a picosecond to millisecond
+timescale. Unfortunately, there are hardly experimental techniques
+available with a high enough time and spatial resolution to follow the 
+atomistic motions step by step, in order to be able to view proteins
+"in action", like under a microscope. Therefore, computer simulations
+of the atomic motions are the methods of choice to study biomolecular
+dynamics. Such simulations allow insights into the dynamics involved
+in e.g. enzyme catalysis, molecular motors, molecular transport, or
+molecular recognition, in atomic detail. Today we will learn how to
+set up such a so-called molecular dynamics simulation, first on a
+simple system (argon gas), after which we will turn to a real protein.
+<p>
+Go back to <a href="#contents">Contents</a> 
+
+<a name="mdargon"></a> <font color=#00c5d0 size=+1>   <h2>B. MD simulation of argon  </h2> </font>
+As a first case study, we consider the dynamics of Argon gas. Argon
+is a noble gas, characterised by a high degree of inertness (i.e. it
+is chemically relatively unreactive). Physically, it is a relatively
+simple compound, as it is mono-atomic both as gas and as fluid (no
+covalent bonds that form molecules) and because it is apolar.
+Therefore, it can be modeled as a neutral compound. Concerning the
+"force-field", as it has been introduced during the lectures, it means
+that in argon the only relevant force-field terms are the
+Pauli-repulsion (that prevent atoms to overlap) and London-dispersion
+(induced dipole-dipole interactions), which together are described by
+a Lennard-Jones potential. Hence, in simulation jargon, Argon and
+other noble gases are also refered to as Lennard-Jones fluids.
+<br> <p>
+The simulations will be carried out with the <a
+href=http://www.gromacs.org>GROMACS</a> simulation package. On the 
+<a href=http://www.gromacs.org>GROMACS homepage</a> you can find both
+the software and documentation (online reference and paper manual). 
+To run a simulation, three input files are usually required:
+<ul>
+<li>a structure file, containing the atomic coordinates of the system
+to be simulated
+<li>a "molecular topology", containing the atomic simulation
+parameters (force-field) and a description of the bonds, bond angles,
+etc (if any) of the simulation system
+<li>the simulation parameters: type of simulation, number of steps,
+simulation temperature, etc.
+</ul>
+<p>
+Go back to <a href="#contents">Contents</a> 
+
+<a name="cond"></a> <font color=#00c5d0 size=+1>   <h2>C. Condensation and boiling of Argon   </h2> </font>
+
+
+<IMG align=right SRC="argon.jpg">
+For the Argon simulations, three files have already been
+prepared. Download <a href=argon_start.pdb>argon_start.pdb</a>,<a
+href=argon.top>argon.top</a> and <a
+href=md.mdp>md.mdp</a> to your local working
+directory <b> without changing the filenames</b>. Please feel free to
+have a look at these files (on the command prompt, you can open these
+files with any of the following programs: more, less, xedit, emacs, vi, 
+kate).
+<br> <p>
+Gromacs uses the preprocessor <b>grompp</b> to collect the data from
+the three input files, check the internal consistency, and write one
+unified input file, <b>topol.tpr</b> On the command prompt in a linux 
+terminal or shell, type:
+<h5>gmx grompp -f md.mdp -c argon_start.pdb -p argon.top </h5>
+<font color=red>
+Please note that the commands in bold print can be easily transferred to the
+command prompt with copy-and-paste (select text by dragging the mouse over it
+with the left mouse button pressed, and paste by pressing the middle mouse
+button).
+</font>
+<p>
+Carefully check the output to see if any errors or warnings ocurred.
+Note that, since we didn't explicitly specify a name for the output
+file, the default name of topol.tpr was used.
+If everything was OK, then start the simulation:
+<h5>gmx mdrun -s topol.tpr -v -c argon_1ns.gro -nice 0</h5>
+As mdrun says, 500,000 MD steps are carried out, each of 2 femtoseconds, making
+a total of 1 nanosecond. Do a
+<h5>ls -lrt</h5>
+to see which files were written by mdrun. We see the following files:
+<UL>
+<font color=black size=3>
+<LI> traj_comp.xtc - the trajectory (coordinates) to be used for analyses 
+<LI> traj.trr - the coordinates, velocities and forces 
+<LI> state.cpt - state of the system to be used for a restart in case of a crash 
+<LI> ener.edr - energies
+<LI> md.log - a LOG file of mdrun
+<LI> argon_1ns.gro - the final coordinates of the simulation
+</font>
+</UL>
+The first analysis step during or after a simulation is usually a
+visual inspection of the trajectory. For this we will use vmd. Other possibilities would be 
+<a href=http://pymol.sourceforge.net> Pymol</a>, or 
+<a href=https://research.csc.fi/-/gopenmol_download> gOpenmol</a>.<br><p>
+
+<h5> vmd argon_start.pdb traj_comp.xtc </h5> 
+
+Two windows (main and display) are opened. Show the simulation box typing "pbc box" in the console. Select the "Graphics" menu in the "Main" window, click "Representations", and then change the "Drawing Method" to "VDW". 
+
+Now click the "play" button (on the lower-right corner of the "Main" vmd window). If the movie displays too fast, change the movie speed with the "speed" button. Change the view by moving the mouse over the "Display" vmd window, with the left mouse button pressed, and zoom in and out by scrolling the middle mouse button. Close the "Main" window to exit vmd. <p>
+We have simulated Argon at 100K, which is above
+the boiling point, so we have simulated argon gas. Before we continue,
+rename traj_comp.xtc so that we can easily find it back later:
+<h5>mv traj_comp.xtc gas.xtc</h5>
+In the next step,
+we are slowly going to cool down the system (simulated annealing), to
+see if we can simulate the condensation to liquid Argon. For this,
+download <a href=anneal.mdp>anneal.mdp</a> and start grompp with:
+<h5>gmx grompp -f anneal.mdp -c argon_start.pdb -p argon.top -maxwarn 2 </h5>
+Now start the annealing simulation:
+<h5>gmx mdrun -c argon_anneal.gro -nice 0</h5>
+(note that we do not need to specify "-s topol.tpr" - as mdrun needs a
+tpr file to run, it will automatically search for the default
+filename: topol.tpr. Also note, that, although we now write to the
+same trajectory files as before, the old files are not overwritten,
+but are backed up automatically). 
+Check the result using pymol. To do so, we first need to convert the trajectory to PDB
+format:
+<h5>gmx trjconv -s -f traj_comp.xtc -o traj.pdb</h5>
+and select "0". Then view the trajectory with:
+<h5>pymol traj.pdb</h5>
+On the white command prompt in pymol, type:
+<h5>show spheres</h5>
+<h5>show cell</h5>
+
+and press the "play" button on the bottom-right of the main pymol
+window. Close pymol.<p>
+
+Do you see the formation of liquid argon?<p> 
+
+ Now analyse the energies and temperature from the simulation:
+<h5>gmx energy -o temperature.xvg</h5>
+and select "8" for the temperature (and "0" to stop the selection).
+Watch the result with:
+<h5>xmgrace temperature.xvg</h5>
+It can be seen that the actual temperature during the simulation
+indeed monotonously decreases as the simulation progresses. Now
+analyse the potential energy:
+<h5>gmx energy -o potential.xvg</h5>
+and select "4"  (and "0" to stop the selection).
+Watch the result with:
+<h5>xmgrace potential.xvg</h5>
+<font color=red size=+1> Question: </font>
+Why is there a drop in the potential energy?<p><br>
+<font color=red size=+1> Question: </font>
+What is the boiling temperature of Argon?<p><br>
+Now repeat the annealing simulation, but extend the length of the
+simulation by a factor of five. Do this by modifying the following
+lines in "anneal.mdp" (open "anneal.mdp" in your favourite editor,
+like xedit, nedit, kate or emacs):
+<h5>nsteps = 2500000</h5>
+<h5>annealing_time = 0 5000</h5>
+and save "anneal.mdp". And run the simulation:
+<h5>gmx grompp -f anneal.mdp -c argon_start.pdb -p argon.top -maxwarn 2</h5>
+<h5>gmx mdrun -c argon_anneal.gro -nice 0</h5>
+and analyse like above with gmx energy and xmgrace.<p><br>
+<font color=red size=+1> Question: </font>
+Why is the final potential energy lower than in the previous simulation?<p><br>
+<font color=red size=+1> Question: </font>
+What is the boiling temperature this time? Why is the apparent boiling point higher than in the previous simulation?<p><br>
+Now, let us simulate the boiling instead of condensation of argon. For
+this, download <a href=heatup.mdp>heatup.mdp</a> and start the
+simulation:
+<h5>gmx grompp -f heatup.mdp -c argon_anneal.gro -p argon.top -maxwarn 2</h5>
+Note that we use the final structure of the previous simulation as a
+starting configuration.
+<h5>gmx mdrun -c argon_heatup.gro -nice 0</h5>
+Analyse the results as above with gmx energy and xmgrace.<p><br>
+<font color=red size=+1> Question: </font>
+What is now the apparent boiling temperature? Can you explain the
+difference to the cooling simulations? Which of the three values would you
+expect to be most realistic? Check your results by searching google
+for the true boiling temperature of Argon. <p><br>
+<p>
+Go back to <a href="#contents">Contents</a> 
+
+<a name="freez"></a> <font color=#00c5d0 size=+1>   <h2>D. Freezing and melting of Argon</h2> </font>
+
+In the annealing simulations, we have not only observed the
+condensation to the liquid phase, but at lower temperatures also 
+the freezing towards the solid phase. To concentrate on this phase
+transition more explicitly, we are now going to simulate the condensed
+phase. A simulation box has already been prepared. 
+Download <a href=liquid.gro>liquid.gro</a>, and <a
+href=94k.mdp>94k.mdp</a> to your local working directory. Update your
+topology (argon.top) and change the number of atoms (last line) from
+100 to 216. Start the simulation of liquid argon with:
+<h5>gmx grompp -f 94k.mdp -c liquid.gro -p argon.top -maxwarn 2</h5>
+<h5>gmx mdrun -c liquid.pdb -nice 0</h5>
+To analyse the dynamic behaviour of liquid argon, we'll calculate the
+diffusion constant from the simulation. The Einstein formula can be
+used, which relates the mean atomic displacement to the diffusion
+constant. For this, we'll use the program gmx msd:
+<h5>gmx msd -s -f traj_comp.xtc -trestart 50 -b 100</h5>
+The option '-trestart 50' means that time windows of 50 ps are used
+for the analysis (to enhance the statistics), and '-b 100' means that
+the first 100 ps are excluded from analysis. Select '0' or '1' when
+asked for a group. <p><br>
+<font color=red size=+1> Question: </font>
+What is the calculated diffusion constant? How does it compare to the
+experimental value of 2.43x10<sup>-5</sup> cm<sup>2</sup>/s?<p><br>
+One way to analyse the structural properties of a liquid is the
+so-called radial distribution function, which shows the probability of
+finding an atom center at a certain distance around an atom.
+<h5>gmx rdf -s -f traj_comp.xtc -b 100 -o rdf_liquid.xvg </h5>
+
+<p> 
+<!--  that if the last command didn't work (didn't produce output for more
+than 30 seconds), please download a working version of g_rdf from <a
+href=g_rdf>here</a>, and make it executable with:
+<h5>chmod +x g_rdf </h5> and repeat the g_rdf command from above). <p>
+-->
+Select "0", "0" followed by Ctrl-D to start the calculation. <p>
+Now view the radial distribution function with:
+<h5>xmgrace rdf_liquid.xvg </h5>
+
+
+<font color=red size=+1> Question: </font>
+What is the nearest-neighbor distance for two argon molecules? Why is
+the second-neighbor peak not exactly at twice the nearest-neighbor distance? <p><br>
+<IMG align=right SRC="argon.gif">
+Now let us slowly cool the system. Download  <a
+href=anneal2.mdp>anneal2.mdp</a> and start the simulation:
+<h5>gmx grompp -f anneal2.mdp -c liquid.gro -p argon.top -maxwarn 2</h5>
+<h5>gmx mdrun -c anneal2.pdb -nice 0</h5>
+Check the animation (with pymol or vmd) and the potential energy.<p><br>
+<font color=red size=+1> Question: </font>
+When does the freezing begin? When would you have expected the
+freezing to start? (check the phase diagram above).<p><br>
+Compute the radial distribution function for the solid state,
+by taking into account only the second half of the simulation:
+<h5>gmx rdf -s -f traj_comp.xtc -b 500 -o rdf_solid.xvg </h5>
+and view the result together with the RDF of the liquid state:
+<h5>xmgrace rdf_solid.xvg rdf_liquid.xvg </h5>
+(the solid state is in black, the liquid state in red).<p><br>
+<font color=red size=+1> Question: </font>
+Can you explain the observed differences?
+<p>
+Go back to <a href="#contents">Contents</a> 
+
+<a name="optional"></a> <font color=#00c5d0 size=+1>   <h2>E. Optional </h2> </font>
+
+Using a simulation strategy similar to above, try to answer the following
+questions: 
+
+<ul>
+<li>  <h3>Pressure dependence</h3>
+From te phase diagram, it is clear that in addition to the temperature,
+the phase behaviour of argon is also strongly dependent on the pressure. Is
+this properly accounted for in the simulations? Try to see how the boiling
+point and the melting point at 1000 bar differ from the phase transitions at an
+ambient pressure of 1 bar. Is the observation consistent with experiment?
+(Hint: look for the word "pressure" in the gromacs input .mdp file. If
+necessary, also check  <a href=http://manual.gromacs.org/current/online/mdp_opt.html>here</a>.
+<p>
+<li>  <h3>Sublimation</h3>
+At low pressures, there is no liquid state of argon, but instead there is a direct
+transition from the solid state to the gas phase, a process called
+sublimation. Is this also observed in the simulation?
+<p>
+<li>  <h3>Simulation of Neon</h3>
+How are the results different for the much smaller neon? (Hint: use this
+set of simulation parameters:<a href=neon.top>neon.top</a>).
+<p>
+<li>  <h3>Collision of two droplets</h3>
+
+Investigate if you can use the kinetic energy of a moving droplet to
+induce a phase transition. In order to investigate this, shoot two droplets
+towards each other with different opposite velocities. With which velocities do
+you get a larged, merged droplet and from which velocities do you get a
+transition into the gas phase? Hint: use <a href=argon2.pdb>this</a> structure
+file containing two droplets to start from. You'll also need 
+<a href=argon2.ndx>this index file</a>, <a href=argon2.top>this topology
+file</a>, and <a href=collision.mdp>this parameter file</a>
+
+</ul>
+
+
+<ul>
+
+
+Go back to <a href="#contents">Contents</a> 
+
+<a name="references"></a> <font color=red size=+1>   <h2>Further references </h2> </font>
+
+<li>  M. Karplus and A. McCammon.  <EM> Molecular Dynamics simulations of
+biomolecules </EM> <b> Nature structural biology </b> 9: 646-652 (2002).<a
+href="http://www.nature.com/nsmb/journal/v9/n9/full/nsb0902-646.html">[link]</a>
+<li>  D.C. Rapaport  <EM> The Art of Molecular Dynamics Simulations - 2nd edn </EM> <b>
+Cambridge University Press </b> (2004).
+<li>  H. Scheraga, M. Khalili and A. Liwo  <EM> Protein-Folding Dynamics:
+Overview of Molecular Simulation Techniques </EM> <b> Annual Review of Physical Chemistry </b> 58: 57-83 (2007).<a
+href="http://arjournals.annualreviews.org/doi/abs/10.1146/annurev.physchem.58.032806.104614">[link]</a>
+
+</ul>
+
+<hr>
+<address>
+For questions or feedback please contact <a href="http://www.mpibpc.mpg.de/groups/de_groot/"> Bert de Groot</a> / <a href="mailto:bgroot@gwdg.de">bgroot@gwdg.de</a></address>
+<hr>
+
+
+</body>
+</HTML>
