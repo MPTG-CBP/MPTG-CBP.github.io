@@ -129,7 +129,7 @@ cd gromacs
 <div class="code">
   mkdir build<br>
   cd build<br>
-  cmake .. -DGMX_BUILD_OWN_FFTW=ON -DREGRESSIONTEST_DOWNLOAD=ON<br>
+  cmake .. -DGMX_BUILD_OWN_FFTW=ON<br>
   make
 </div>
 After installation, the GROma&rho;s tools will be accessible in the "build/bin" directory. They should appear in the list of programs as maptide, mapdiff, mapconvert, etc:   
@@ -303,11 +303,13 @@ gmx mapinfo -mi localcorrelation.ccp4
 	  
  
 <li> <div class="Pagragraph subsubtitle">Spatial free energies</div>
-  In this example we estimate the spatial free energy as -log(&rho;). We consider a short fragment of  coarse-grained trajectory of a GPCR membrane protein embedded in a bilayer of POPC lipids  and cholesterol. Fist, we compute the density cholesterol: 
+  In this example we estimate the spatial free energy as -log(&rho;). We consider a short fragment of  coarse-grained trajectory of a GPCR membrane protein embedded in a bilayer of POPC lipids  and cholesterol. First, we need to obtain Gaussian coefficients for the coarse-grained beads. Scaling the atomistic Gaussians by a factor of two was found to be a good choice (see publication above). The file CG_coeff.dat contains the scaled Gaussian coefficients for the cholesterol beads (same coefficients for all beads). Here, we compute the density of cholesterol, for a coarser grid (0.4 nm resolution) and specifying the file with the coarse-grained Gaussian coefficients (CG_coeff.dat): 
       	  <div class="code"><strong>
 	      gmx maptide  -f gpcr.xtc -s gpcr.pdb -spacing 0.4 -gaussparameters CG_coeff.dat -select 'resname CHOL and within 3 of group "Protein"' -mo chol.ccp4<p>
-</strong> </div>
-	  Then, we take the logarithm of this map:
+	  </strong> </div>
+	  Note that if certain bead name is not found, maptide will run with default (all-atom) values (without prompting a warning/error). This is undesired for coarse-grained systems, so the best is to include Gaussian coefficients for all the beads of interest in the gaussparameters file. <p>
+	  
+We now take the logarithm of this map:
 	        	  <div class="code"><strong>
 			      gmx maplog  -mi chol.ccp4 -mo logchol.ccp4 -fillundef minfloat<p><p>
 </strong> </div>

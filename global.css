@@ -307,6 +307,14 @@ input.styled {
 	text-align: right;
 	color:#1e4377;
 }
+
+.body_background {
+    background: url(https://mptg-cbp.github.io/teaching/for-biol-2019/images/body_banner.png)  no-repeat;
+    width: 540px;		/**/
+    height: 200px;		/**/
+    
+}
+
 #header .slogan {
 	padding-left: 3px;
 	font-size: 16px;
@@ -453,7 +461,8 @@ vertical-align: top;
 .title  {
 	margin: 0px 0 10px 0;
 /	border-bottom: #76330A solid 1px;
-	border-top:  #76330A solid 1px;
+        border-top:  #76330A solid 1px;
+/	border-bottom:  #76330A solid 1px;
 	padding-bottom: 5px;
 	padding-top: 5px;
 	padding-left: 0px;
@@ -461,10 +470,16 @@ vertical-align: top;
 
 /	color: #B55920;
 	color: #76330A;
+
+
+
+
 	font-size: 22px;
 /	font-weight: bold ;
 	display: block;
 	background-color: #FFFFFF;
+
+
 	                  font-family: 'Arial', 'ArialMT', 'sans-serif';
 }
 
@@ -504,4 +519,5 @@ vertical-align: top;
     padding-bottom: 5px;
     padding-top: 5px;
     text-align: left;
+    background-color: #EEEEEE;    
    }
