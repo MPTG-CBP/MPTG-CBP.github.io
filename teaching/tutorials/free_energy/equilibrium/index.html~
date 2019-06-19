@@ -1,0 +1,302 @@
+<HTML>
+<head><title>Free energy calculation</title></head>
+
+
+
+<style type="text/css">
+  div.important {color: #ff0000}
+  div.code {
+  background: #afd8de;
+  border: #000 2px solid;
+  padding: 10px;  width: 50%;
+  }
+</style>
+
+
+<body BGCOLOR="white">
+<!-- <center><h4>http://www.mpibpc.mpg.de/groups/de_groot/compbio2/p8/index.html</h4></center> -->
+<p>
+
+
+<font face="Arial" size="-1">
+<a name="contents"></a>  <center><h1>Practical 8: Free energy calculations</h1></center>
+<div class="code">
+
+  <font color=black size=5>
+    Contents
+  </font>
+  <UL>
+    <font color=black size=3>
+      <LI><a href="#fep">   A. The free energy "slow-growth" method </a>
+      <LI><a href="#nasolvation"> B. Solvation free energy of a sodium ion in water </a>
+      <LI><a href="#ther_rev_fold"> C. Thermodynamics of reversible peptide folding </a>
+      <LI><a href="#references"> References </a>
+
+    </font>
+  </UL>
+  
+</div>
+<br>
+
+<a name="fep"></a> <font color=#00c5d0 size=+0>   <h2>A.  The free energy "slow-growth" method</h2> </font>
+Molecular simulations can be carried out to gain either dynamical or
+energetical information on the simulated system. Today we'll focus on
+different ways to extract energies and free energies from simulations.
+One way to gain access to free energies by simulation is to perform
+so-called free-energy perturbation (FEP) simulations. In such
+simulations, the system is gradually "morphed" from one state to
+another (let's say from state "A" to state "B"), during which the
+effect of this perturbation onto the free energy is monitored. In
+practice, this is achieved by defining a morph parameter lambda, which
+is defined to be zero in the initial state (A), and one in the final
+state (B). By collecting the derivative of the potential energy with
+respect to lambda during the simulation, and by integrating over
+lambda afterwards, we gain access to the free energy.<p> 
+<div align="center"> <IMG   SRC="lambda+eq.png"> </div>
+<br>
+Go back to <a href="#contents">Contents</a>
+<a name="nasolvation"></a> <font color=#00c5d0 size=+0>   <h2>B.  Solvation free energy of a sodium ion in water</h2> </font>
+<IMG align=right SRC="na.jpg">
+We are now going
+to use this procedure to calculate the free energy of solvation for a
+sodium ion in water. For this, we'll slowly create a sodium ion in a
+water box. In order to start the simulation, download the
+<a href=start.pdb> starting coordinates</a>, <a href=na.top> the
+topology</a>, and <a href=fep.mdp> the MD parameter file </a> first.
+First have a look at the starting structure:
+<h5> pymol start.pdb </h5>
+In pymol, type:
+<h5> show cell </h5>
+<h5> show spheres, resn  na </h5>
+
+Note that the sodium ion is already "present" in the starting
+structure. Now have a look at the topology "na.top", with 'xedit',
+'nedit', 'more' or 'less', and look for the line containing "Na" under
+"[atoms]". You'll notice that two states (A and B) are defined, with
+charge 0 and 1, respectively. This means that during the simulation,
+the charge of the sodium ion will be slowly switched on. <br>
+Now start the simulation:
+<h5>gmx grompp -f fep -c start.pdb -p na -maxwarn 1 </h5>
+<h5>gmx mdrun -v -c charged.gro</h5>
+
+Analyse the free energy change by:
+<h5> xmgrace dhdl.xvg </h5>
+In order to compute the free energy, we must integrate dG/dlambda over
+dlambda. Instead, we have dG/dlambda as a function of time. This is
+not a problem, as we know that lambda changed from0 to 1 during this
+time (10 ps). So instead, we can integrate the curve over time, and
+divide the obtained value by ten to derive the desired free energy.
+To integrate, under "Data", select "Transformations", followed by
+"Integration", and press "Accept". <br><p>
+<font color=red size=+1> Question: </font>
+The experimentally observed solvation free energies for sodium range
+from -365 to -372 kJ/mol. How does the obtained value correspond to
+that?  <br><p>
+
+Instead of integrating dG/dlambda, we can also compare the initial and
+final values of the potential energy of the system:
+<h5> gmx energy </h5>
+Select "Potential", followed by "0" (and, if necessary, an extra "enter").
+<h5> xmgrace energy.xvg </h5>
+Subtract the initial value from the final value.<br><p>
+<font color=red size=+1> Question: </font>
+What value do you get? Why is this value so much larger (in absolute
+value) than the free energy difference obtained by integrating
+dG/dlambda?<br><p> 
+
+One important check in simulations in general and in free energy
+simulations in particular is to make sure that the answer has
+converged. In order to do so, we can either perform a longer (or
+shorter!) simulation, and compare the result to the original, or we
+can perform the backward transition to see if the free energy
+difference is the opposite of the forward transition. In this
+practical, we'll do both. First, we'll carry out the backward
+transition. Copy the MD parameter file to incorporate the changes:
+<h5> cp fep.mdp back.mdp</h5>
+and open "back.mdp" in your favorite editor (xedit, nedit, emacs,
+kate, vi)
+to make the following changes:<br>
+First search for "Free energy", then change "init-lambda" to 1 and
+change delta-lambda to "-0.0002". Now we can start the backward
+simulation. For this, we'll use the final structure of the previous
+simulation (charged.gro) as initial structure:
+<h5> gmx grompp -f back -c charged.gro -p na -maxwarn 1 </h5>
+<h5> gmx mdrun -v </h5>
+And analyse the free energy change using xmgrace. Remember that we now
+changed lambda from one to zero, meaning that if we integrate over
+time, we should divide the obtained value by -10 instead of by 10.<br><p>
+<font color=red size=+1> Question: </font>
+What value do you get? How does this value compare to the free energy
+change for the forward simulation? Would you consider the obtained
+value for the solvation free energy sufficiently converged? <br><p>
+<font color=red size=+1> Question: </font>
+If we take the forward and backward
+simulation together, is the total free energy change positive or
+negative? Which of the two should it have been? <br><p>
+
+As stated above, another way to check convergence is to perform a
+longer simulation and see if the free energy change remains the same
+as compared to a shorter simulation. For this, open "fep.mdp" in your
+favorite editor. Change "nsteps" from 5000 to 50000, and
+"delta-lambda" from 0.0002 to 0.00002, and repeat the forward
+transition:
+<h5> gmx grompp -f fep -c start.pdb -p na -maxwarn 1 </h5>
+<h5> gmx mdrun -v</h5>
+
+<font color=red size=+1> Question: </font>
+Is the obtained free energy very different as compared to the shorter
+simulations? What would you consider an appropriate length for this
+type of simulation?<p>
+<br>
+Go back to <a href="#contents">Contents</a>
+<a name="ther_rev_fold"></a> <font color=#00c5d0 size=+0>   <h2>C.  Thermodynamics of reversible peptide folding </h2> </font>
+<IMG align=right SRC="pep.jpg">
+For the case of a sodium ion in water we could compute the free energy
+difference between two states because we defined a path connecting the
+two states, and we had access to the free energy gradient along the
+path. In the case of the ion in water, the path was an artificial path 
+(hence such free energy perturbation studies are also called
+"computational alchemy"). Likewise, a free energy difference can also
+be computed along a real path, e.g. by forcing an ion across an
+electrostatic gradient and integrating the force required to displace
+the ion along the path. <br>
+There are also cases, however, where such a path, artificial or real,
+can not be easily defined. Peptide or protein folding is a good
+example. The problem of defining a path is that there are multiple
+folding (and unfolding) pathways that connect the (well-defined)
+folded state and the degenerate unfolded state. If we would like to
+compute the folding free energy
+by integrating the force along a pathway connecting the two, we'd
+therefore have to follow multiple pathways, and take a weighted
+average of the results. In the case, however, where we have a
+simulation in which folding and unfolding takes place spontaneously
+(i.e. without forcing the system to fold or unfold) and <b> reversibly </b>
+we can also access the free energy difference between the folded and
+unfolded state in a different way, namely simply by monitoring the
+fraction of time the system resides in each state. In the equilibrium
+case (i.e. if the simulation was long enough to visit all relevant
+configurations multiple times) the probability of finding the system
+is exactly proportional to its Boltzmann factor. Therefore, for any
+two states, the following equation holds:<br>
+<IMG align=center SRC="Boltzmann_eq.png"><br>
+Therefore, if we know the respective probability to find the system in
+a particular pair of states, we can calculate the free energy
+difference between these two states. Note that for this type of free
+energy calculation we solely need the conformational information
+(coordinates, trajectory) from the simulation, no energies! <br> <p>
+
+To illustrate the above, we are going to calculate the free energy of
+the folding of a small peptide. For this, download a <a href=pep.pdb>
+PDB file of the peptide</a> and the MD trajectories at four different
+temperatures: <a href=298.xtc> 298K</a>, <a href=340.xtc> 340K</a>,
+ <a href=350.xtc> 350K</a> and  <a href=360.xtc> 360K</a>. <br>
+First view part of one trajectory with pymol:
+<h5>gmx trjconv -s pep.pdb -f 340.xtc -o movie.pdb -e 10000 -fit rot+trans </h5>
+and select "4" followed by  "1" when asked to select a group.
+<h5>pymol movie.pdb</h5>
+in pymol, type:
+<h5>show sticks</h5>
+and press the "play" button on the bottom right of the main pymol
+window. You see the first folding transition during the simulation at
+340 K. <br><p>
+<font color=red size=+1> Question: </font>
+What kind of structure is the folded structure? <br><p>
+
+For a more quantitative analysis of the folding/unfolding
+transitions, we'll analyse the root mean square deviation of each
+structure in each trajectory with respect to the folded
+structure. Here we will call the structure "folded" if it has a root
+mean square deviation (RMSD) of less than 2 Angstroms (0.2 nm) of the
+backbone atoms with respect to the reference structure in pep.pdb.
+
+<h5>gmx rms -s pep.pdb -f 340.xtc -o rmsd_340.xvg</h5>
+when asked for a selection of groups, press "4" and "4" again.
+View the result with xmgrace:
+<h5>xmgrace rmsd_340.xvg</h5>
+<font color=red size=+1> Question: </font>
+How many folding/unfolding transitions do you observe? <br><p>
+
+Repeat the same procedure for the other 3 temperatures to generate 
+rmsd_298.xvg, rmsd_350.xvg and rmsd_360.xvg. With a command like the
+following, we can count how many configuration from each trajectory
+are "folded" or "unfolded":
+<h5>
+egrep -v "\@|\#"    rmsd_340.xvg  | awk ' (NF==2 && $2 < 0.2) {print $0}' | wc -l </h5>
+<!--
+if the counting didn't work, then try:
+<h5>tail +14 rmsd_340.xvg | sed 's/0\./0,/g' | awk '$2 < 0.2 {print $0}' | wc -l</h5>
+-->
+(never mind if you didn't understand that command completely. The
+"egrep" part throws away the lines starting with characters "@" and "#" of the rmsd_340.xvg file, the
+output is then "piped" to the "awk" command that filters the output and
+only prints the lines of which the second column (the RMSD) is smaller
+than 0.2; the "wc -l" simply counts the number of lines). 
+<!--
+The sed command,
+finally, replaces the dots in the file with comma's, for the case your
+computer has expects  german input, which uses comma's for floating point numbers.
+-->
+The obtained number is the number of "folded" configurations in the 340K
+simulation. Repeat the procedure, now to count the number of
+"unfolded" conformations. You'll see, at this temperature the system
+is folded about one third of the time.<br><p>
+<font color=red size=+1> Question: </font>
+What is the difference in free energy between the folded and unfolded
+state at this temperature? (Hint: kT = 2.5 kJ/mol at 300K)<br><p>
+<font color=red size=+1> Question: </font>
+What about the other three temperatures? What would you estimate to be
+the folding temperature?
+<br><p>
+
+<font color=red size=+1> Question: </font>
+Do the above free energy estimates, based on peptide configurations, include
+the influence of the solvent? Would different folding free energies (and/or
+an estimate of the folding temperature) be obtained when the solvent would be
+analysed as well?
+<br><p>
+
+
+<font color=red size=+1> Question: </font>
+Assuming that the folding enthalpy is the same for the different
+temperatures, how can the entropy difference between the folded and
+unfolded state be estimated from the set of free energies? How large
+do you estimate the entropy of folding in this case? Is it positive or
+negative? Why? <br><p>
+<br><p>
+
+
+<!--
+Hope you enjoyed it. In case of questions or suggestions, please do not
+hesitate to contact Bert de Groot: <A HREF="mailto:bgroot@gwdg.de">bgroot@gwdg.de</A> -->
+
+<br> 
+<p>
+
+Go back to <a href="#contents">Contents</a> 
+
+
+
+
+
+<a name="references"></a> <font color=#1a83c4 size=+1> <h2>Further references:</h2> </font>
+<ul>
+<p>
+<font color=#1a83c4 size=+1>Books:</font>
+<p>
+<li> Editors: Chipot C. , Christophe A. et al., <EM> <b> Free Energy Calculations </b> </EM>, Springer Series in Chemical Physics, Vol. 86,  <a href="http://scc.acad.bg/ncsa/articles/library/Library2016_Supercomputers-at-Work/Free_Energy/FreeEnergy_Calculation_Chemistry_and_Biology.pdf"> [link] </a> . 
+<p>
+<p>
+<font color=#1a83c4 size=+1>Advanced reading:</font>
+<li>  R. W. Zwanzig, <EM> High Temperature Equation of State by a Perturbation Method. I. Nonpolar Gases</EM> <b> J. Chem. Phys. </b> 22: 1420 (1954). <a href="http://ursula.chem.yale.edu/~batista/classes/vaa/zwanzig1954.pdf"> [link] </a>
+
+<li>  Goette M, Grubmuller H, <EM> Accuracy and convergence of free energy differences calculated from nonequilibrium switching processes. </EM> <b> J. Comp. Chem.  </b> 30: 447-456 (2009). <a href="http://www.mpibpc.mpg.de/275668/Goette_2009_JCC_30_447-457.pdf"> [link] </a>
+
+
+
+</ul>
+
+<p>
+Go back to <a href="#contents">Contents</a> 
+
+</body> 
+</HTML>

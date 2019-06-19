@@ -1,0 +1,25 @@
+; Include forcefield parameters
+#include "gromos54a7.ff/forcefield.itp"
+#include "gromos54a7.ff/ions.itp"
+
+[ moleculetype ]
+; Name            nrexcl
+Na              1
+
+
+[ atoms ]
+;   nr       type  resnr residue  atom   cgnr     charge   mass  typeB    chargeB      massB
+     1       NA+      1       NA     NA       1      0      22.98980 NA+     1          22.98980
+
+
+; Include water topology
+#include "gromos54a7.ff/spc.itp"
+
+[ system ]
+; Name
+Na+ in water
+
+[ molecules ]
+; Compound        #mols
+SOL              431
+Na                1
