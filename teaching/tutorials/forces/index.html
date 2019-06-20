@@ -37,10 +37,8 @@
 
 <!----------------------- BETA STRAND  ------------>
 <IMG align=right style="width:400px"  SRC="files/beta-strand-spring.png">
-<a name="beta-strand"></a> <font color=#005A9C size=+1>   <h2>A. Dissociation of two beta-strands by force </h2> </font>
-
-
-We will consider two unconnected antiparallel 8 aminoacid beta strands forming a small beta sheet. We will setup a force-probe simulation in which the N-termini of each strand is pulled in oppossite directions with a moving harmonic force. First, download all the necessary files for this part of the practical <a href="files/beta-strand.zip">here</a> and save them in the Desktop directory.<p>
+<a name="beta-strand"></a> <font color=#005A9C size=+1>   <h2>A. Dissociation of a beta-sheet by force </h2> </font>
+We will consider two unconnected 8-aminoacid beta strands forming a small beta sheet. We will setup a force-probe simulation in which the N-termini of each strand are pulled away from each other by using moving harmonic forces. First, download all the necessary files for the practical <a href="files/beta-strand.zip">here</a> and save them in the Desktop directory.<p>
 
     Open a terminal, go to the Desktop directory and unzip the downloaded file:
 <p>
@@ -78,7 +76,7 @@ pymol pr.gro
 </pre>
 </div>
 <p>
-  Now append the following options regarding COM pulling at the end of the mdp file. Save and close this file.
+  Now append the following options regarding COM pulling at the end of the mdp file. After that, save and close the mdp file.
   </p><div class="code">
 <pre>
 ; COM PULLING          
@@ -117,9 +115,9 @@ pull-coord2-k            = 1000
 <p>
 
   
-  These options will tell GROMACS to turn on the COM pulling module, to pull the CA atom of residue 1 (pull group1: r_1_&_CA) and that of residue (pull group2: r_9_&_CA), using two coordinates (pull ncoords: 2), one for each atom (pull-coord1-xxx  and pull-coord2-xxx options separately for each coordinate). A harmonic force (pull type: umbrella), along the x direction (pull geometry: direction, pull dim: Y N N , and pull vec: 1.0 0.0 0.0) is used. The harmonic springs move away from each other at a rate of 0.5 nm/ps (pull rate: +-0.5) and have an elastic constant of 1000 kJ/mol/nm<sup>2</sup> (pull k: 1000).<p>
+  These options will tell GROMACS to turn on the COM pulling module, to pull the CA atom of residue 1 (pull group1: r_1_&_CA) and that of residue (pull group2: r_9_&_CA), using two coordinates (pull ncoords: 2), one for each atom (pull-coord1-xxx  and pull-coord2-xxx options separately for each coordinate). A harmonic force (pull type: umbrella), along the x direction (pull geometry: direction, pull dim: Y N N , and pull vec: 1.0 0.0 0.0) is used. The harmonic springs move at a rate of 0.5 nm/ps (pull rate: +-0.5) and have an elastic constant of 1000 kJ/mol/nm<sup>2</sup> (pull k: 1000).<p>
 
-    Now let us create an index file containing the two groups to be pulled:
+    Now let us create an index file containing the groups to be pulled:
     </p><div class="code">
 <pre>
   {
@@ -146,14 +144,14 @@ Finally, run the pulling simulation:
 </pre>
 </div>
 <p>
-  This simulation runs for 9 ps and should take few minutes depending of your workstation. Once the simulation finishes, have a look at the generated files:
+  This simulation runs for 9 ps and should take few minutes depending of your workstation. Once the simulation ends, have a look at the generated files:
 </p><div class="code">
 <pre>
 ls -lhrt
 </pre>
 </div>
 <p>
-  Let us first visualize the trajectory with pymol. First load the starting conformation:
+  Let us first visualize the trajectory with pymol. Load the starting conformation:
 </p>
 <div class="code">
   <pre>
@@ -185,7 +183,7 @@ load traj_comp.xtc, pr
   What can you say about the detachment of the two beta-strands? which interactions are disrupted? 
 <p><p>
 
-    The force excerted on the two pulled groups is stored in the pullf.xvg file. Plot this graph with xmgrace, after closing pymol:
+    The force exerted on the two pulled groups is stored in the pullf.xvg file. Plot this graph with xmgrace, after closing pymol:
     </p>
 <div class="code">
   <pre>
@@ -200,7 +198,7 @@ Why do you think the two forces are almost equal in magnitude but of opposite si
   what is the rupture force?
 <p><p>
    
-Now, repeat the simulation, but this time with a pulling velocity 10 times smaller. Note that the length of the simulation has to increase by 10. Make the following changes in the mdp file:
+Now, repeat the simulation, but this time with a pulling velocity 10 times smaller. Note that the length of the simulation has to increase by 10-fold. Make the following changes in the mdp file:
        <div class="code">
 	 <pre>
    nsteps                   = 45000 
@@ -224,7 +222,7 @@ Now, repeat the simulation, but this time with a pulling velocity 10 times small
 </pre>
 </div>
 <p>
-  The simulation may stop before completing the 45000 steps if any of the two pulled groups gets moves a distance larger than half of the simulation box size.  This may be an indication that the two strands dissociated. Have a visual look if that is indeed the case (e.g. with vmd):
+  The simulation may stop before completing the 45000 steps if any of the two pulled groups moves a distance larger than half of the simulation box size.  This may be an indication that the two strands dissociated. Have a visual look if that is indeed the case (e.g. with vmd):
    <div class="code">
   <pre>
 vmd pr.gro pull_slow.xtc
@@ -238,7 +236,7 @@ xmgrace -block pullf.xvg  -bxy 1:2 -bxy 1:3 -block  pullf_slow.xvg -bxy 1:2 -bxy
    </pre>
 </div>	       
 <p> 
-Black and red curves correspond to the original pull velocity (0.5 nm/ps) and green and blue to the slower velocity of 0.05 nm/ps.  
+Black and red curves correspond to the original pull velocity (0.5 nm/ps) and green and blue to the slower velocity (0.05 nm/ps).  
 <p>
 <font size="+1" color="red"> Question: </font>
 What is the rupture force for this new pulling velocity?
@@ -252,7 +250,7 @@ What do you think it will happen if the pulling velocity is reduced further, e.g
 which rupture force do you think is more reliable?
 <p>
 
-Now, repeat the pulling simulation, but this time choosing as second group (the CA atom of residue 17 instead of residue 9) and pulling along the z-axis. To this end, update the following lines in the mdp file:
+Now, repeat the pulling simulation, choosing as second pulling group (the CA atom of residue 17 instead of residue 9) and pulling along the z-axis. To this end, update the following lines in the mdp file, according to:
    <div class="code">
   <pre>
     pull-group2-name         = r_17_&_CA
@@ -291,7 +289,7 @@ Now, repeat the pulling simulation, but this time choosing as second group (the 
   
 <p>
 <font size="+1" color="red"> Question: </font>
-how would you describe the dissociation in this case (pull along the y-axis) compared to the previous situation (pull along the x-axis)? 
+how would you describe the dissociation in this case (pull along the z-axis) compared to the previous situation (pulling along the x-axis)? 
 <p>
 <p>
 <font size="+1" color="red"> Question: </font>
@@ -299,7 +297,7 @@ How do the rupture forces compare in these two cases?
 <p>
 <p>
 <font size="+1" color="red"> Question: </font>
-which conclusions can you draw from these simulations regarding the force-response of beta-sheets?
+which conclusions can you draw from these simulations regarding the force-response of beta-sheets and the direction of force application ?
 <p>  
   
 <a name="references"></a> <font color=#005A9C size=+1> <h2>Further references and advanced reading:</h2> </font>
