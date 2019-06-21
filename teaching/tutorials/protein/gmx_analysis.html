@@ -1,0 +1,155 @@
+<HTML>
+<head><title>Introduction to gromacs</title></head>
+<body BGCOLOR="white">
+<center><h2>Analysis of a gromacs simulation</h2></center>
+<IMG align=right SRC="image_1.jpg">
+<p>
+The simulation is running now (or finished) and we can start analysing
+the results. Let us first see which kind of files have been written by
+the simulation (mdrun):<br><p>
+<h5> ls -lrt </h5> 
+We see the following files:
+<UL>
+<font color=black size=3>
+<LI> traj.xtc - the trajectory to be used for analyses 
+<LI> traj.trr - the trajectory to be used for a restart in case of a crash 
+<LI> ener.edr - energies
+<LI> md.log - a LOG file of mdrun
+<LI> md.gro - the final coordinates of the simulation
+</font>
+</UL>
+The first analysis step during or after a simulation is usually a
+visual inspection of the trajectory. For this we will use the gromacs
+trajectory viewer ngmx. Other possibilities would be <a
+href=http://www.ks.uiuc.edu/Research/vmd> VMD </a>, <a
+href=http://pymol.sourceforge.net> Pymol</a>, or <a
+href=http://www.csc.fi/gopenmol> gOpenmol</a>.<br><p>
+<h5> ngmx -s md.tpr -f traj.xtc </h5> 
+Select a group of your interest ("system" might be good for a start),
+and then, under "Display", click "Animate". Now a animation player
+button appears near the bottom of the screen, which can be used to
+view the trajectory. If you wish to filter different simulated
+components, choose a different group under "Display" and "Filter".
+We can see that the protein and its surroundings undergo thermal
+fluctuations, but overall, the protein structure is rather stable, as
+would be expected on such timescales. 
+<p>
+A more versatile visualisation is provided by pymol. First, we have to extract
+the protein coordinates and write to PDB format:
+<h5>trjconv -s md.tpr -f traj.xtc -o traj.pdb -dt 1.</h5>
+Now, select group 1  (Protein). And view with pymol:
+<h5>pymol traj.pdb</h5>
+On the pymol prompt, type:
+<h5>dss</h5> followed by
+<h5>show cartoon</h5> 
+
+Play the animation by pressing the play button.
+<p>
+For a more quantitative analysis
+on the protein fluctuations, we can view how fast and how far the
+protein deviates from the starting (experimental) structure:<br> <p>
+<h5> g_rms -s md.tpr -f traj.xtc </h5> 
+When prompted for groups to be analysed, type "1 1 1". g_rms has
+written a file called "rmsd.xvg", which can be viewed with:<br> <p>
+<h5> xmgrace rmsd.xvg </h5> 
+We see the Root Mean Square Deviation (rmsd) from the starting
+structure, averaged over all protein atoms, as a function of time. The
+deviation of 0.1 nm is within the expected range for a protein like
+the B1 domain at a temperature of 300K at such timescales. If we now
+wish to see if the fluctuations are equally distributed over the
+protein, or if some residues are more flexible than others, we can
+type:<br> <p>
+<h5> g_rmsf -s md.tpr -f traj.xtc -oq </h5> 
+Select group "3" (C-alpha). The result can be viewed with:
+<h5> xmgrace rmsf.xvg </h5> 
+We can see that mainly two regions in the protein show a large
+flexibility: around residue 11 and residue 48. To see where these
+residues are located in the protein, type:<br> <p>
+<h5> rasmol bfac.pdb </h5> 
+Under "Colours", select "Temperature". The protein backbone is now
+shown with the flexibility encoded in the colour. The red (orange,
+green) regions are relatively flexible and the blue regions are
+relatively rigid. It can be seen that the alpha-helix and beta-sheet
+are relatively stable, whereas the loops are more flexible.<br> <p>
+Repeat the same rasmol command for the x-ray structure (1PGB.pdb).<br> <p> 
+<font color=red size=+1> Question: </font> How do the flexibilities in the simulation compare to the temperature factors in the crystallographic structure?<br>
+(note that the correspondence cannot be expected to be 100%, as the protein flexibility in different in the crystal than in solution (as in the simulation). Additionally, not only flexibility is encoded in the crystallographic B-factor, but also experimental error or model inaccuracy)
+<br> <p>
+The simulation not only yields information on the structural
+properties of the simulation, but also on the energetics. With the
+program<a
+href=http://www.gromacs.org/documentation/reference_3.2/online/g_energy.html>
+g_energy </a> the energies written by mdrun can be analysed: <br> <p>
+<h5> g_energy -f ener.edr </h5>
+Select "Potential" and end your selection by pressing enter twice, View the result with:<br> <p>
+<h5> xmgrace energy.xvg </h5>
+As can be seen, the total potential energy initially rises rapidly after
+which it relaxes again. <br> <p>
+<font color=red size=+1> Question: </font>can you think of an explanation for
+this behaviour?<br> <p>
+Please repeat the energy analysis for a number of different energy
+terms to obtain an impression of their behaviour.<br> <p>
+We continue with a number of more specific analysis, the first of
+which is an analysis of the secondary structure (alpha-helix,
+beta-sheet) of the protein during the simulation.<br> <p>
+First, we need to tell gromacs where the DSSP program for secondary structure
+calculations can be found:<br> <p>
+<h5> export DSSP=/usr/global/whatif/dssp/dssp</h5>
+(or, if you get a message "export: Command not found.", you're perhaps using a
+(t)csh in which case the command should be:) <br>
+<h5> setenv DSSP /usr/global/whatif/dssp/dssp</h5>
+Now, perform the actual analysis with:
+<h5> do_dssp -s md.tpr -f traj.xtc </h5> 
+select group "1" (protein), and convert the output to PostScript with:
+<h5> xpm2ps -f ss.xpm </h5> 
+and view the result with:
+<h5> gv plot.eps </h5> 
+if "gv" is not installed on your computer, try "xpsview", "ghostview"
+or "gs". As can be seen, the secondary structure is rather stable
+during the simulation, which is an important validation check of the
+simulation procedure (and force-field) used. The next thing to analyse
+is the change in the overall size (or gyration radius) of the protein:
+<br><p><h5> g_gyrate -s md.tpr -f traj.xtc</h5>
+(again, select group "1" for the protein)
+<h5> xmgrace gyrate.xvg</h5>
+The analysis shows that the gyration radius fluctuates around a stable
+value and does not show any significant drift. Another important check
+concerns the behaviour of the protein surface:
+<h5>g_sas -s md.tpr -f traj.xtc</h5>
+(again, select group "1" for the protein)
+<p> (Note that if the last command didn't work (didn't produce output for more
+than 30 seconds), please download a working version of g_sas from <a
+href=g_sas>here</a>, and make it executable with:
+
+<h5>chmod +x g_sas </h5> and repeat the g_sas command from above). <p>
+Now view the total solvent accessible surface area with:
+<h5>xmgrace -nxy area.xvg</h5>
+We now see three curves together: black for the hydrophobic accessible
+surface, red for the hydrophilic accessible surface, and green for the
+total accessible surface.<br> <p>
+<font color=red size=+1> Question: </font> Is the total
+(solvent-accessible) surface constant? Are any hydrophobic groups
+exposed during the simulation?
+
+<br> <p><br> <p><br> <p>
+<center> <h3> OPTIONAL </h3></center>
+
+You've probably noticed that in the simulation about only ten percent of the
+system that was simulated consisted of protein, the rest was water. As we are
+mainly interested in the protein's motions and not so much in the surrounding
+water, one could ask if we couldn't forget about the water and rather simulate
+the protein. That way, we could reach ten times longer simulations with the
+same computational effort! <br> <p>
+<font color=red size=+1> Question: </font> Why do you think that it is
+important to include explicit solvent in the simulation of a protein? <p><br>
+To check if your assumption is correct, repeat the simulation of protein G,
+this time without solvent (to observe the effect more clearly, increase the
+length of the simulation by changing "nsteps" in the file "md.mdp" by e.g. a
+factor of ten).  <br> <p>
+<font color=red size=+1> Question: </font> What are the main differences to the
+protein's structure and dynamics as compared to the solvent simulation? <p><br>
+(Hint: use programs like g_rms and g_gyrate to analyse both simulations).
+<br> <p>
+
+</body>
+</HTML>
