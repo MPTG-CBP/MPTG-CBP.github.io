@@ -2,6 +2,89 @@
 <html template="true"><head>
 <link rel="icon" href="images/aqp0-dmpc.png" />
 
+<!-- SCRIPT TO INCLUDE HTML -->
+
+<script>
+function includeHTML() {
+  var z, i, elmnt, file, xhttp;
+  /*loop through a collection of all HTML elements:*/
+  z = document.getElementsByTagName("*");
+  for (i = 0; i < z.length; i++) {
+    elmnt = z[i];
+    /*search for elements with a certain atrribute:*/
+    file = elmnt.getAttribute("include-html");
+    if (file) {
+      /*make an HTTP request using the attribute value as the file name:*/
+      xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4) {
+          if (this.status == 200) {elmnt.innerHTML = this.responseText;}
+          if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
+          /*remove the attribute, and call this function once more:*/
+          elmnt.removeAttribute("include-html");
+          includeHTML();
+        }
+      }      
+      xhttp.open("GET", file, true);
+      xhttp.send();
+      /*exit the function:*/
+      return;
+    }
+  }
+};
+</script>
+
+
+   <!-- SCRIPT TO RANDOMLY SHOW IMAGES --> 
+<script language="JavaScript">
+
+var theImages = new Array() // do not change this
+
+theImages[0] = 'images/pictures/1.png'
+theImages[1] = 'images/pictures/2.png'
+theImages[2] = 'images/pictures/3.png'
+theImages[3] = 'images/pictures/4.png'
+theImages[4] = 'images/pictures/5.png'
+theImages[5] = 'images/pictures/6.png'
+theImages[6] = 'images/pictures/7.png'
+theImages[7] = 'images/pictures/8.png'
+theImages[8] = 'images/pictures/9.png'
+theImages[9] = 'images/pictures/10.png'
+theImages[10] = 'images/pictures/11.png'
+theImages[11] = 'images/pictures/12.png'
+theImages[12] = 'images/pictures/13.png'
+theImages[13] = 'images/pictures/14.png'
+theImages[14] = 'images/pictures/15.png'
+theImages[15] = 'images/pictures/16.png'
+theImages[16] = 'images/pictures/17.png'
+theImages[17] = 'images/pictures/18.png'
+theImages[18] = 'images/pictures/19.png'
+theImages[19] = 'images/pictures/20.png'
+theImages[20] = 'images/pictures/21.png'
+theImages[21] = 'images/pictures/22.png'
+theImages[22] = 'images/pictures/23.png'
+theImages[23] = 'images/pictures/24.png'
+theImages[24] = 'images/pictures/25.png'
+theImages[25] = 'images/pictures/26.png'
+theImages[26] = 'images/pictures/27.png'
+theImages[27] = 'images/pictures/28.png'
+
+
+var j = 0
+var p = theImages.length;
+var preBuffer = new Array()
+for (i = 0; i < p; i++){
+   preBuffer[i] = new Image()
+   preBuffer[i].src = theImages[i]
+}
+var whichImage = Math.round(Math.random()*(p-1));
+function showImage(){
+document.write('<table class="image" align="center" border="0">');
+document.write('<tr><td><img src="'+theImages[whichImage]+'"  ></td></tr>');
+document.write('</table>');
+}
+</script>
+
 
 <!-- flooble Expandable Content header start -->
 <script language="javascript">
@@ -38,7 +121,7 @@ function hide(link, divId) { var lText = link.innerHTML; var d = getObject(divId
 </script>
 
 <!-- flooble Expandable Content header end   -->
-   
+
 
  
   <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>MPTG Computational Biophysics - Camilo Aponte-Santamar&iacutea</title>
@@ -46,7 +129,7 @@ function hide(link, divId) { var lText = link.innerHTML; var d = getObject(divId
 <link href="global.css" rel="stylesheet" type="text/css"></head><body>
 
 
-<table style="text-align: left; width: 710px;" border="0" cellpadding="10" cellspacing="1">
+<table style="text-align: left; width: 910px;" border="0"  cellpadding="10" cellspacing="1">
 
   <tbody>
 
@@ -63,63 +146,21 @@ function hide(link, divId) { var lText = link.innerHTML; var d = getObject(divId
       </td></tr>
 <!---- ====== END HEADER ==== ----->
 
+
 <tr>
   <td colspan="1" rowspan="1" style="vertical-align: top; width: 710px;">
     
     <table style="text-align: left; width: 100%;" border="0" cellpadding="0" cellspacing="3">
       <tbody>
         <tr>
-	  	  <!--- ===== BEGIN TABLE OF CONTENTS ===== ---->
-	  <td style="vertical-align: top; width: 100px;">
-	                <table style="text-align: center; width: 100%;" border="0" ; cellpadding="5" ; cellspacing="0">
-              <tbody>
-		<tr>
-		  <td>
-		    <div id="side">
-		      <div id="menu"> 
-			<ul>
-			  <li><a href="index.html">Home</a></li>
-			  <li><a href="research.html">Research</a></li>
-			  <li><a href="people.html">People</a></li>
-		  	  <li><a href="publications.html">Publications</a></li>
-			  <li><a href="teaching.html">Teaching</a></li>
-			  <li><a href="positions.html">Positions</a></li>
-			  <li><a href="gallery.html">Gallery</a></li>
-			  <li><a href="software.html">Software</a></li>
-            <li><a href="contact.html">Contact</a></li>
-			</ul>
-		      </div>
-		    </div>
-		    <div class="paragraph Heading_2" >
-
-		     <a href="http://www.uniandes.edu.co"><img src="images/uniandes_logo.png" style="width: 150px;margin-top:15px;"></a>
-
-
-				   <hr>Hosted by:<br>
-				   <a href="http://www.mpimf-heidelberg.mpg.de/person/49405/2169">
-<img src="images/MPI_logo.png" style="height: 100px;">
-				   </a>
-<hr>Guest members of:<br>
-<a href="http://typo.iwr.uni-heidelberg.de/members/guest-members/">
-<img src="images/iwr-logo.png" style="width: 120px;"><br>
-</a>
-
-				   
-</div>
-		    
-		  </td>
-		</tr>
-	      </tbody>
-            </table>
-          </td>
-	
-
-
-	  <!--- ===== END TABLE OF CONTENTS ===== ---->
 	  
-
-	    
-            
+	  <!--- ===== BEGIN TABLE OF CONTENTS ===== ---->
+	  <td style="vertical-align: top; width: 100px;">
+	  <div include-html="contents.html"></div> 
+<script>
+includeHTML();
+</script>
+	    <!--- ===== END TABLE OF CONTENTS ===== ---->
 
 <!-- ===== MAIN CONTENT OF THE PAGE  ====-->
 <td style="vertical-align: top; text-align: justify;">
@@ -231,24 +272,25 @@ Photo taken on August, 2018<p><p>
   
   
 <!-- ===== END MAIN CONTENT OF THE PAGE  ====-->
+<!-- ===== News  ====-->
+<td style="vertical-align: top; width: 210px;">
+<div include-html="news_side.html"></div> 
+<script>
+includeHTML();
+</script>
+  
+</td>
+</tr>
 
 
+
+
+</tbody>
+</table>
 
 </td>
-          </tr>
-        </tbody>
-      </table>
-      <br>
-
-
-      </td>
-
-    </tr>
-    <tr>
-    </tr>
-
-
-  </tbody>
+</tr>
+</tbody>
 </table>
 
 

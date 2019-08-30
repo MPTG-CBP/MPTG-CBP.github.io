@@ -6,7 +6,7 @@ body,td,th {
              color: #493b3b;
 	                  font-family: 'Arial', 'ArialMT', 'sans-serif';
 	                  
-             font-size: 15px;
+/             font-size: 15px;
              font-style: normal;
              font-variant: normal;
              font-weight: normal;
@@ -27,9 +27,10 @@ body,td,th {
 	     
 }
 body {
-/	margin: 30px;
-	text-align: center;
-	width: 720px;
+    /	margin: 30px;
+    		text-align: center;
+	//width: 720px;
+	width: 920px;
 	border-style: double ;
 	border-color: #f2f2f2 ;
 	border-width: 5px;
@@ -276,19 +277,20 @@ input.styled {
 	text-align: justify;
 }
 #header {
-    margin-bottom: 0px;
+        margin-bottom: 0px;
 	padding-top: 10px ;
         padding-bottom: 0px;
         padding-right:0px ;
         padding-left:0px;
-	height: 92px;
-	width: 700px;		/**/
+	height: 130px;
+	width: 900px;		/**/
 	background: url(images/header_banner.png)  no-repeat; 
 	font-weight: normal;
-	font-size: 32px;
+	font-size: 34px;
 	text-align: right;
 	text-indent: 30px;	
 	color:#1e4377;
+
 	line-height: 120%;
 	text-shadow: 1px 1px #AAAAAA;
 }
@@ -308,10 +310,10 @@ input.styled {
 	color:#1e4377;
 }
 
-.body_background {
-    background: url(https://mptg-cbp.github.io/teaching/for-biol-2019/images/body_banner.png)  no-repeat;
-    width: 540px;		/**/
-    height: 200px;		/**/
+.event_background {
+    background: url(images/event_background.png)  no-repeat;
+    width: 200px;		/**/
+    height: 250px;		/**/
     
 }
 
@@ -461,7 +463,7 @@ vertical-align: top;
 .title  {
 	margin: 0px 0 10px 0;
 /	border-bottom: #76330A solid 1px;
-        border-top:  #76330A solid 1px;
+/        border-top:  #76330A solid 1px;
 /	border-bottom:  #76330A solid 1px;
 	padding-bottom: 5px;
 	padding-top: 5px;
@@ -475,7 +477,7 @@ vertical-align: top;
 
 
 	font-size: 22px;
-/	font-weight: bold ;
+	font-weight: bold ;
 	display: block;
 	background-color: #FFFFFF;
 
@@ -521,3 +523,6 @@ vertical-align: top;
     text-align: left;
     background-color: #EEEEEE;    
    }
+
+
+

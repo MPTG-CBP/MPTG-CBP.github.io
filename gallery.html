@@ -1,6 +1,39 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html template="true"><head>
 <link rel="icon" href="images/aqp0-dmpc.png" />
+
+<!-- SCRIPT TO INCLUDE HTML -->
+
+<script>
+function includeHTML() {
+  var z, i, elmnt, file, xhttp;
+  /*loop through a collection of all HTML elements:*/
+  z = document.getElementsByTagName("*");
+  for (i = 0; i < z.length; i++) {
+    elmnt = z[i];
+    /*search for elements with a certain atrribute:*/
+    file = elmnt.getAttribute("include-html");
+    if (file) {
+      /*make an HTTP request using the attribute value as the file name:*/
+      xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4) {
+          if (this.status == 200) {elmnt.innerHTML = this.responseText;}
+          if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
+          /*remove the attribute, and call this function once more:*/
+          elmnt.removeAttribute("include-html");
+          includeHTML();
+        }
+      }      
+      xhttp.open("GET", file, true);
+      xhttp.send();
+      /*exit the function:*/
+      return;
+    }
+  }
+};
+</script>
+
  <!-- SCRIPT TO INCLUDE IMAGES -->
 
 <SCRIPT LANGUAGE="JavaScript">
@@ -113,7 +146,6 @@ showimage(j);
 
 
 
-    
 
 <!-- flooble Expandable Content header start -->
 <script language="javascript">
@@ -150,7 +182,7 @@ function hide(link, divId) { var lText = link.innerHTML; var d = getObject(divId
 </script>
 
 <!-- flooble Expandable Content header end   -->
-   
+
 
  
   <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>MPTG Computational Biophysics - Camilo Aponte-Santamar&iacutea</title>
@@ -158,7 +190,7 @@ function hide(link, divId) { var lText = link.innerHTML; var d = getObject(divId
 <link href="global.css" rel="stylesheet" type="text/css"></head><body>
 
 
-<table style="text-align: left; width: 710px;" border="0" cellpadding="10" cellspacing="1">
+<table style="text-align: left; width: 910px;" border="0"  cellpadding="10" cellspacing="1">
 
   <tbody>
 
@@ -175,64 +207,21 @@ function hide(link, divId) { var lText = link.innerHTML; var d = getObject(divId
       </td></tr>
 <!---- ====== END HEADER ==== ----->
 
+
 <tr>
   <td colspan="1" rowspan="1" style="vertical-align: top; width: 710px;">
     
     <table style="text-align: left; width: 100%;" border="0" cellpadding="0" cellspacing="3">
       <tbody>
         <tr>
-	  	  <!--- ===== BEGIN TABLE OF CONTENTS ===== ---->
-	  <td style="vertical-align: top; width: 100px;">
-	                <table style="text-align: center; width: 100%;" border="0" ; cellpadding="5" ; cellspacing="0">
-              <tbody>
-		<tr>
-		  <td>
-		    <div id="side">
-		      <div id="menu"> 
-			<ul>
-			  <li><a href="index.html">Home</a></li>
-			  <li><a href="research.html">Research</a></li>
-			  <li><a href="people.html">People</a></li>
-		  	  <li><a href="publications.html">Publications</a></li>
-			  <li><a href="teaching.html">Teaching</a></li>
-			  <li><a href="positions.html">Positions</a></li>
-			  <li><a href="gallery.html">Gallery</a></li>
-			  <li><a href="software.html">Software</a></li>
-            <li><a href="contact.html">Contact</a></li>
-			</ul>
-		      </div>
-		    </div>
-		    <div class="paragraph Heading_2" >
-
-		      
-		      <a href="http://www.uniandes.edu.co"><img src="images/uniandes_logo.png" style="width: 150px;margin-top:15px;"></a>
-
-
-				   <hr>Hosted by:<br>
-				   <a href="http://www.mpimf-heidelberg.mpg.de/person/49405/2169">
-<img src="images/MPI_logo.png" style="height: 100px;">
-				   </a>
-<hr>Guest members of:<br>
-<a href="http://typo.iwr.uni-heidelberg.de/members/guest-members/">
-<img src="images/iwr-logo.png" style="width: 120px;"><br>
-</a>
-
-				   
-</div>
-		    
-		  </td>
-		</tr>
-	      </tbody>
-            </table>
-          </td>
-	
-
-
-	  <!--- ===== END TABLE OF CONTENTS ===== ---->
 	  
-
-	    
-            
+	  <!--- ===== BEGIN TABLE OF CONTENTS ===== ---->
+	  <td style="vertical-align: top; width: 100px;">
+	  <div include-html="contents.html"></div> 
+<script>
+includeHTML();
+</script>
+	    <!--- ===== END TABLE OF CONTENTS ===== ---->
 
 <!-- ===== MAIN CONTENT OF THE PAGE  ====-->
 <td style="vertical-align: top; text-align: justify;">
@@ -289,25 +278,25 @@ Movies
 
   
 <!-- ===== END MAIN CONTENT OF THE PAGE  ====-->
+<!-- ===== News  ====-->
+<td style="vertical-align: top; width: 210px;">
+<div include-html="news_side.html"></div> 
+<script>
+includeHTML();
+</script>
+  
+</td>
+</tr>
 
 
 
+
+</tbody>
+</table>
 
 </td>
-          </tr>
-        </tbody>
-      </table>
-      <br>
-
-
-      </td>
-
-    </tr>
-    <tr>
-    </tr>
-
-
-  </tbody>
+</tr>
+</tbody>
 </table>
 
 
