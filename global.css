@@ -4,7 +4,7 @@ body,td,th {
 
 
              color: #493b3b;
-	     /             font-family: 'Arial', 'ArialMT', 'sans-serif';
+	                  font-family: 'Arial', 'ArialMT', 'sans-serif';
 	                  
 /             font-size: 15px;
              font-style: normal;
@@ -38,14 +38,16 @@ body {
 }
 
 a {
-/	border-bottom: #CCCCCC solid 1px;
-	color: #527EBB;
+	/border-bottom: #CCCCCC solid 1px;
+		color: #527EBB;
+	
 	text-decoration: none;
 	outline: none;
 }
 a:hover {
 	border-bottom-color: #142864;
 	color: #000000;
+
 }
 p, h1, h2, h3, h4, h5, h6, pre {
 	margin-top: 0;
