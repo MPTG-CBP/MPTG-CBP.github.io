@@ -4,7 +4,7 @@ body,td,th {
 
 
              color: #493b3b;
-	                  font-family: 'Arial', 'ArialMT', 'sans-serif';
+	     /             font-family: 'Arial', 'ArialMT', 'sans-serif';
 	                  
 /             font-size: 15px;
              font-style: normal;
@@ -285,7 +285,7 @@ input.styled {
 	height: 130px;
 	width: 900px;		/**/
 	background: url(images/header_banner.png)  no-repeat; 
-	font-weight: normal;
+	font-weight: bold;
 	font-size: 34px;
 	text-align: right;
 	text-indent: 30px;	
@@ -293,6 +293,7 @@ input.styled {
 
 	line-height: 120%;
 	text-shadow: 1px 1px #AAAAAA;
+       font-family: 'Arial', 'ArialMT', 'sans-serif';
 }
 #header_extended {
 	margin-bottom: 0px;
@@ -311,7 +312,7 @@ input.styled {
 }
 
 .event_background {
-    background: url(images/event_background.png)  no-repeat;
+   / background: url(images/event_background.png)  no-repeat;
     width: 200px;		/**/
     height: 250px;		/**/
     
@@ -324,7 +325,7 @@ input.styled {
 #side {
 	width: 152px;
         /* background-color:#DAC577;*/
-	background: url(images/side.png)  ;
+/*	background: url(images/side.png)  ;*/
 	line-height: 0px;
 	float: left;
 }
@@ -469,19 +470,13 @@ vertical-align: top;
 	padding-top: 5px;
 	padding-left: 0px;
 	padding-right: 5px;
-
 /	color: #B55920;
 	color: #76330A;
 
-
-
-
 	font-size: 22px;
-	font-weight: bold ;
+	font-weight: normal ;
 	display: block;
 	background-color: #FFFFFF;
-
-
 	                  font-family: 'Arial', 'ArialMT', 'sans-serif';
 }
 
