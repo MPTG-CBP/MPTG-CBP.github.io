@@ -34,12 +34,12 @@ function includeHTML() {
 };
 </script>
 
- <!-- SCRIPT TO INCLUDE IMAGES -->
 
-<SCRIPT LANGUAGE="JavaScript">
+   <!-- SCRIPT TO RANDOMLY SHOW IMAGES --> 
+<script language="JavaScript">
 
-<!-- ARRAY OF IMAGES -->
 var theImages = new Array() // do not change this
+
 theImages[0] = 'images/pictures/1.png'
 theImages[1] = 'images/pictures/2.png'
 theImages[2] = 'images/pictures/3.png'
@@ -70,81 +70,20 @@ theImages[26] = 'images/pictures/27.png'
 theImages[27] = 'images/pictures/28.png'
 
 
-
+var j = 0
 var p = theImages.length;
-
-
-<!-- ARRAY OF CAPTIONS -->
-var captions = new Array()
-captions[0]='VWF A2 targets GPIB&alpha binding site in VWF A1 (P. 10)'
-captions[1]='VWF A1-A2 domains (P. 10)'
-captions[2]='VWF A1 domain: a hub in hemostasis (P. 9) '
-captions[3]='FAK protein bound to a PIP2-rich bilayer (P. 11)'
-captions[4]='Lipid localization around aquaporin-0 (P. 6)'
-captions[5]='Water permeation around Plasmodium falciparum aquaporin (P. 3)'
-captions[6]='Bent membrane around yeast aquaporin (P. 1)'
-captions[7]='Aquaporin embedded in lipid bilayer (P. 3)'
-captions[8]='VWF+platelets rolling aggregates (P. 10)'
-captions[9]='VWF+PDI colocalization (P. 12) '
-captions[10]='Mechanism of dimerization for VWF (P. 12)'
-captions[11]='Thermodynamic cycle for VWF G1629E mutant (P. 16)'
-captions[12]='Structural changes for VWF G1629E mutant (P. 16)'
-captions[13]='Changes in mechanical stress for the VWF G1629E mutant (P. 16)'
-captions[14]='VWF G1629E mutation increase VWF proteolytic cleavage (P. 16)'
-captions[15]='Stress propagation through a DPPC lipid bilayer (P. 20)'
-captions[16]='Disulphide bond shuffling in an unfolded protein domain (P. 19)'
-captions[17]='Lipid density around a restrained AQPO monomer  (P. 17)'
-captions[18]='yeast aquaporin X-ray structural vs. PLS-FMA gating deviations (P. 18)'
-captions[19]='Stress propagation through a DPPC lipid bilayer (P. 20)'
-captions[20]='Disulphide bond swapping in a protein domain (P. 19)'
-captions[21]='Disulphide bond swapping in a protein domain (P. 19)'
-captions[22]='Stress propagation through biological lipid bilayers (P. 20)'
-captions[23]='Yeast aquaporin gating (P. 1)'
-captions[24]='Voltage regulation of aquaporin-4 (P. 4)'
-captions[25]='Von Willebrand Factor disulfide bond switch (P. 21)'
-captions[26]='Aquaporin tetramer embedded in a lipid bilayer (P. 6)'
-captions[27]='Mechanical indentation of stacked lipid bilayers (P. 22)'
-var j =0 ; 
-
-
-<!-- SHOW THE IMAGE J WITH THE CAPTION -->
-function showcaption(j){
-
-
-<!-- Add caption -->
-<!-- pic / npic. Caption  Add caption -->
-
-var begin="<strong>" ;
-var pic=j+1;
-var npic=p ;
-var slash=" / ";
-var dot=". ";
-var end="</strong>"
-
-var txt= begin + pic + slash + npic + dot + captions[j] + end   ;
-document.getElementById("caption").innerHTML=txt;
-
+var preBuffer = new Array()
+for (i = 0; i < p; i++){
+   preBuffer[i] = new Image()
+   preBuffer[i].src = theImages[i]
 }
-
-function showimage(j){
-<!-- Add figure -->
-<!-- <img src="outdoor/images/photo.jpg" style="width: 500px;"> -- >
-
-var begin="<img src=\"" ;
-var end="\" >"
-var txt= begin + theImages[j] + end   ;
-document.getElementById("image").innerHTML=txt;
+var whichImage = Math.round(Math.random()*(p-1));
+function showImage(){
+document.write('<table class="image" align="center" border="0">');
+document.write('<tr><td><img src="'+theImages[whichImage]+'"  ></td></tr>');
+document.write('</table>');
 }
-
-function showall(j){
-showcaption(j);
-showimage(j);
-}
-
-
 </script>
-
-
 
 
 <!-- flooble Expandable Content header start -->
@@ -280,10 +219,9 @@ Movies
 <!-- ===== END MAIN CONTENT OF THE PAGE  ====-->
 <!-- ===== News  ====-->
 <td style="vertical-align: top; width: 210px;">
-<div include-html="news_side.html"></div> 
-<script>
-includeHTML();
-</script>
+
+<a class="twitter-timeline" data-width="220" data-height="550" href="https://twitter.com/camiloapontelab?ref_src=twsrc%5Etfw">Tweets by camiloapontelab</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+
   
 </td>
 </tr>
