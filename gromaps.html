@@ -219,8 +219,8 @@ cd gromacs
 <div class="code">
   mkdir build<br>
   cd build<br>
-  cmake .. -DGMX_BUILD_OWN_FFTW=ON<br>
-  make
+  cmake .. -DGMX_BUILD_OWN_FFTW=ON <br>
+  make -j nproc #nproc= number of cpus<br>
 </div>
 After installation, the GROma&rho;s tools will be accessible in the "build/bin" directory. They should appear in the list of programs as maptide, mapdiff, mapconvert, etc:   
 <div class="code">
@@ -437,7 +437,43 @@ gmx mapdiff -compare  logchol.ccp4 -refmap logpopc.ccp4  -mo mlogchol_relative.c
   
 Note that log[ &rho;(POPC) ] must have been obtained beforehand (e.g. following a similar protocol as that described above for CHOL).
 
- 
+
+<li> <div class="Pagragraph subsubtitle">Conversion of the output map into "PDB" or  "dump" formats </div>
+  It is possible to convert the output map into a PDB file. Each "ATOM" entry corresponds to one voxel of the grid, including its coordinates in the X, Y and Z columns and the density in the B-factor column. This is an alternative to visualize and analyze the resulting map. Here, we convert the map obtained above for cholesterol from cpp4 to PDB format:
+  <div class="code"><strong>
+      gmx mapconvert  -mi chol.ccp4 -mo chol_map.pdb 
+      <p>
+	  </strong> </div><br>
+  It is also possible to output the map as multicolumn ascii file:
+  <div class="code"><strong>
+      gmx mapconvert  -mi chol.ccp4 -mo chol_map.dump
+      <p>
+  </strong> </div>
+ In chol_map.dump, the first three columns correspond to the x, y, and z coordinates of the voxel and the density is printed in the 4th column.  
+  
+<li> <div class="Pagragraph subsubtitle">Other useful tools </div>  
+	To create a new map:
+  <div class="code"><strong>
+      gmx mapcreate 
+      <p>
+	</strong>
+	</div>
+	To multiply two maps (voxel by voxel)
+<div class="code"><strong>
+      gmx mapmul
+      <p>
+	</strong>		</div>
+
+	Square root of the map:
+	<div class="code"><strong>
+      gmx mapsqrt
+      <p>	</strong>
+		</div>
+
+	
+	
+
+	
     
 </OL>
 
@@ -447,6 +483,10 @@ Note that log[ &rho;(POPC) ] must have been obtained beforehand (e.g. following 
 News and updates:
 </div>
 <ul>
+  <li>	<strong>May 1, 2020. </strong>  Groma&rho;s "mapconvert" tool now converts cpp4 maps into PDB or dump formats (useful for further analysis of the densities).</a></li>
+
+  <li>	<strong>May 1, 2020. </strong>  Groma&rho;s "mapmul" and "mapsqrt" tools have been implemented (useful to estimate the standard deviation of multiple maps, along with mapdiff).</a></li>
+
   <li>	<strong>January 8, 2019. </strong>  The GROma&rho;s article has been published in biophysical journal, computational tools section.</a></li>
   
 <!--  <li>	<strong>December 4, 2018. </strong>  The GROma&rho;s article has been accepted for publication in biophysical journal, computational tools section.</a></li>-->
