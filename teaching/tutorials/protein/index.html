@@ -1,0 +1,760 @@
+<HTML>
+<head><title>Practical: Introduction to protein simulation</title></head>
+ <style type="text/css"> 
+  div.important {color: #ff0000}
+  div.code {
+  background: #e0e0e0;
+  border: black 1px solid;
+  padding: 10px; width: 510px; 
+ </style>
+
+<body BGCOLOR="white">
+<!--<font face="Arial" size="-1">-->
+<a name="contents"></a>  <center><h1>Practical 2: Introduction to protein simulation</h2></center>
+<IMG align=right SRC="image_1.jpg">
+
+<!--<div class="code">-->
+<div class="code" style="width: 30%;">
+  
+  <font color=black size=5>
+    Contents
+  </font>
+  <UL>
+    <font color=black size=3>
+      <LI><a href="#preparation">   Preparation of a typical MD simulation </a>
+      <LI><a href="#setup">  Setup the simulation system </a>
+      <LI> <a href="#simulation"> Carry out the simulation </a>
+      <LI> <a href="#analysis">  Trajectory analysis </a>
+      <LI>  <a href="#optional"> Optional exercises </a>
+      <LI>  <a href="#references"> References </a>
+
+    </font>
+  </UL>
+  
+</div>
+<br> 
+
+In the lecture we have learned what MD simulations are. Now it is time to set up a simulation of a biological macromolecule: a small protein. 
+<br> <p>
+Proteins are nature's universal machines. For example, they are used as building blocks (e.g. collagen in skin, bones and teeth), transporters (e.g. hemoglobin as oxygen transporter in the blood), as reaction catalysts (enzymes like lysozyme that catalyse the breakdown of sugars), and as nano-machines (like myosin that is at the basis of muscle contraction). The protein's structure or molecular architecture is sufficient for some of these functions (like for example in the case of collagen), but for most others the function is intimately linked to internal dynamics. In these
+cases, evolution has optimised and fine-tuned the protein to exhibit exactly that type of dynamics that is essential for its function. Therefore, if we want
+to understand protein function, we often first need to understand its
+dynamics (see references below). 
+<br> <p>
+MD simulations have nowadays become essential tools for the study of biomolecular systems. Over the last decade, it has been successfully elucidated key biological processes such as enzyme catalysis, ribosomal translocation, DNA repair, membrane permeation, protein folding, macromolecular crowding and viral assembly, among many others. The use of this technique enables monitoring the dynamics of biomolecules in an unprecedentedly broad spatio-temporal range, from pico- to milli-seconds and from thousands to hundreds of millions of atoms. Moreover, recent advances in computing power, together with optimized algorithms and new sampling methodologies, are pushing these boundaries further, while increasing the precision and accuracy. Simulations do not only help interpret experimental data but also complement experimental techniques such as Cryo-EM, FRET, SAXS, or NMR to reveal key structure, dynamic, and energetic information of biomolecules.
+<br> <p>
+Today, we will simulate the dynamics of a small, typical protein domain: the B1 domain of protein G. B1 is one of the domains
+of protein G, a member of an important class of proteins, which form IgG binding receptors on the surface of certain Staphylococcal and
+Streptococcal strains. These proteins allow the pathogenic bacterium to evade the host immune response by coating the invading bacteria
+with host antibodies, thereby contributing significantly to the pathogenicity
+of these bacteria.
+
+<!--(click
+<a href=http://tsailab.tamu.edu/wikiBID/index.php/Protein_G_and_IgG_Fc_Fragment> 
+here</a> for further background information on this protein). 
+-->
+
+<br> <p>
+    <br>
+<p><IMG align=right SRC="flow.png">
+<p>
+
+  The simulations will be carried out with the <a
+href=http://www.gromacs.org>GROMACS</a> simulation package. On the 
+<a href=http://www.gromacs.org>GROMACS homepage</a> you can find both
+the software and documentation (online reference and paper manual). 
+To run a simulation, three input files are usually required:
+<ul>
+<li>a structure file, containing the atomic coordinates of the system
+to be simulated
+<li>a "molecular topology", containing the atomic simulation
+parameters (force-field) and a description of the bonds, bond angles,
+etc (if any) of the simulation system
+<li>the simulation parameters: type of simulation, number of steps,
+simulation temperature, etc.
+</ul>
+<p>
+We will now follow a standard protocol to run a typical MD simulation of a
+  protein in a box of water in GROMACS. The individual steps are summarized in a flowchart on the right site. 
+<a name="preparation"></a> </a> <font color=gray size=+1>   <h2>A. Preparation</h2> </font>
+
+Before a simulation can be started, an initial structure of the protein is required. Fortunately, the structure of the B1 domain of
+protein G has been solved experimentally, both by x-ray crystallography and NMR. Experimentally solved protein structures are
+collected and distributed by the Protein Data Bank (PDB). Please open
+<a href=http://www.rcsb.org/pdb/> this </a> link in a new browser
+window and enter <b>"protein G B1"</b> in the search field. Several entries
+in the PDB should match this query. We will choose the x-ray structure
+with the highest resolution (entry 1PGB) for this study. To download
+the structure, click on the link <b>"1PGB"</b>, and then, under "Download Files",
+select "PDB File". When prompted, select "Save File", and save the file
+to the local hard disk in the "Desktop" directory.<p>
+
+  Open a unix terminal and go to the "Desktop" directory by typing:
+<p>
+</p><div class="code">
+<pre>
+ cd ~/Desktop
+</pre>
+</div>
+<p>
+  
+To have a look at the contents of the downloaded PDB file, type: <br><p>
+<p>
+</p><div class="code">
+<pre>
+ more 1pgb.pdb 
+</pre>
+</div>
+<p>
+
+The file starts with general information about the protein, about the
+structure, and about the experimental techniques used to determine the
+structure, as well as literature references where the structure is described
+in detail. (in "more", press the spacebar to scroll). The data file contains the atomic coordinates of our protein structure with one line per atom. (quit the "more" program by pressing "q").
+Now we can have a look at the structure:
+<p>
+</p><div class="code">
+<pre>
+pymol 1pgb.pdb 
+</pre>
+</div>
+<p>
+<p><IMG align=right SRC="snap_1pgb.png" width="20%">
+<p>
+
+  We now see a so-called cartoon representation of the protein structure
+  : atoms (with different colors 
+for the different chemical elements: green for carbon; red for oxygen
+and blue for nitrogen) are not shown directly, but the
+  bonds between atoms are shown as lines.
+
+  Under the "Show" and "Hide" menus ("S" and "H" at the top-right of the "PyMOL Viewer" window), also try
+other representations such as "wire", "sticks", "spheres", and "surface". Try different views by moving the mouse over the molecule viewer with the left mouse button pressed, and zoom with the right mouse button pressed. Exit pymol.
+ <br> <p>
+<font color=red size=+1> Question: </font> Why do we start our MD
+simulations from the experimental determined 3D structure? Isn't it enough to know the proteins amino acid sequence?
+<p>
+Go back to <a href="#contents">Contents</a> 
+<a name="setup"></a> <font color=#00c5d0 size=+1>   <h2>B. Setup </h2> </font>
+We will now prepare the protein structure to be simulated in GROMACS. Although we now have a starting structure for our protein, one might
+have noticed that hydrogen atoms (which would appear white) are still missing from the
+structure. This is because hydrogen atoms contain too few electrons to
+be observed by x-ray crystallography at moderate resolutions. Also, 
+GROMACS requires a molecular description (or topology) of the
+molecules to be simulated before we can start, containing information
+on e.g. which atoms are covalently bonded and other physical information. Both the generation of
+hydrogen atoms and writing of the topology can be done with the
+GROMACS program <a href="http://manual.gromacs.org/documentation/current/onlinehelp/gmx-pdb2gmx.html">pdb2gmx</a>:<br><p>
+<p>
+</p><div class="code">
+<pre>
+ gmx pdb2gmx -f 1pgb.pdb -o conf.pdb 
+</pre>
+</div>
+<p>
+ 
+when prompted for the force-field and water model to be used, choose the number corresponding to the OPLS-AA/L all-atom force field and to the SPC water model. <p>
+
+View the result with: <br><p>
+
+<p>
+</p><div class="code">
+<pre>
+ pymol conf.pdb 
+</pre>
+</div>
+<p>
+ 
+In pyMol, change to "wire" representation to  see the added hydrogens (white lines).<p>
+The topology file written by pdb2gmx is called "topol.top". Have a
+look at the contents of the file using: <br><p>
+<p>
+</p><div class="code">
+<pre>
+ more topol.top 
+</pre>
+</div>
+<p>
+
+you will see a list of all the atoms (with masses, charges), followed
+by bonds (covalent bonds connecting the atoms), angles, dihedral
+angles etc. Near the very end of the topology (in the "[molecules]"
+section) there is a summary of the simulation system, including the
+protein and 24 crystallographic water molecules. <br> <p>
+The topology file thus contains all the physical information about all
+interactions between the atoms of the protein (bonds, angles, torsion
+angles, Lennard-Jones interactions and electrostatic interactions). <p>
+The next step in setting up the simulation system is to solvate the
+protein in a water box, to mimick a physiological environment. For that, we first need to define a
+simulation box. In this case we will generate a rectangular box with
+the box-edges at least 7 Angstroms apart from the protein surface:
+<br><p>
+<p>
+</p><div class="code">
+<pre>
+ gmx editconf -f conf.pdb -o box.pdb -d 0.7 
+</pre>
+</div>
+<p>
+
+
+(note that GROMACS uses units of nanometers). View the result
+with<br><p>
+<p>
+</p><div class="code">
+<pre>
+ pymol box.pdb 
+</pre>
+</div>
+<p>
+ and, in pymol, type: <br> <p>
+<p>
+</p><div class="code">
+<pre>
+ show cell
+</pre>
+</div>
+<p>
+
+Now we fill the simulation box with SPC water using:<br> <p>
+<p>
+</p><div class="code">
+<pre>
+ gmx solvate -cp box.pdb -cs spc216 -o water.pdb -p topol.top
+</pre>
+</div>
+<p>
+
+
+Again, view the output (water.pdb) with pymol. Now the simulation
+system is almost ready.<p> 
+Before we can start the dynamics, we must
+perform an energy minimisation, to alleviate any bad contacts (atoms
+overlapping such that a significant repulsion would result, causing
+numerical problems in the simulation) that
+might be present in the system. For this we need a <b>parameter file</b>,
+specifying which type of minimisation should be carried out, the
+number of steps, etc. For your convenience this file, 
+called <b>"em.mdp"</b>, has
+already been prepared and can be downloaded <a
+href=em.mdp>here</a>. View the file
+with "more" to see its contents. 
+<p>
+</p><div class="code">
+<pre>
+more  em.mdp
+</pre>
+</div>
+<p>
+
+
+<p>We use the GROMACS preprocessor to
+prepare our energy minimisation:
+<p>
+</p><div class="code">
+<pre>
+gmx grompp -f em.mdp -c water.pdb -p topol.top -o em.tpr -maxwarn 2
+</pre>
+</div>
+<p>
+
+This collects all the information from em.mdp, the coordinates from
+water.pdb and the topology from topol.top, checks if the contents are
+consistent and writes a unified output file: em.tpr, which will be
+used to carry out the minimisation:
+<p>
+</p><div class="code">
+<pre>
+gmx mdrun -v -s em.tpr -c em.pdb 
+</pre>
+</div>
+<p>
+
+The output shows that already the initial energy was rather low, so
+in this case there were hardly any bad contacts. Having a look at
+"em.pdb" shows that the structure hardly changed during
+minimisation.<p> <br>
+The careful user may have noticed that grompp gave a warning NOTE:<p>
+System has non-zero total charge: -4.<p>
+Before we continue with the dynamics, we should neutralise
+this net charge of the simulation system. This
+is to prevent artefacts that would arise as a side effect caused by
+the periodic boundary conditions used in the simulation. A net charge
+would result in an electrostatic repulsion between neighbouring
+periodic images. Therefore, 4 sodium ions will be added to the system:<p>
+<p>
+</p><div class="code">
+<pre>
+gmx genion -s em.tpr -o ions.pdb -np 4
+</pre>
+</div>
+<p>
+
+Select the number corresponding to the  water group (SOL) from which 4 water molecules will be replaced by sodium ions.<p>
+
+<p>
+<p><IMG align=right SRC="snap_ions.png" width="20%">
+<p>
+
+
+The output (ions.pdb) can be checked with pymol. To better see the
+ions, type (in pymol):
+<p>
+</p><div class="code">
+<pre>
+ show spheres, resn na
+</pre>
+</div>
+<p>
+
+Since we now changed the topology of the system (4 water molecules
+were replaced by sodium ions), we have to manually adapt the topology. Open the topology with your favourite text editor (vi, emacs or gedit)
+<p>
+</p><div class="code">
+<pre>
+ gedit topol.top
+</pre>
+</div>
+<p>
+
+browse towards the end of the file, and change the number of SOL
+(water) molecules (from 24 to 20). Then, add a line with "NA    4",
+(note the space between "NA" and "4") and do a "save" (twice!) followed by 
+"quit". <p>
+
+Go back to <a href="#contents">Contents</a> 
+<a name="simulation"></a> <font color=#fad61c size=+1>   <h2>C. Simulation </h2> </font>
+Just to be on the safe side, we repeat the energy minimisation, now with the ions included
+(remember to (re)run grompp to create a new run input file whenever
+changes to the topology, or coordinates have been made):
+<p>
+</p><div class="code">
+<pre>
+gmx grompp -f em.mdp -c ions.pdb -p topol.top -o em.tpr -maxwarn 2
+</pre>
+</div>
+<p>
+
+
+<p>
+</p><div class="code">
+<pre>
+gmx mdrun -v -s em.tpr -c em.pdb 
+</pre>
+</div>
+<p>
+
+Now we have all that is required to start the dynamics. Again, a
+simulation parameter file has been prepared for the simulation, and can be
+downloaded <a href=md.mdp>here</a>. Please browse
+through the file "md.mdp" (using "more") to get an idea of the
+simulation parameters. <a href=http://manual.gromacs.org/documentation/2018/user-guide/mdp-options.html> The GROMACS online manual</a> describes all
+parameters in detail Please don't worry in this stage about all individual parameters, we've chosen common values typical for protein simulations.
+Again, we use the GROMACS preprocessor to prepare the simulation: <br>
+<p>
+<p>
+</p><div class="code">
+<pre>
+gmx grompp -f md.mdp -c em.pdb -p topol.top -o md.tpr -maxwarn 2
+</pre>
+</div>
+<p>
+
+and start the simulation!
+<p>
+</p><div class="code">
+<pre>
+gmx mdrun -v -s md.tpr -c md.pdb -nice 0
+</pre>
+</div>
+<p>
+
+The simulation is running now, and depending on the speed and load of
+the computer, the simulation will run for a number of minutes. 
+<br> <p>
+
+<font color=red size=+1> Question: </font> How do the parts of energy
+minimization and MD simulation differ (with reference to energy landscapes)? 
+<p>
+Go back to <a href="#contents">Contents</a> 
+<a name="analysis"></a> <font color=#ff4e06 size=+1>   <h2> D. Analysis of a GROMACS simulation </h2> </font>
+
+<IMG align=right SRC="image_1.jpg">
+<p>
+The simulation is running now (or finished) and we can start analysing
+the results. Let us first see which kind of files have been written by
+the simulation (mdrun):<br><p>
+<p>
+</p><div class="code">
+<pre>
+ ls -lrt 
+</pre>
+</div>
+<p>
+ 
+We see the following files:
+<UL>
+<font color=black size=3>
+<LI> <b>traj_comp.xtc</b> - the trajectory (coordinates) to be used for analyses 
+<LI> <b>traj.trr</b> - coordinates, velocities and forces written at less frequency.
+<LI> <b>state.cpt</b> - a state of the trajectory to be used for a restart in case of a crash  
+<LI> <b>ener.edr</b> - energies
+<LI> <b>md.log</b> - a LOG file of mdrun
+<LI> <b>md.gro</b> - the final coordinates of the simulation
+</font>
+</UL>
+The first analysis step during or after a simulation is usually a
+visual inspection of the trajectory. For this we will use pymol. First, we load the initial configuration:
+<p>
+<p>
+</p><div class="code">
+<pre>
+ pymol md.pdb 
+</pre>
+</div>
+<p>
+ 
+then, we load the trajectory by typing on the pymol prompt: 
+<p>
+</p><div class="code">
+<pre>
+ load traj_comp.xtc,  md 
+</pre>
+</div>
+<p>
+ 
+Play the animation by pressing the play button. 
+We can see that the protein and its surroundings undergo thermal
+fluctuations, but overall, the protein structure is rather stable, as
+would be expected on such timescales. To change the view orientation, move the mouse over the molecule, with either the left or right mouse buttons pressed.
+If you wish to visualize only the protein (in cartoon representation), on the pymol prompt, type:
+<p>
+</p><div class="code">
+<pre>
+hide all 
+dss
+show cartoon
+</pre>
+</div>
+<p>
+ 
+Play the animation by pressing the play button. Close pymol<p>
+
+<b><big>1. RMSD</big></b><p>
+
+For a more quantitative analysis
+on the protein fluctuations, we can view how fast and how far the
+protein deviates from the starting (experimental) structure:<br> <p>
+<p>
+</p><div class="code">
+<pre>
+ gmx rms -s md.tpr -f traj_comp.xtc 
+</pre>
+</div>
+<p>
+ 
+When prompted for groups to be analysed, type "1 1". gmx rms has
+written a file called "rmsd.xvg", which can be viewed with:<br> <p>
+<p>
+</p><div class="code">
+<pre>
+ xmgrace rmsd.xvg 
+</pre>
+</div>
+<p>
+ 
+We see the Root Mean Square Deviation (rmsd) from the starting
+structure, averaged over all protein atoms, as a function of time.  <p>
+<font color=red size=+1> Question: </font> Why is there an intial rise in the rmsd?<p>
+
+
+<b><big>2. RMSF</big></b><p>
+If we now wish to see if the fluctuations are equally distributed over the
+protein, or if some residues are more flexible than others, we can
+type:<br> <p>
+
+<p>
+</p><div class="code">
+<pre>
+ gmx rmsf -s md.tpr -f traj_comp.xtc -oq 
+</pre>
+</div>
+<p>
+ 
+Select group "4" (Backbone). The result can be viewed with:
+<p>
+</p><div class="code">
+<pre>
+ xmgrace rmsf.xvg 
+</pre>
+</div>
+<p>
+ 
+We can see that mainly four regions in the protein show a large
+flexibility: around residues 1, 11, 21 and 38. To see where these
+residues are located in the protein, type:<br> <p>
+<p>
+</p><div class="code">
+<pre>
+ pymol bfac.pdb 
+</pre>
+</div>
+<p>
+ 
+On the pymol prompt type:
+<p>
+</p><div class="code">
+<pre>
+hide all 
+show spheres
+spectrum b
+</pre>
+</div>
+<p>
+
+The protein backbone is now
+shown with the flexibility encoded in the colour. The red (orange,
+green) regions are relatively flexible and the blue regions are
+relatively rigid. It can be seen that the alpha-helix and beta-sheet
+are relatively stable, whereas the loops are more flexible.<br> <p>
+
+
+<b><big>3. POTENTIAL ENERGY</big></b><p>
+The simulation not only yields information on the structural
+properties of the simulation, but also on the energetics. The energies written by mdrun can be analysed: <br> <p>
+<p>
+</p><div class="code">
+<pre>
+gmx energy -f ener.edr 
+</pre>
+</div>
+<p>
+
+
+Select "Potential" and end your selection by pressing enter twice, View the result with:<br> <p>
+<p>
+</p><div class="code">
+<pre>
+ xmgrace energy.xvg 
+</pre>
+</div>
+<p>
+
+As can be seen, the total potential energy initially rises rapidly after
+which it relaxes again. <br> <p>
+<font color=red size=+1> Question: </font>Can you think of an explanation for
+this behaviour?<br> <p>
+Please repeat the energy analysis for a number of different energy
+terms to obtain an impression of their behaviour.<br> <p>
+<font color=red size=+1> Question: </font> Do you think the length of our
+simulation is sufficient to provide a faithful picture of the protein's
+conformations at equillibrium. <p>
+
+
+<b><big>4. SECONDARY STRUCTURE</big></b><p>
+We continue with an analysis of the secondary structure (i.e. alpha-helix and
+beta-sheet content) of the protein during the simulation.<br> <p>
+First,  we need to tell GROMACS where the DSSP program for secondary structure
+calculations can be found:<br> <p>
+<p>
+</p><div class="code">
+<pre>
+ export DSSP="/usr/bin/dssp"
+</pre>
+</div>
+<p>
+
+(or, if you get a message "export: Command not found.", you're perhaps using a
+(t)csh in which case the command should be:) <br>
+<p>
+</p><div class="code">
+<pre>
+ setenv DSSP /usr/bin/dssp
+</pre>
+</div>
+<p>
+
+Now, perform the actual analysis with:
+<p>
+</p><div class="code">
+<pre>
+ gmx do_dssp -s md.tpr -f traj_comp.xtc 
+</pre>
+</div>
+<p>
+ 
+
+select group "1" (protein), and convert the output to PostScript with:
+<p>
+</p><div class="code">
+<pre>
+gmx  xpm2ps -f ss.xpm 
+</pre>
+</div>
+<p>
+ 
+and view the result with:
+<p>
+</p><div class="code">
+<pre>
+ gv plot.eps 
+</pre>
+</div>
+<p>
+ 
+if "gv" is not installed on your computer, try "xpsview", "ghostview"
+or "gs". As can be seen, the secondary structure is rather stable
+during the simulation, which is an important validation check of the
+simulation procedure (and force-field) used. <p>
+
+<b><big>5. RADIUS OF GYRATION</big></b><p>
+The next thing to analyse is the change in the overall size (or gyration radius) of the protein: 
+<br><p><p>
+</p><div class="code">
+<pre>
+ gmx gyrate -s md.tpr -f traj_comp.xtc
+</pre>
+</div>
+<p>
+
+(again, select group "1" for the protein)
+<p>
+</p><div class="code">
+<pre>
+ xmgrace gyrate.xvg
+</pre>
+</div>
+<p>
+
+<font color=red size=+1> Question: </font> 
+What can you say about the size of the protein based on the time-trace of the radius of gyration (e.g. fluctuations and drift)? 
+<p>
+
+
+
+<b><big>6. SOLVENT ACCESSIBLE SURFACE AREA (SASA) </big></b><p>
+Another important check
+concerns the behaviour of the protein surface:
+<p>
+</p><div class="code">
+<pre>
+gmx sasa -s md.tpr -f traj_comp.xtc -surface 'Protein' -output 'Protein' 
+</pre>
+</div>
+<p>
+
+Now view the total solvent accessible surface area with:
+<p>
+</p><div class="code">
+<pre>
+xmgrace -nxy area.xvg
+</pre>
+</div>
+<p>
+
+Let us now split the area into hydrophobic and hydrophilic contributions:
+<p>
+</p><div class="code">
+<pre>
+gmx sasa -s md.tpr -f traj_comp.xtc  -surface 'Protein' -output '"Hydrophobic" group "Protein" and charge {-0.2 to 0.2}; "Hydrophilic" group "Protein" and not charge {-0.2 to 0.2}; "Total" group "Protein"'
+</pre>
+</div>
+<p>
+and visualize again the output with xmgrace. 
+<p>
+<font color=red size=+1> Question: </font> Is the total
+(solvent-accessible) surface constant? Are any hydrophobic groups
+exposed during the simulation? (tipp: check in pymol the type of residues exposed to the solvent) <p>
+
+Go back to <a href="#contents">Contents</a> 
+<a name="optional"></a> <font size=+1>  <h2> Optional exercises </h2> </font>
+
+<ul>
+<li>You've probably noticed that in the simulation about only ten percent of the
+system that was simulated consisted of protein, the rest was water. As we are
+mainly interested in the protein's motions and not so much in the surrounding
+water, one could ask if we couldn't forget about the water and rather simulate
+the protein. That way, we could reach ten times longer simulations with the
+same computational effort!
+</ul>
+<font color=red size=+1> Question: </font> Why do you think that it is
+important to include explicit solvent in the simulation of a protein? 
+<p>
+To check if your assumption is correct, repeat the simulation of protein G,
+this time without solvent (to observe the effect more clearly, increase the
+length of the simulation by changing "nsteps" in the file "md.mdp" by e.g. a
+factor of ten).  <br> <p>
+<font color=red size=+1> Question: </font> What are the main differences to the
+protein's structure and dynamics as compared to the solvent simulation? <br><p>
+(Hint: use programs like gmx rms and gmx gyrate to analyse both simulations).
+<p><br> <p>
+<ul>
+<li>Let's go back to the first step in setting up the system - as we already
+  know, building the topology of our protein can be done with the GROMACS program pdb2gmx:
+<p>
+</p><div class="code">
+<pre>
+ gmx pdb2gmx -f 1pgb.pdb -o conf_gromos.pdb 
+</pre>
+</div>
+<p>
+ 
+when prompted for the force-field to be used, now choose the GROMOS 43a1 instead of OPLS-AA/L. Use the more and pymol
+commands as before to compare the result with the previous configuration
+- what difference do you find?<br> <p>
+</ul>
+<font color=red size=+1> Question: </font> How is the level of representation correlated with system size (number of atoms)? 
+<br> <p>
+
+
+
+Go back to <a href="#contents">Contents</a> 
+<a name="references"></a> <font color=#1a83c4 size=+1> <h2>Further references:</h2> </font>
+<ul>
+<p>
+<font color=#1a83c4 size=+1>Principles of protein structure and basic in biophysics and biochemistry:</font>
+<p>
+<li> Stryer, Biochemistry
+<li> Voet, Fundamentals of Biochemistry Rev. Ed. 
+<li> Cantor and Schimmel, Biophysical Chemistry Part I: The conformation of biological macromolecules
+
+
+<p>
+<font color=#1a83c4 size=+1>Computer simulations and molecular dynamics:</font>
+<li>  M. Karplus and A. McCammon.  <EM> Molecular Dynamics simulations of
+biomolecules </EM> <b> Nature structural biology </b> 9: 646-652 (2002).<a
+href="http://www.nature.com/nsmb/journal/v9/n9/full/nsb0902-646.html">[link]</a>
+<li>  D.C. Rapaport.  <EM> The Art of Molecular Dynamics Simulations - 2nd edn </EM> <b>
+Cambridge University Press </b> (2004).
+<li>Ron O. Dror, Robert M. Dirks, J.P. Grossman, Huafeng Xu, and David E. Shaw. <EM>Biomolecular Simulation: A Computational Microscope for Molecular Biology.</EM><b> Annual Review of Biophysics.</b> 41:429-452  (2012). <a href=https://doi.org/10.1146/annurev-biophys-042910-155245>[link]</a>. 
+
+  
+
+<p>
+<font color=#1a83c4 size=+1>Advanced reading:</font>
+<li>  H. Scheraga, M. Khalili and A. Liwo.  <EM> Protein-Folding Dynamics:
+Overview of Molecular Simulation Techniques </EM> <b> Annual Review of Physical Chemistry </b> 58: 57-83 (2007).<a
+href="http://arjournals.annualreviews.org/doi/abs/10.1146/annurev.physchem.58.032806.104614">[link]</a>
+<li>  K Henzler-Wildman and D Kern. <EM> Dynamic personalities of proteins</EM> <b> Nature</b> 450: 964-972 (2007). 
+<li>  K A Sharp and B Honig. <EM> Electrostatic Interactions in Macromolecules: Theory and Applications</EM>, <b>Annual Review of Biophysics and Biophysical Chemistry </b>19: 301-332 (1990).
+<li>  F M Richards. <EM> Areas, Volumes, Packing, and Protein Structure</EM> <b>Annual Review of Biophysics and Bioengineering</b> 6: 151-176 (1977).
+<li>  K A Dill, S B Ozkan, M Scott Shell and T R Weikl. <EM> The Protein Folding Problem</EM><b> Annual Review of Biophysics </b>37: 289-316 (2008). 
+</ul>
+
+<p>
+Go back to <a href="#contents">Contents</a> 
+
+<hr>
+<address>
+  This tutorial is based on the tutorial originally developed by <a href="http://www.mpibpc.mpg.de/groups/de_groot/"> Bert de Groot</a>
+</a></address>
+<hr>
+
+
+
+
+
+</font>
+</body>
+</HTML>
+
