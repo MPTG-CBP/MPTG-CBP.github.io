@@ -87,13 +87,13 @@ in the PDB should match this query. We will choose the x-ray structure
 with the highest resolution (entry 1PGB) for this study. To download
 the structure, click on the link <b>"1PGB"</b>, and then, under "Download Files",
 select "PDB File". When prompted, select "Save File", and save the file
-to the local hard disk in the "Desktop" directory.<p>
+to the local hard disk. <p>
 
-  Open a unix terminal and go to the "Desktop" directory by typing:
+Open a unix terminal and go to the directory where the pdb file was saved, i.e. Downloads:
 <p>
 </p><div class="code">
 <pre>
- cd ~/Desktop
+ cd ~/Downloads
 </pre>
 </div>
 <p>
@@ -285,7 +285,7 @@ periodic images. Therefore, 4 sodium ions will be added to the system:<p>
 <p>
 </p><div class="code">
 <pre>
-gmx genion -s em.tpr -o ions.pdb -np 4
+gmx genion -s em.tpr -o ions.pdb -np 4 -pname NA
 </pre>
 </div>
 <p>
@@ -554,8 +554,23 @@ conformations at equillibrium. <p>
 <b><big>4. SECONDARY STRUCTURE</big></b><p>
 We continue with an analysis of the secondary structure (i.e. alpha-helix and
 beta-sheet content) of the protein during the simulation.<br> <p>
-First,  we need to tell GROMACS where the DSSP program for secondary structure
-calculations can be found:<br> <p>
+  First,  we need to install the DSSP program for secondary structure calculation:
+<p>
+</p><div class="code">
+<pre>
+  sudo apt-get update -y
+  sudo apt-get install -y dssp
+</pre>
+</div>
+<p>
+  when prompted, type the user login password. If dssp was properly installed it should appear by typing
+</p><div class="code">
+<pre>
+  which dssp
+</pre>
+</div>
+<p>
+Now, we need to tell GROMACS where the DSSP program can be found:<br> <p>
 <p>
 </p><div class="code">
 <pre>
@@ -563,7 +578,6 @@ calculations can be found:<br> <p>
 </pre>
 </div>
 <p>
-
 (or, if you get a message "export: Command not found.", you're perhaps using a
 (t)csh in which case the command should be:) <br>
 <p>
@@ -573,22 +587,19 @@ calculations can be found:<br> <p>
 </pre>
 </div>
 <p>
-
 Now, perform the actual analysis with:
 <p>
 </p><div class="code">
 <pre>
- gmx do_dssp -s md.tpr -f traj_comp.xtc 
+ gmx do_dssp -s md.tpr -f traj_comp.xtc -dt 1
 </pre>
 </div>
 <p>
- 
-
 select group "1" (protein), and convert the output to PostScript with:
 <p>
 </p><div class="code">
 <pre>
-gmx  xpm2ps -f ss.xpm 
+gmx  xpm2ps -f ss.xpm -size 200 
 </pre>
 </div>
 <p>
@@ -597,14 +608,11 @@ and view the result with:
 <p>
 </p><div class="code">
 <pre>
- gv plot.eps 
+ gs plot.eps 
 </pre>
 </div>
 <p>
- 
-if "gv" is not installed on your computer, try "xpsview", "ghostview"
-or "gs". As can be seen, the secondary structure is rather stable
-during the simulation, which is an important validation check of the
+As can be seen, the secondary structure (blue: helix and red: beta-sheet) is rather stable during the simulation, which is an important validation check of the
 simulation procedure (and force-field) used. <p>
 
 <b><big>5. RADIUS OF GYRATION</big></b><p>
@@ -627,7 +635,7 @@ The next thing to analyse is the change in the overall size (or gyration radius)
 <p>
 
 <font color=red size=+1> Question: </font> 
-What can you say about the size of the protein based on the time-trace of the radius of gyration (e.g. fluctuations and drift)? 
+What can you say about the size of the protein based on the time-trace of the radius of gyration (e.g. fluctuations and drift)?  
 <p>
 
 
