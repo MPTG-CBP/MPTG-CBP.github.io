@@ -302,7 +302,31 @@ ions, type (in pymol):
 <p>
 </p><div class="code">
 <pre>
- show spheres, resn na
+ show spheres, resn NA
+</pre>
+</div>
+<p>
+
+If pymol does not display the ions, we can try vmd:
+<p>
+</p><div class="code">
+<pre>
+vmd ions.pdb
+</pre>
+</div>
+<p>
+
+and in the "VMD Main" window 
+<p>
+</p><div class="code">
+<pre>
+click on "Graphics"->"Representations"
+in the menu "Graphical Representations", click on "Create Rep" 
+in the second created representation, change
+drawing method: from "lines" to "VDW" 
+Selected Atoms: from "all" to "resname NA"  
+
+click on "Apply"
 </pre>
 </div>
 <p>
@@ -318,8 +342,7 @@ were replaced by sodium ions), we have to manually adapt the topology. Open the 
 <p>
 
 browse towards the end of the file, and change the number of SOL
-(water) molecules (from 24 to 20). Then, add a line with "NA    4",
-(note the space between "NA" and "4") and do a "save" (twice!) followed by 
+(water) molecules (from 24 to 20). Then, add a line with "NA    4" at the end of the file (note the space between "NA" and "4") and do a "save" (twice!) followed by 
 "quit". <p>
 
 Go back to <a href="#contents">Contents</a> 
