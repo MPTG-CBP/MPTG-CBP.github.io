@@ -682,18 +682,20 @@ pymol conf_0ns.pdb
  <p>
 <div class="code">
   <pre>
-    load traj.xtc,  conf_0ns
     hide
+    load_traj traj.xtc,  conf_0ns, interval=2
     show lines, poly
     show spheres, name P8
     </pre>
 </div>	       
  <p>
-   Click on one lipid near the protein and one far away. They will constitute the "sele" group at the right side. Now change their representation:
+   If pymol crashes, because too many frames were loaded, then increase the interval to 4 or 5. <p>
+  
+  Click on one lipid near the protein and one far away. They will constitute the "sele" group at the right side. Now change their representation:
     <p>
 <div class="code">
   <pre>
-show lines, sele
+show sticks, sele
   </pre>
 </div>	       
  <p>
@@ -730,12 +732,11 @@ vmd conf_0ns.pdb traj.xtc
     Click on "Create Rep"
     Replace "resname SOL and within 4 of protein" by "protein and resid 62 64 180 183"
     Select Licorice as Drawing method
-    In the VMD Main window pres play, adjusting the speed	   
-    In the Molecule display, play with the orientation and zoom 
 	   </pre>
 </div>	       
 <p>
 <p>
+  In the VMD Main window, press play, adjusting the speed, orientation and zoom. Also fraphical representations can be hidden/shown for more clarity.<p>
   <font size="+1" color="red"> Question: </font>
   how many water pathways can you identify?
 <p>
@@ -770,8 +771,8 @@ Aquaporin-0 has a unique feature. It has been possible to crystallize it with a 
   <pre>
     gmx make_ndx -f conf_0ns.pdb
     > a C40
-    > splitres XXX ; XXX is the number of the C40 created group
-    > press "Enter" key
+    > splitres XXX ; XXX is the number of the C40 created group (e.g. 22)
+    > press "Enter" key twice
     > q
   </pre>
 </div>	       
@@ -860,7 +861,7 @@ How do you think this distribution will change if an atom of the lipid head-grou
 <div class="code">
   <pre>
     gmx densmap -f traj_fitted.xtc -s conf_0ns.pdb -n index.ndx  -bin 0.05
-    > C40 ; Select the group of C40 atoms
+    > C40 ; Select the group of C40 atoms (it may be group 22)
   </pre>
 </div>	       
  <p>    
@@ -892,7 +893,7 @@ Why are there regions of high-lipid density near the protein?
 What happens with the lipids far away from the protein?
  <p>
  <p>
-<font size="+1" color="red"> Question: </font>
+<font size="+1" color="red"> Optional Question: </font>
 The Cryo-EM structure of aquaporin-0 revealed the position of several surrounding lipids (remember the first step in which we removed the lipids from the crystallographic structure). How do the lipid positions in the structure compare to the average positions you observed in the simulations? HINT: identify the protein surface residues near the high lipid density, looking at the 2D density plot and the trajectory.
 <p>   
   
