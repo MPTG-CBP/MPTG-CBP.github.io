@@ -23,7 +23,7 @@
   </font>
 <font face="Arial" size="-1">
 <a name="contents"></a>  
-<div class="code" style="width: 36%; background: white;">
+<div class="code" style="width: 30%; background: white;">
    <font size=4>
      <a href="#bilayer"> A. Lipid bilayer simulation setup </a> <br>
      <a href="#bilayer_ana"> B. Lipid bilayer simulation analysis </a> <br>
@@ -241,7 +241,35 @@ gmx order -f run.xtc -s topol.tpr  -n sn1.ndx -od deuter_sn1.xvg
 </pre>
 </div>
 <p>  
-  Repeat this process for the second acyl chain (sn2) whose atoms are C32,...,C50, paying attention to the name of the index file and the deuter_xxx.xvg files. At the end you should have two files: deuter_sn1.xvg and deuter_sn2.xvg. Plot them with xmgrace:
+  Repeat this process for the second acyl chain (sn2):
+         </p><div class="code">
+  <pre>
+    {
+echo a C36
+echo a C37
+echo a C38
+echo a C39
+echo a C40
+echo a C41
+echo a C42
+echo a C43
+echo a C44
+echo a C45
+echo a C46
+echo a C47
+echo a C48
+echo a C49
+echo a C50
+echo del 0-12
+echo q
+    } | gmx make_ndx  -f system+ions.pdb -o sn2.ndx
+
+gmx order -f run.xtc -s topol.tpr  -n sn2.ndx -od deuter_sn2.xvg
+</pre>
+</div>
+<p> 
+
+At the end you should have two files: deuter_sn1.xvg and deuter_sn2.xvg. Plot them with xmgrace:
         </p><div class="code">
 <pre>
 xmgrace deuter_sn1.xvg deuter_sn2.xvg
