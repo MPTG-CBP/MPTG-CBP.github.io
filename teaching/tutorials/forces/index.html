@@ -182,8 +182,25 @@ load traj_comp.xtc, pr
   <font size="+1" color="red"> Question: </font>
   What can you say about the detachment of the two beta-strands? which interactions are disrupted? 
 <p><p>
+    From visual inspection it is hard to identify which interactions were disrupted. Let us calculate the number of hydrogen bonds of the main chain:
+<div class="code">
+  <pre>
+gmx hbond -s pull.tpr -f traj_comp.xtc -num 
+  </pre>
+</div>	       
+<p>
+select "MainChain+H" group twice. Plot the number of hydrogen bonds: 
+<div class="code">
+  <pre>
+    xmgrace hbnum.xvg
+  </pre>
+</div>	       
+<p>
+  <font size="+1" color="red"> Question: </font>
+what happens with the hydrogen bonds when pulling? 
+<p><p>
 
-    The force exerted on the two pulled groups is stored in the pullf.xvg file. Plot this graph with xmgrace, after closing pymol:
+The force exerted on the two pulled groups is stored in the pullf.xvg file. Plot this graph with xmgrace, after closing pymol:
     </p>
 <div class="code">
   <pre>
@@ -195,10 +212,11 @@ load traj_comp.xtc, pr
 Why do you think the two forces are almost equal in magnitude but of opposite sign?
 <p>
     <font size="+1" color="red"> Question: </font>
-  what is the rupture force?
+  what is the rupture force? what happens with the hydrogen bonds at the moment of rupture?
 <p><p>
-   
-Now, repeat the simulation, but this time with a pulling velocity 10 times smaller. Note that the length of the simulation has to increase by 10-fold. Make the following changes in the mdp file:
+
+<strong>Pulling at a smaller pulling velocity </strong><p>
+Now, repeat the simulation, but this time with a pulling velocity 10 times smaller. Note that the length of the simulation has to increase by 10-fold. Make the following changes in the run.mdp file:
        <div class="code">
 	 <pre>
    nsteps                   = 45000 
@@ -249,8 +267,8 @@ What do you think it will happen if the pulling velocity is reduced further, e.g
 <font size="+1" color="red"> Question: </font>
 which rupture force do you think is more reliable?
 <p>
-
-Now, repeat the pulling simulation, choosing as second pulling group (the CA atom of residue 17 instead of residue 9) and pulling along the z-axis. To this end, update the following lines in the mdp file, according to:
+<strong>Pulling in another direction </strong><p>
+Now, repeat the pulling simulation, choosing as second pulling group (the CA atom of residue 17 instead of residue 9) and pulling along the z-axis. To this end, update the following lines in the run.mdp file, according to:
    <div class="code">
   <pre>
     pull-group2-name         = r_17_&_CA
@@ -289,7 +307,7 @@ Now, repeat the pulling simulation, choosing as second pulling group (the CA ato
   
 <p>
 <font size="+1" color="red"> Question: </font>
-how would you describe the dissociation in this case (pull along the z-axis) compared to the previous situation (pulling along the x-axis)? 
+how would you describe the dissociation in this case (pulling along the z-axis) compared to the previous situation (pulling along the x-axis)? 
 <p>
 <p>
 <font size="+1" color="red"> Question: </font>
@@ -302,7 +320,19 @@ which conclusions can you draw from these simulations regarding the force-respon
   
 <a name="references"></a> <font color=#005A9C size=+1> <h2>Further references and advanced reading:</h2> </font>
 <ul>
+  <li>
+    F Franz, C Daday, and F Gr&aumlter.
+    <b><EM>Advances in molecular simulations of protein mechanical properties and function.</EM></b>.
+        Current Opinion in Structural Biology, 15 Jan 2020, 61:132-138. <a href="https://doi.org/10.1016/j.sbi.2019.12.015">[link]</a><p>
+
+        <li>F Rico, A Russek, L Gonz&aacutelez, H Grubm&uumlller, and S Scheuring.
+    <b><EM>   Heterogeneous and rate-dependent streptavidin–biotin unbinding revealed by high-speed force spectroscopy and atomistic simulations. </b></EM>
+      PNAS. 2019 116 (14) 6594-6601
+      <a href="https://doi.org/10.1073/pnas.1816909116">[link]</a><p>  
+      
+  
   <li>H Grubm&uumlller, B Heymann, P Tavan.<b><EM> Ligand binding: molecular mechanics calculation of the streptavidin-biotin rupture force</EM></b>. Science 271 (5251), 997-999 (1996). <a href="https://pure.mpg.de/rest/items/item_1690312/component/file_1690313/content">[link]</a><p>
+      
   <li>Gerhard Hummer and Attila Szabo. <b><EM> Kinetics from Nonequilibrium Single-Molecule Pulling Experiments</EM></b>. Biophysical Journal. 85: 5-15 (2003).  <a href="https://doi.org/10.1016/S0006-3495(03)74449-X">[link]</a><p>
       <li> Rico, L Gonzalez, I Casuso, M Puig-Vidal, S Scheuring <b><EM>
 	    High-speed force spectroscopy unfolds titin at the velocity of molecular dynamics simulations</EM></b>. Science 342 (6159), 741-743 (2013).  <a href="https://science.sciencemag.org/content/342/6159/741">[link]</a><p>
