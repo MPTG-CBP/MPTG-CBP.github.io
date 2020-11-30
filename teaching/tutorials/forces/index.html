@@ -115,7 +115,7 @@ pull-coord2-k            = 1000
 <p>
 
   
-  These options will tell GROMACS to turn on the COM pulling module, to pull the CA atom of residue 1 (pull group1: r_1_&_CA) and that of residue (pull group2: r_9_&_CA), using two coordinates (pull ncoords: 2), one for each atom (pull-coord1-xxx  and pull-coord2-xxx options separately for each coordinate). A harmonic force (pull type: umbrella), along the x direction (pull geometry: direction, pull dim: Y N N , and pull vec: 1.0 0.0 0.0) is used. The harmonic springs move at a rate of 0.5 nm/ps (pull rate: +-0.5) and have an elastic constant of 1000 kJ/mol/nm<sup>2</sup> (pull k: 1000).<p>
+  These options will tell GROMACS to turn on the COM pulling module, to pull the CA atom of residue 1 (pull group1: r_1_&_CA) and that of residue 9 (pull group2: r_9_&_CA), using two coordinates (pull ncoords: 2), one for each atom (pull-coord1-xxx  and pull-coord2-xxx options separately for each coordinate). A harmonic force (pull type: umbrella), along the x direction (pull geometry: direction, pull dim: Y N N , and pull vec: 1.0 0.0 0.0) is used. The harmonic springs move at a rate of 0.5 nm/ps (pull rate: +-0.5) and have an elastic constant of 1000 kJ/mol/nm<sup>2</sup> (pull k: 1000).<p>
 
     Now let us create an index file containing the groups to be pulled:
     </p><div class="code">
