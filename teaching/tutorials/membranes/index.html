@@ -70,6 +70,26 @@ show spheres, name C1+C2+C3+C4+C5+C6+O7+P8+O9+O10+O11
 </pre>
 </div>
 <p><p>
+Alternatively, if pymol does not visualize the lipid atoms as spheres, you can try with vmd:
+<p>
+</p><div class="code">
+<pre>
+vmd system+ions.pdb
+</pre>
+</div>
+<p>
+</p><div class="code">
+<pre>
+Graphics->Representations->"Create Rep":
+Selected Atoms: name C1 C2 C3 C4 C5 C6 O7 P8 O9 O10 O11  
+Drawing method: VWD 
+Click: "Apply"
+</pre>
+</div>
+
+	<p><p>
+	
+	
   <font size="+1" color="red"> Question: </font>
   How do lipids arrange? which lipid parts are exposed to the water molecules?
 <p><p>
