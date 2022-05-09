@@ -10,7 +10,8 @@
 
 <body BGCOLOR="white">
 <!--<font face="Arial" size="-1">-->
-<a name="contents"></a>  <center><h1>Practical 2: Introduction to protein simulation</h2></center>
+<a name="contents"></a>  <center><h1>Practical 2: Introduction to protein simulation
+ </h2></center>
 <IMG align=right SRC="image_1.jpg">
 
 <!--<div class="code">-->
@@ -131,6 +132,20 @@ and blue for nitrogen) are not shown directly, but the
   Under the "Show" and "Hide" menus ("S" and "H" at the top-right of the "PyMOL Viewer" window), also try
 other representations such as "wire", "sticks", "spheres", and "surface". Try different views by moving the mouse over the molecule viewer with the left mouse button pressed, and zoom with the right mouse button pressed. Exit pymol.
  <br> <p>
+ 
+ Note: you can also visualize conformations (and trajectories) with vmd:
+<p>
+</p><div class="code">
+<pre>
+vmd 1pgb.pdb <p>
+
+and change the representations:<p>
+graphics->Representations->Drawing method
+</pre>
+</div>
+ 
+ 
+ 
 <font color=red size=+1> Question: </font> Why do we start our MD
 simulations from the experimental determined 3D structure? Isn't it enough to know the proteins amino acid sequence?
 <p>
@@ -573,7 +588,6 @@ terms to obtain an impression of their behaviour.<br> <p>
 simulation is sufficient to provide a faithful picture of the protein's
 conformations at equillibrium. <p>
 
-<!--
 <b><big>4. SECONDARY STRUCTURE</big></b><p>
 We continue with an analysis of the secondary structure (i.e. alpha-helix and
 beta-sheet content) of the protein during the simulation.<br> <p>
@@ -635,10 +649,10 @@ and view the result with:
 </pre>
 </div>
 <p>
-As can be seen, the secondary structure (blue: helix and red: beta-sheet) is rather stable during the simulation, which is an important validation check of the
+
+ As can be seen, the secondary structure (blue: helix and red: beta-sheet) is rather stable during the simulation, which is an important validation check of the
 simulation procedure (and force-field) used. <p>
 
--->
 
 <b><big>4. RADIUS OF GYRATION</big></b><p>
 The next thing to analyse is the change in the overall size (or gyration radius) of the protein: 
@@ -660,7 +674,7 @@ The next thing to analyse is the change in the overall size (or gyration radius)
 <p>
 
 <font color=red size=+1> Question: </font> 
-What can you say about the size of the protein based on the time-trace of the radius of gyration (e.g. fluctuations and drift)?  
+What can you say about the size and overall shape of the protein based on the time-trace of the radius of gyration (e.g. fluctuations and drift)?  
 <p>
 
 
@@ -779,7 +793,7 @@ Go back to <a href="#contents">Contents</a>
 
 <hr>
 <address>
-  This tutorial is based on the tutorial originally developed by <a href="http://www.mpibpc.mpg.de/groups/de_groot/"> Bert de Groot</a>
+  This tutorial is based on the tutorial originally developed by <a href="http://www.mpibpc.mpg.de/groups/de_groot/"> Bert de Groot</a> and modified by <a href="https://mptg-cbp.github.io/caas.html"> Camilo Aponte-Santamar&iacutea </a>
 </a></address>
 <hr>
 
