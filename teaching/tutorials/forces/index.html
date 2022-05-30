@@ -29,6 +29,7 @@
 <div class="code" style="width: 36%; background: white;">
    <font size=4>
      <a href="#beta-strand"> A. Dissociation of two beta-strands by force</a> <br>
+      <a href="#opt"> B. Optional exercises </a><br>
       <a href="#references"> References </a>
     </font>
   
@@ -317,7 +318,31 @@ How do the rupture forces compare in these two cases?
 <font size="+1" color="red"> Question: </font>
 which conclusions can you draw from these simulations regarding the force-response of beta-sheets and the direction of force application ?
 <p>  
-  
+
+	<a href="#opt"> B. Optional exercises </a><br>
+<a name="opt"></a> <font color=#005A9C size=+1> <h2>Optional exercises:</h2> </font>
+<ul>
+  <li> <b>Unfolding a small protein domain.</b><br>
+The procedure presented here could be applied to unfold a small protein domain, such as the one studied in the previous practical, i.e. the B1 domain of protein G.  
+	<li> <b>Pulling at constant force.</b><br>
+	  We could induce the dissociation of the beta-strands by exerting a constant force on the termini instead of pulling them with constant-velocity. 
+	  In this case, we will need to change the type of pulling, the force strength and the pull rate in the mdp file to: 
+	  </p><div class="code">
+<pre>
+pull-coord1-type         = constant-force
+pull-coord1-rate         = 0
+pull-coord1-k            = 1000 ; the applied force will be minus this value
+
+pull-coord2-type         = constant-force
+pull-coord2-rate         = 0
+pull-coord2-k            = -1000 ; the applied force will be minus this value
+</pre>
+</div>
+<p>
+Here, you could try different forces and thereby monitor the force dependency of the rate of dissociation. 
+	
+	
+	</ul>	
 <a name="references"></a> <font color=#005A9C size=+1> <h2>Further references and advanced reading:</h2> </font>
 <ul>
   <li>
