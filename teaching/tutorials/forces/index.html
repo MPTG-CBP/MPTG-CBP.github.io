@@ -39,19 +39,19 @@
 <!----------------------- BETA STRAND  ------------>
 <IMG align=right style="width:400px"  SRC="files/beta-strand-spring.png">
 <a name="beta-strand"></a> <font color=#005A9C size=+1>   <h2>A. Dissociation of a beta-sheet by force </h2> </font>
-We will consider two unconnected 8-aminoacid beta strands forming a small beta sheet. We will setup a force-probe simulation in which the N-termini of each strand are pulled away from each other by using moving harmonic forces. First, download all the necessary files for the practical <a href="files/beta-strand.zip">here</a> and save them in the Desktop directory.<p>
+We will consider two unconnected 8-aminoacid beta strands forming a small beta sheet. We will setup a force-probe simulation in which the N-termini of each strand are pulled away from each other by using moving harmonic forces. First, download all the necessary files for the practical <a href="files/beta-strand.zip">here</a> and save them in the Desktop (or Downloads) directory.<p>
 
     Open a terminal, go to the Desktop directory and unzip the downloaded file:
 <p>
 </p><div class="code">
 <pre>
-  cd ~/Desktop<p>
+  cd ~/Desktop  or cd ~/Downloads <p> 
   ls -lhrt *zip<p>
   unzip  beta-strand.zip
 </pre>
 </div>
 <p>
-  Have a look at the structure using pymol:
+  Have a look at the structure using pymol (or alternatively with VMD):
 <p>
 </p><div class="code">
 <pre>
@@ -69,6 +69,7 @@ pymol pr.gro
 </pre>
 </div>
 <p><p>
+	
     We will pull the red- and blue-shown CA atoms away from each other. To attain this, we need to use the Center Of Mass <a href="http://manual.gromacs.org/documentation/2018/user-guide/mdp-options.html#com-pulling"> (COM) pulling </a> module of GROMACS. In the linux terminal, after closing pymol, open the mdp file used for the equilibration using the text editor of your preference (e.g. gedit):
     <p>
 </p><div class="code">
