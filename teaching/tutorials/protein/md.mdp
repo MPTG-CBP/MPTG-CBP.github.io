@@ -137,7 +137,7 @@ andersen_seed            = 815131
 
 ; SIMULATED ANNEALING  
 ; Type of annealing for each temperature group (no/single/periodic)
-annealing                = no no no
+annealing                = no 
 ; Number of time points to use for specifying annealing in each group
 annealing_npoints        = 
 ; List of times at the annealing points for each group
