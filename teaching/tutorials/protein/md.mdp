@@ -121,10 +121,10 @@ implicit_solvent         = No
 ; Temperature coupling  
 Tcoupl                   = yes
 ; Groups to couple separately
-tc_grps                  = Protein SOL NA
+tc_grps                  = System
 ; Time constant (ps) and reference temperature (K)
-tau_t                    = 0.1 0.1 0.1
-ref_t                    = 300 300 300
+tau_t                    = 0.1
+ref_t                    = 300
 ; Pressure coupling     
 Pcoupl                   = Berendsen
 Pcoupltype               = isotropic
@@ -137,7 +137,7 @@ andersen_seed            = 815131
 
 ; SIMULATED ANNEALING  
 ; Type of annealing for each temperature group (no/single/periodic)
-annealing                = no no no
+annealing                = no 
 ; Number of time points to use for specifying annealing in each group
 annealing_npoints        = 
 ; List of times at the annealing points for each group

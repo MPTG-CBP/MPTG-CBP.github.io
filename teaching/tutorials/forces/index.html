@@ -14,7 +14,7 @@
 <body BGCOLOR="white" ; style="width: 100%"; >
 
   <center><b>Force-probe molecular dynamics (MD) simulations</b><br>
-      <a href="https://mptg-cbp.github.io"> by Camilo Aponte-Santamar&iacutea<br>
+      <a href="https://mptg-cbp.github.io/caas.html"> by Camilo Aponte-Santamar&iacutea<br>
 <!--	Max Planck Tandem Group in Computational Biophysics<br>
 	University of Los Andes, Bogot&aacute, Colombia-->
       </a>
@@ -29,6 +29,7 @@
 <div class="code" style="width: 36%; background: white;">
    <font size=4>
      <a href="#beta-strand"> A. Dissociation of two beta-strands by force</a> <br>
+      <a href="#opt"> B. Optional exercises </a><br>
       <a href="#references"> References </a>
     </font>
   
@@ -38,19 +39,19 @@
 <!----------------------- BETA STRAND  ------------>
 <IMG align=right style="width:400px"  SRC="files/beta-strand-spring.png">
 <a name="beta-strand"></a> <font color=#005A9C size=+1>   <h2>A. Dissociation of a beta-sheet by force </h2> </font>
-We will consider two unconnected 8-aminoacid beta strands forming a small beta sheet. We will setup a force-probe simulation in which the N-termini of each strand are pulled away from each other by using moving harmonic forces. First, download all the necessary files for the practical <a href="files/beta-strand.zip">here</a> and save them in the Desktop directory.<p>
+We will consider two unconnected 8-aminoacid beta strands forming a small beta sheet. We will setup a force-probe simulation in which the N-termini of each strand are pulled away from each other by using moving harmonic forces. First, download all the necessary files for the practical <a href="files/beta-strand.zip">here</a> and save them in the Desktop (or Downloads) directory.<p>
 
     Open a terminal, go to the Desktop directory and unzip the downloaded file:
 <p>
 </p><div class="code">
 <pre>
-  cd ~/Desktop<p>
+  cd ~/Desktop  or cd ~/Downloads <p> 
   ls -lhrt *zip<p>
   unzip  beta-strand.zip
 </pre>
 </div>
 <p>
-  Have a look at the structure using pymol:
+  Have a look at the structure using pymol (or alternatively with VMD):
 <p>
 </p><div class="code">
 <pre>
@@ -68,6 +69,7 @@ pymol pr.gro
 </pre>
 </div>
 <p><p>
+	
     We will pull the red- and blue-shown CA atoms away from each other. To attain this, we need to use the Center Of Mass <a href="http://manual.gromacs.org/documentation/2018/user-guide/mdp-options.html#com-pulling"> (COM) pulling </a> module of GROMACS. In the linux terminal, after closing pymol, open the mdp file used for the equilibration using the text editor of your preference (e.g. gedit):
     <p>
 </p><div class="code">
@@ -317,7 +319,31 @@ How do the rupture forces compare in these two cases?
 <font size="+1" color="red"> Question: </font>
 which conclusions can you draw from these simulations regarding the force-response of beta-sheets and the direction of force application ?
 <p>  
-  
+
+	<a href="#opt"> B. Optional exercises </a><br>
+<a name="opt"></a> <font color=#005A9C size=+1> <h2>Optional exercises:</h2> </font>
+<ul>
+  <li> <b>Unfolding a small protein domain.</b><br>
+The procedure presented here could be applied to unfold a small protein domain, such as the one studied in the previous practical, i.e. the B1 domain of protein G.  
+	<li> <b>Pulling at constant force.</b><br>
+	  We could induce the dissociation of the beta-strands by exerting a constant force on the termini instead of pulling them with constant-velocity. 
+	  In this case, we will need to change the type of pulling, the force strength and the pull rate in the mdp file to: 
+	  </p><div class="code">
+<pre>
+pull-coord1-type         = constant-force
+pull-coord1-rate         = 0
+pull-coord1-k            = 1000 ; the applied force will be minus this value
+
+pull-coord2-type         = constant-force
+pull-coord2-rate         = 0
+pull-coord2-k            = -1000 ; the applied force will be minus this value
+</pre>
+</div>
+<p>
+Here, you could try different forces and thereby monitor the force dependency of the rate of dissociation. 
+	
+	
+	</ul>	
 <a name="references"></a> <font color=#005A9C size=+1> <h2>Further references and advanced reading:</h2> </font>
 <ul>
   <li>
