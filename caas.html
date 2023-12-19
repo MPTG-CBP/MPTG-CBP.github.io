@@ -36,42 +36,6 @@ function includeHTML() {
 
 
 
-<!-- flooble Expandable Content header start -->
-<script language="javascript">
-// Expandable content script from flooble.com.
-// For more information please visit:
-//   http://www.flooble.com/scripts/expand.php
-// Copyright 2002 Animus Pactum Consulting Inc.
-//----------------------------------------------
-var ie4 = false; if(document.all) { ie4 = true; }
-function getObject(id) { if (ie4) { return document.all[id]; } else { return document.getElementById(id); } }
-
-function toggle(link, divId) { 
-var lText = link.innerHTML; var d = getObject(divId);
-if (lText == 'expand' ) { link.innerHTML = 'collapse'; d.style.display = 'block'; }
- else { link.innerHTML = 'expand'; d.style.display = 'none'; } }
-
-
-function expand(link, divId) { var lText = link.innerHTML; var d = getObject(divId);
-if(d.style.display == "block") {
-    		d.style.display = "none";
-	  	}
-	else {
-		d.style.display = "block";
-		
-	}
-}
-
-function hide(link, divId) { var lText = link.innerHTML; var d = getObject(divId);
-
-		d.style.display = "none";
-                link.innerHTML = '^';
-
-}
-</script>
-
-<!-- flooble Expandable Content header end   -->
-
 
  
   <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Camilo Aponte-Santamar&iacutea</title>
