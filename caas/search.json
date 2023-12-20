@@ -7,25 +7,11 @@
     "text": "Full list:\n  PubMed  |   ORCID  | Research Gate | Google Scholar | h-index: 21\n\n\nRecent highlights:\n\n\nRita Roessner, Nicholas Michelarakis, Frauke Gräter, Camilo Aponte-Santamaría. Mechanical forces control the valency of the malaria adhesin VAR2CSA by exposing cryptic glycan binding sites. PLoS Comp Biol. In press.\n\n\nPo-Lin Chiu, Juan D. Orjuela,Bert L. de Groot, Camilo Aponte-Santamaría,Thomas Walz. Structure and dynamics of cholesterol-mediated aquaporin-0 arrays and implications for lipid rafts. eLife. 12:RP90851 (2023). Reviewed Preprint.\n\n\nLucas Diedrich, Matthias Brosz, Tobias Abele, Salome Steinke, Frauke Gräter, Kerstin Göpfrich, Camilo Aponte-Santamaría. Energetics and kinetics of membrane permeation of photoresists for bioprinting. bioRxiv (2023).\n\n\nHelman Amaya-Espinosa, Alfredo Alexander-Katz, Camilo Aponte-Santamaría. The interplay between adsorption and aggregation of von Willebrand factor chains in shear flows. Biophys J. 122:3831-3842 (2023)."
   },
   {
-    "objectID": "cv.html",
-    "href": "cv.html",
-    "title": "Curriculum Vitae",
+    "objectID": "contact.html",
+    "href": "contact.html",
+    "title": "Contact",
     "section": "",
-    "text": "2021- \n\n\nStaff Scientist, Molecular Biomechanics Group, Heidelberg Institute for Theoretical Studies (HITS), Heidelberg (Germany)\n\n\n\n\n\n\n\n\n 2017-2020 \n\n\nGroup leader, Max Planck Tandem Group on Computational Biophysics, University of los Andes, Bogotá (Colombia)\n\n\n\n\n\n 2012-2017 \n\n\nPostdoc, at the group of Prof. Frauke Gräter, Heidelberg Institute for Theoretical Studies (HITS), Heidelberg (Germany)\n\n\n\n\n\n 2015-spring \n\n\nVisiting Postdoc, at the group of Prof. Alfredo Alexander-Katz, MIT, Cambridge (USA)\n\n\n\n\n\n 2011 \n\n\nPostdoc, at the group of Prof. Bert de Groot, Max Planck Institute for Biophysical Chemistry, Göttingen (Germany)\n\n\n\n\n\n2007-2011\n\n\nDoctor in Natural Sciences,\nMax Planck Institute for Biophysical Chemistry/University of Göttingen, Göttingen (Germany),   Supervisor: Prof. Bert de Groot. Thesis project: Understanding the molecular machinery of aquaporins through molecular dynamics simulations\n\n\n\n\n\n2005-2007\n\n\nMaster of Science on Physics,\nNational University of Colombia, Bogotá (Colombia),  Supervisor: Prof. José Daniel Muñoz.  Thesis project: Brownian Dynamics simulations of the rotation of the F1-ATPase molecular motor\n\n\n\n\n\n2000-2005\n\n\nPhysics BSc,\nNational University of Colombia, Bogotá (Colombia),  Supervisor: Prof. Ramón Fayad and Prof. José Daniel Mu&ntildeoz.  Thesis project: The Gramicidin A Channel: A comparison between an elemental permeation model and a Brownian Dynamics simulation.\n\n\n\n\n\n1994-1999\n\n\nHigh school,\nColegio CAFAM, Bogotá (Colombia)"
-  },
-  {
-    "objectID": "teaching.html",
-    "href": "teaching.html",
-    "title": "Teaching",
-    "section": "",
-    "text": "Courses:\n\nComputational molecular biophysics . SS 2023. Heidelberg University.\nData Science and Simulations. WS 2022/2023. Heidelberg University.\n\n\n\nTutorials:\n\nMD simulations of biological membranes with GROMACS\nForce-probe MD simulations with GROMACS\nGoogle Colab practical: Molecular dynamics simulations of a small protein domain"
-  },
-  {
-    "objectID": "software.html",
-    "href": "software.html",
-    "title": "Software",
-    "section": "",
-    "text": "GROmaps\nc++ leap-frog MD code"
+    "text": "Dr. Camilo Aponte-Santamaría Heidelberg Institute for Theoretical Studies Heidelberg, Germany www"
   },
   {
     "objectID": "index.html",
@@ -35,10 +21,59 @@
     "text": "Here you will find information about my research and teaching activities in the area of theoretical and computational biophysics.\n Rendered with Quarto"
   },
   {
-    "objectID": "contact.html",
-    "href": "contact.html",
-    "title": "Contact",
+    "objectID": "software.html",
+    "href": "software.html",
+    "title": "Software",
     "section": "",
-    "text": "Dr. Camilo Aponte-Santamaría Heidelberg Institute for Theoretical Studies Heidelberg, Germany www"
+    "text": "GROmaps\nc++ leap-frog MD code"
+  },
+  {
+    "objectID": "teaching.html",
+    "href": "teaching.html",
+    "title": "Teaching",
+    "section": "",
+    "text": "Courses:\n\nComputational molecular biophysics . SS 2023. Heidelberg University.\nData Science and Simulations. WS 2022/2023. Heidelberg University.\n\n\n\nTutorials:\n\nMD simulations of biological membranes with GROMACS\nForce-probe MD simulations with GROMACS\nGoogle Colab practical: Molecular dynamics simulations of a small protein domain"
+  },
+  {
+    "objectID": "cv.html",
+    "href": "cv.html",
+    "title": "Curriculum Vitae",
+    "section": "",
+    "text": "2021- \n\n\nStaff Scientist, Molecular Biomechanics Group, Heidelberg Institute for Theoretical Studies (HITS), Heidelberg (Germany)\n\n\n\n\n\n\n\n\n 2017-2020 \n\n\nGroup leader, Max Planck Tandem Group on Computational Biophysics, University of los Andes, Bogotá (Colombia)\n\n\n\n\n\n 2012-2017 \n\n\nPostdoc, at the group of Prof. Frauke Gräter, Heidelberg Institute for Theoretical Studies (HITS), Heidelberg (Germany)\n\n\n\n\n\n 2015-spring \n\n\nVisiting Postdoc, at the group of Prof. Alfredo Alexander-Katz, MIT, Cambridge (USA)\n\n\n\n\n\n 2011 \n\n\nPostdoc, at the group of Prof. Bert de Groot, Max Planck Institute for Biophysical Chemistry, Göttingen (Germany)\n\n\n\n\n\n2007-2011\n\n\nDoctor in Natural Sciences,\nMax Planck Institute for Biophysical Chemistry/University of Göttingen, Göttingen (Germany),   Supervisor: Prof. Bert de Groot. Thesis project: Understanding the molecular machinery of aquaporins through molecular dynamics simulations\n\n\n\n\n\n2005-2007\n\n\nMaster of Science on Physics,\nNational University of Colombia, Bogotá (Colombia),  Supervisor: Prof. José Daniel Muñoz.  Thesis project: Brownian Dynamics simulations of the rotation of the F1-ATPase molecular motor\n\n\n\n\n\n2000-2005\n\n\nPhysics BSc,\nNational University of Colombia, Bogotá (Colombia),  Supervisor: Prof. Ramón Fayad and Prof. José Daniel Mu&ntildeoz.  Thesis project: The Gramicidin A Channel: A comparison between an elemental permeation model and a Brownian Dynamics simulation.\n\n\n\n\n\n1994-1999\n\n\nHigh school,\nColegio CAFAM, Bogotá (Colombia)"
+  },
+  {
+    "objectID": "gallery.html",
+    "href": "gallery.html",
+    "title": "Gallery",
+    "section": "",
+    "text": "For usage of this material please reference the original publication."
+  },
+  {
+    "objectID": "gallery.html#force-controlled-valency-of-the-malaria-adhesin-var2csa",
+    "href": "gallery.html#force-controlled-valency-of-the-malaria-adhesin-var2csa",
+    "title": "Gallery",
+    "section": "Force-controlled valency of the malaria adhesin VAR2CSA",
+    "text": "Force-controlled valency of the malaria adhesin VAR2CSA\n \nRead more: Roessner et al. PLoS Comp Biol. In press."
+  },
+  {
+    "objectID": "gallery.html#role-of-cholesterol-in-the-formation-of-2d-aqp0-arrays-in-lens-membranes",
+    "href": "gallery.html#role-of-cholesterol-in-the-formation-of-2d-aqp0-arrays-in-lens-membranes",
+    "title": "Gallery",
+    "section": "Role of cholesterol in the formation of 2D AQP0 arrays in lens membranes",
+    "text": "Role of cholesterol in the formation of 2D AQP0 arrays in lens membranes\n\nRead more:\nChiu, Orjuela et al.  eLife. 12:RP90851 (2023). Reviewed Preprint."
+  },
+  {
+    "objectID": "gallery.html#force-induced-dissociation-of-von-willebrand-factor-domains",
+    "href": "gallery.html#force-induced-dissociation-of-von-willebrand-factor-domains",
+    "title": "Gallery",
+    "section": "Force-induced dissociation of von Willebrand factor domains",
+    "text": "Force-induced dissociation of von Willebrand factor domains\n\nRead more: Aponte-Santamaría et al. Biophys. J. 108: 2312-2321 (2015)."
+  },
+  {
+    "objectID": "gallery.html#von-willebrand-factor-a2-domain-dynamics",
+    "href": "gallery.html#von-willebrand-factor-a2-domain-dynamics",
+    "title": "Gallery",
+    "section": "Von Willebrand factor A2 domain dynamics",
+    "text": "Von Willebrand factor A2 domain dynamics\n\nRead more: Butera et al. Science. Adv4: eaaq1477 (2018)."
   }
 ]
