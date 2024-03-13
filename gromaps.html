@@ -92,9 +92,10 @@ cd gromacs
 <div class="code">
   mkdir build<br>
   cd build<br>
-  cmake .. -DGMX_BUILD_OWN_FFTW=ON <br>
+  cmake .. -DGMX_BUILD_OWN_FFTW=ON -DCMAKE_CXX_COMPILER=g++-10<br>
   make -j nproc #nproc= number of cpus<br>
 </div>
+GROmaps requires gcc 10 (or older). "g++-10" is accordingly the name of the g++ 10 version in your computer. A version compatible newest g++ versions (11 or so) is planned.       
 After installation, the GROma&rho;s tools will be accessible in the "build/bin" directory. They should appear in the list of programs as maptide, mapdiff, mapconvert, etc:   
 <div class="code">
   ./bin/gmx help commands

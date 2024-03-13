@@ -4,7 +4,7 @@
     "href": "publications.html",
     "title": "Publications",
     "section": "",
-    "text": "Full list:\n  PubMed  |   ORCID  | Research Gate | Google Scholar | h-index: 21\n\n\nRecent highlights:\n\n\nRita Roessner, Nicholas Michelarakis, Frauke Gräter, Camilo Aponte-Santamaría. Mechanical forces control the valency of the malaria adhesin VAR2CSA by exposing cryptic glycan binding sites. PLoS Comp Biol. 19(12): e1011726 (2023).\n\n\nPo-Lin Chiu, Juan D. Orjuela,Bert L. de Groot, Camilo Aponte-Santamaría,Thomas Walz. Structure and dynamics of cholesterol-mediated aquaporin-0 arrays and implications for lipid rafts. eLife. 12:RP90851 (2023). Reviewed Preprint.\n\n\nLucas Diedrich, Matthias Brosz, Tobias Abele, Salome Steinke, Frauke Gräter, Kerstin Göpfrich, Camilo Aponte-Santamaría. Energetics and kinetics of membrane permeation of photoresists for bioprinting. bioRxiv (2023).\n\n\nHelman Amaya-Espinosa, Alfredo Alexander-Katz, Camilo Aponte-Santamaría. The interplay between adsorption and aggregation of von Willebrand factor chains in shear flows. Biophys J. 122:3831-3842 (2023)."
+    "text": "Full list:\n  PubMed  |   ORCID  | Research Gate | Google Scholar | h-index: 21\n\n\nRecent highlights:\n\n\nSoumitra Polley, Tobias Raisch, Sabrina Ghetti, Marie Körner, Melina Terbeck, Frauke Gräter, Stefan Raunser, Camilo Aponte-Santamaría, Ingrid R. Vetter & Andrea Musacchio. Structure of the human KMN complex and implications for regulation of its assembly. NSMB (2024).\n\n\nRita Roessner, Nicholas Michelarakis, Frauke Gräter, Camilo Aponte-Santamaría. Mechanical forces control the valency of the malaria adhesin VAR2CSA by exposing cryptic glycan binding sites. PLoS Comp Biol. 19(12): e1011726 (2023).\n\n\nPo-Lin Chiu, Juan D. Orjuela,Bert L. de Groot, Camilo Aponte-Santamaría,Thomas Walz. Structure and dynamics of cholesterol-mediated aquaporin-0 arrays and implications for lipid rafts. eLife. 12:RP90851 (2023). Reviewed Preprint.\n\n\nLucas Diedrich, Matthias Brosz, Tobias Abele, Salome Steinke, Frauke Gräter, Kerstin Göpfrich, Camilo Aponte-Santamaría. Energetics and kinetics of membrane permeation of photoresists for bioprinting. bioRxiv (2023).\n\n\nHelman Amaya-Espinosa, Alfredo Alexander-Katz, Camilo Aponte-Santamaría. The interplay between adsorption and aggregation of von Willebrand factor chains in shear flows. Biophys J. 122:3831-3842 (2023)."
   },
   {
     "objectID": "contact.html",
@@ -18,7 +18,7 @@
     "href": "index.html",
     "title": "Welcome!",
     "section": "",
-    "text": "Here you will find information about my research and teaching activities in the area of theoretical and computational biophysics.\n\nNews:\nDec 20, 2023: Our article on the malaria adhesin VAR2CSA has been published in PLoS Comp Biol. Read more Media\n Rendered with Quarto"
+    "text": "Here you will find information about my research and teaching activities in the area of theoretical and computational biophysics.\n\nNews:\nMar 13, 2024: Our article on the human outer kinetochore, in collaboration with Soumitra Polley, Tobias Raisch, Andrea Musacchio and co-workers, has been published in NSMB. Read more Media\n Rendered with Quarto"
   },
   {
     "objectID": "software.html",
@@ -47,6 +47,13 @@
     "title": "Gallery",
     "section": "",
     "text": "For usage of this material please reference the original publication."
+  },
+  {
+    "objectID": "gallery.html#dynamics-of-the-human-outer-kinetochore-hub",
+    "href": "gallery.html#dynamics-of-the-human-outer-kinetochore-hub",
+    "title": "Gallery",
+    "section": "Dynamics of the human outer kinetochore hub",
+    "text": "Dynamics of the human outer kinetochore hub\n\nRead more: Polley et al. NSMB. (2024)."
   },
   {
     "objectID": "gallery.html#force-controlled-valency-of-the-malaria-adhesin-var2csa",
